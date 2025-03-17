@@ -1,0 +1,20 @@
+{
+  "name": "mapquest",
+  "version": "1.0.0",
+  "description": "The geography-based game that challenges players to navigate maps and solve location-based puzzles",
+  "homepage": "https://github.com/marklukin/MapQuest#readme",
+  "bugs": {
+    "url": "https://github.com/marklukin/MapQuest/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marklukin/MapQuest.git"
+  },
+  "license": "MIT",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
