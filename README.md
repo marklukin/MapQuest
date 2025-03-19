@@ -6,6 +6,14 @@
 
 MapQuest is a game in which the player has to guess the country by its outline. The game is designed for several rounds, each of which gradually reveals clues.
 
+## 🔧 Technologies
+
+* Node.js (server side)
+* Express.js (request processing)
+* EventEmitter (event management)
+* State Machine (game state management)
+* Strategy Pattern (different types of hints)
+
 ## 🚀 Features
 
 * Random selection of a country for each round.
@@ -35,13 +43,6 @@ npm start
 
 7. Points are calculated and the game continues.
 
-## 🔧 Technologies
-
-* Node.js (server side)
-* Express.js (request processing)
-* EventEmitter (event management)
-* Strategy Pattern (different types of hints)
-* State Machine (game state management)
 
 ## 📂 Project structure
 ```
