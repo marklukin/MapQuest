@@ -33,7 +33,7 @@ npm start
 ```
 2. The player sees the outline of the country.
 
-3. Enter the name of the country in the text box.
+3. Choose the country from a list.
 
 4. If the answer is correct, the player gets points and moves on to the next round.
 
