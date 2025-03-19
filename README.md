@@ -14,17 +14,9 @@ MapQuest is a game in which the player has to guess the country by its outline. 
 * State Machine (game state management)
 * Strategy Pattern (different types of hints)
 
-## 🚀 Features
-
-* Random selection of a country for each round.
-* Display of country outlines.
-* The user enters the answer.
-* If the answer is incorrect, hints are provided:
-  * Capital city
-  * Population
-  * Neighbouring countries
-  * Shape of the country
-* Points are awarded based on the number of hints used.
+## 📅 Goals
+- [ ] Score system
+- [ ] Hints
 
 ## 🕹 How to play
 1. Start the server with the command:
@@ -32,17 +24,11 @@ MapQuest is a game in which the player has to guess the country by its outline. 
 npm start
 ```
 2. The player sees the outline of the country.
-
 3. Choose the country from a list.
-
 4. If the answer is correct, the player gets points and moves on to the next round.
-
 5. If the answer is incorrect, the game gives a hint.
-
 6. After 3 hints, the name of the correct country is revealed.
-
 7. Points are calculated and the game continues.
-
 
 ## 📂 Project structure
 ```
