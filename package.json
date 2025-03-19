@@ -16,5 +16,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "eslint": "^9.22.0",
+    "eslint-config-metarhia": "^9.1.1",
+    "globals": "^16.0.0"
   }
 }
