@@ -6,7 +6,7 @@
 
 MapQuest is a game in which the player has to guess the country by its outline. The game is designed for several rounds, each of which gradually reveals clues.
 
-## 🚀 Features.
+## 🚀 Features
 
 * Random selection of a country for each round.
 
@@ -42,7 +42,7 @@ npm start
 6. After 3 hints, the name of the correct country is revealed.
 
 7. Points are calculated and the game continues.
-## 🔧 Technologies.
+## 🔧 Technologies
 * Node.js (server side)
 
 * Express.js (request processing)
