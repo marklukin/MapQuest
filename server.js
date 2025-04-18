@@ -1,7 +1,7 @@
 'use strict';
 
 const http = require('node:http');
-const fs = require('node:fs');
+const routers = require('./src/routers.js');
 
 const result = require('dotenv').config();
 if (result.error) {
@@ -20,20 +20,20 @@ if (!hostname) {
   throw new Error('Missing hostname option in .env');
 }
 
-const index = (req, resp) => {
-  fs.readFile('./public/index.html', 'utf8', (err, data) => {
-    if (err) {
-      console.error(err);
-      return;
-    };
-    resp.writeHead(200, { 'Content-Type': 'text/html' });
-    resp.write(data);
-    resp.end();
-  });
-};
+const server = http.createServer(async (req, resp) => {
+  const router = routers.routing[req.url];
 
-const server = http.createServer((req, resp) => {
-  if (req.url === '/') index(req, resp);
+  if (!router) {
+    resp.statusCode = 404;
+    resp.end('Not found');
+    return;
+  }
+
+  const result = await router(req, resp);
+
+  resp.setHeader('Content-Type', result.contentType);
+  resp.write(result.data, 'utf8');
+  resp.end();
 });
 
 server.listen(port, hostname, () => {
