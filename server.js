@@ -12,12 +12,14 @@ const config = result.parsed;
 
 const port = config.PORT;
 if (!port) {
-  throw new Error('Missing port option in .env');
+  console.error('Missing port option in .env');
+  process.exit(1);
 }
 
 const hostname = config.HOSTNAME;
 if (!hostname) {
-  throw new Error('Missing hostname option in .env');
+  console.error('Missing hostname option in .env');
+  process.exit(1);
 }
 
 const server = http.createServer(async (req, resp) => {
