@@ -3,8 +3,22 @@
 const http = require('node:http');
 const fs = require('node:fs');
 
-const hostname = '127.0.0.1';
-const port = 8000;
+const result = require('dotenv').config();
+if (result.error) {
+  throw result.error;
+}
+
+const config = result.parsed;
+
+const port = config.PORT;
+if (!port) {
+  throw new Error('Missing port option in .env');
+}
+
+const hostname = config.HOSTNAME;
+if (!hostname) {
+  throw new Error('Missing hostname option in .env');
+}
 
 const index = (req, resp) => {
   fs.readFile('./public/index.html', 'utf8', (err, data) => {
