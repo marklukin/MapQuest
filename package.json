@@ -13,15 +13,18 @@
   "license": "MIT",
   "author": "",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "devDependencies": {
     "eslint": "^9.22.0",
     "eslint-config-metarhia": "^9.1.1",
     "globals": "^16.0.0",
     "prettier": "3.5.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0"
   }
 }
