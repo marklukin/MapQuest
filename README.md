@@ -34,15 +34,11 @@ npm start
 ```
 /mapquest
 ├── src
-│ ├── game
-│ │ ├── Game.js (main game logic)
-│ │ ├── State.js (game state machine)
-│ │ ├── Strategy.js (different types of hints)
-│ ├── server.js (server startup)
+│ ├── routers.js (server routers)
+├── frontend
+│ ├── index.html
 │ ├── assets
-│ │ ├── maps (country outlines in PNG format)
-│ ├── utils
-│ │ ├── helpers.js (auxiliary functions)
+├── server.js
 ├── package.json
 ├── README.md
 ```
