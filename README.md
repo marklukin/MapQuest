@@ -11,10 +11,6 @@ MapQuest is a game in which the player has to guess the country by its outline. 
 * Node.js (server side)
 * HTTP (request processing)
 
-## 📅 Goals
-- [ ] Score system
-- [ ] Hints
-
 ## 🕹 How to play
 1. Start the server with the command:
 ```
@@ -39,3 +35,7 @@ npm start
 ├── package.json
 ├── README.md
 ```
+
+## 📅 TODO
+- [ ] Hints
+- [ ] Score system
