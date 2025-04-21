@@ -2,7 +2,7 @@
 
 const indexRouter = async () => {
   const { readFile } = require('node:fs/promises');
-  const data = await readFile('./public/index.html', { encoding: 'utf8' });
+  const data = await readFile('./frontend/index.html', { encoding: 'utf8' });
   const contentType = 'text/html';
 
   return {
