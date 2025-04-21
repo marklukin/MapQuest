@@ -9,10 +9,7 @@ MapQuest is a game in which the player has to guess the country by its outline. 
 ## 🔧 Technologies
 
 * Node.js (server side)
-* Express.js (request processing)
-* EventEmitter (event management)
-* State Machine (game state management)
-* Strategy Pattern (different types of hints)
+* HTTP (request processing)
 
 ## 📅 Goals
 - [ ] Score system
