@@ -1,7 +1,7 @@
 'use strict';
 
-const http = require('node:http');
-const routers = require('./src/routers.js');
+const fastify = require('fastify')({ logger: true });
+const path = require('node:path');
 
 const result = require('dotenv').config();
 if (result.error) {
@@ -22,28 +22,13 @@ if (!hostname) {
   process.exit(1);
 }
 
-const server = http.createServer(async (req, resp) => {
-  const router = routers.routing[req.url];
-
-  if (!router) {
-    resp.statusCode = 404;
-    resp.end('Not found');
-    return;
-  }
-
-  const result = await router(req, resp);
-
-  resp.setHeader('Content-Type', result.contentType);
-  resp.write(result.data, 'utf8');
-  resp.end();
+fastify.register(require('@fastify/static'), {
+  root: path.join(__dirname, 'frontend'),
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server has started at http://${hostname}:${port}`);
-});
-
-server.on('error', (err) => {
-  if (err.code === 'EACCES') {
-    console.log(`No access to port: ${port}`);
+fastify.listen({ port, hostname }, (err, address) => {
+  if (err) {
+    fastify.log.error(err);
+    process.exit(1);
   }
 });
