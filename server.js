@@ -22,7 +22,7 @@ if (!host) {
 }
 
 fastify.register(require('@fastify/static'), {
-  root: path.join(__dirname, 'frontend'),
+  root: path.join(__dirname, 'public'),
 });
 
 fastify.listen({ port, host }, (err, address) => {
