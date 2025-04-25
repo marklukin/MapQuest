@@ -14,13 +14,41 @@ const roundInfo = document.getElementById('round-info');
 const scoreElement = document.getElementById('score');
 
 function generateOptions() {
-  optionsContainer = '';
+  optionsContainer.innerHTML = '';
 
   let incorrectOptions = countries.filter(country => country.name !== currentCountry.name);
   incorrectOptions = shuffleArray(incorrectOptions).slice(0, 3);
 
   let options = [currentCountry, ...incorrectOptions];
   options = shuffleArray(options);
+
+  for (const country of options) {
+    const button = document.createElement('button');
+    button.className = 'btn btn-outline-primary mb-2';
+    button.textContent = country.name;
+    button.addEventListener('click', () => checkAnswer(country.name));
+    optionsContainer.appendChild(button);
+  }
+}
+
+function checkAnswer(selectedCountry) {
+  const buttons = optionsContainer.querySelectorAll('button');
+
+  for (const button of buttons) {
+    button.disabled = true;
+
+    if (button.textContent === currentCountry.name) {
+      button.classList.remove('btn-outline-primary');
+      button.classList.add('btn-success');
+    }
+  
+    if (button.textContent === selectedCountry && selectedCountry !== currentCountry.name) {
+      button.classList.remove('btn-outline-primary');
+      button.classList.add('btn-danger');
+    }
+  };
+
+  if (selectedCountry === currentCountry.name) score++;
 }
 
 function shuffleArray(arr) {
