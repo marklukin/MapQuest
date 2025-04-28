@@ -2,6 +2,7 @@
 
 const fastify = require('fastify')({ logger: true });
 const path = require('node:path');
+const { createDatabase } = require('./src/database/connection');
 
 const result = require('dotenv').config();
 if (result.error) {
@@ -23,10 +24,11 @@ if (!hostname) {
 }
 
 fastify.register(require('@fastify/static'), {
-  root: path.join(__dirname, 'frontend'),
+  root: path.join(__dirname, 'public'),
 });
 
 fastify.listen({ port, hostname }, (err, address) => {
+  createDatabase();
   if (err) {
     fastify.log.error(err);
     process.exit(1);
