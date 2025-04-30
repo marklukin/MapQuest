@@ -70,8 +70,17 @@ ${currentCountry.hints[hintCount]}`; //Считаю что в базе данн�
 ${currentCountry.name}</strong>`;
         revealMessage.className = 'alert alert-info';
         hintContainer.appendChild(revealMessage);
+
+        setTimeout(() => {
+          currentRound++;
+          updateRoundInfo();
+        }, 3000);
     }
   }
+}
+
+function updateRoundInfo() {
+  roundInfo.textContent = `Round ${currentRound} of ${totalRounds}`;
 }
 
 function updateScore() {
