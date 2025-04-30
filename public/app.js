@@ -3,7 +3,7 @@ let currentRound = 1;
 const totalRounds = 15;
 let score = 0;
 let currentCountry = null;
-let hintNumber = 0;
+let hintCount = 0;
 let usedCountries = new Set();
 
 const countryImage = document.getElementById('country-image');
@@ -48,7 +48,34 @@ function checkAnswer(selectedCountry) {
     }
   };
 
-  if (selectedCountry === currentCountry.name) score++;
+  if (selectedCountry === currentCountry.name) {
+    score++;
+    updateScore();
+  }
+}
+
+function showHint() {
+  if (hintCount < 3) {
+    const hint = document.createElement('p');
+    hint.textContent = `Hint ${hintCount + 1}: 
+${currentCountry.hints[hintCount]}`; //Считаю что в базе данных для каждой страны будет массив hints с 3 подсказками
+    hintContainer.appendChild(hint);
+    hintCount++;
+
+    if (hintCount === 3) { //максимум 3 подсказки, и тогда будет показываться ответ и переходить на следующий раунд
+      hintButton.style.display = 'none';
+
+      const revealMessage = document.createElement('p');
+      revealMessage.innerHTML = `<strong>The correct answer is: 
+${currentCountry.name}</strong>`;
+        revealMessage.className = 'alert alert-info';
+        hintContainer.appendChild(revealMessage);
+    }
+  }
+}
+
+function updateScore() {
+  scoreElement.textContent = `Score: ${score}`;
 }
 
 function shuffleArray(arr) {
