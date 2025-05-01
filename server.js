@@ -3,6 +3,7 @@
 const fastify = require('fastify')({ logger: true });
 const path = require('node:path');
 const { createDatabase } = require('./src/database/connection');
+const { errorHandler } = require('./src/controllers/error-handler');
 
 const result = require('dotenv').config();
 if (result.error) {
@@ -27,6 +28,7 @@ fastify.register(require('@fastify/static'), {
   root: path.join(__dirname, 'public'),
 });
 
+fastify.setErrorHandler(errorHandler);
 fastify.register(require('./src/routes/player'));
 
 fastify.listen({ port, hostname }, (err, address) => {

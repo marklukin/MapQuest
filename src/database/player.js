@@ -1,6 +1,7 @@
 'use strict';
 
 const { db } = require('./connection');
+const { NotFoundException } = require('../controllers/error-handler');
 
 const playerExists = (username) => {
   const record = db.prepare(`
@@ -12,9 +13,14 @@ const playerExists = (username) => {
   else return false;
 };
 
-const createPlayer = (username, hashedPassword) => {
-  if (playerExists(username)) throw new Error('User is exist');
+const handleNotFound = (username) => {
+  const exists = playerExists(username);
+  if (!exists) {
+    throw new NotFoundException(`User with username ${username} is not found`);
+  }
+};
 
+const createPlayer = (username, hashedPassword) => {
   const record = db.prepare(`
     INSERT INTO Players 
     (username, hashed_password) 
@@ -25,6 +31,7 @@ const createPlayer = (username, hashedPassword) => {
 };
 
 const findPlayerByUsername = (username) => {
+  handleNotFound(username);
   const record = db.prepare(`
     SELECT * FROM Players WHERE username = ?
   `);
