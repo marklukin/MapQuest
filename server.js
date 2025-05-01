@@ -27,6 +27,8 @@ fastify.register(require('@fastify/static'), {
   root: path.join(__dirname, 'public'),
 });
 
+fastify.register(require('./src/routes/player'));
+
 fastify.listen({ port, hostname }, (err, address) => {
   createDatabase();
   if (err) {
