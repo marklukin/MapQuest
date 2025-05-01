@@ -30,6 +30,16 @@ const createPlayer = (username, hashedPassword) => {
   record.run(username, hashedPassword);
 };
 
+const deletePlayer = (username) => {
+  handleNotFound(username);
+  const record = db.prepare(`
+    DELETE FROM Players
+    WHERE username = ?
+  `);
+
+  record.run(username);
+};
+
 const findPlayerByUsername = (username) => {
   handleNotFound(username);
   const record = db.prepare(`
@@ -43,5 +53,6 @@ const findPlayerByUsername = (username) => {
 
 module.exports = {
   createPlayer,
+  deletePlayer,
   findPlayerByUsername,
 };

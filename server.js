@@ -29,7 +29,7 @@ fastify.register(require('@fastify/static'), {
 });
 
 fastify.setErrorHandler(errorHandler);
-fastify.register(require('./src/routes/player'));
+fastify.register(require('./src/routes/players'));
 
 fastify.listen({ port, hostname }, (err, address) => {
   createDatabase();
