@@ -24,9 +24,7 @@ const errorHandler = (err, req, reply) => {
     err,
   }, 'Unhandled error occured.');
 
-  return reply
-    .code(500)
-    .send(err.message);
+  return reply.code(500).send(err.message);
 };
 
 module.exports = {

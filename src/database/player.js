@@ -1,7 +1,7 @@
 'use strict';
 
 const { db } = require('./connection');
-const { NotFoundException } = require('../controllers/error-handler');
+const { NotFoundException } = require('../error-handler');
 
 const playerExists = (username) => {
   const record = db.prepare(`
