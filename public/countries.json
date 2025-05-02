@@ -1,0 +1,1704 @@
+{
+  "Europe": [
+    {
+      "name": "Albania",
+      "imagePath": "assets/countries/albania.png",
+      "hints": [
+        "The only European country with over 700,000 communist-era bunkers still scattered across its territory",
+        "Home to the ancient city of Butrint, a UNESCO World Heritage Site",
+        "Capital: Tirana"
+      ]
+    },
+    {
+      "name": "Andorra",
+      "imagePath": "assets/countries/andorra.png",
+      "hints": [
+        "The parliament of this microstate once met in a converted chicken coop",
+        "Has the highest life expectancy in Europe (over 82 years)",
+        "Capital: Andorra la Vella"
+      ]
+    },
+    {
+      "name": "Austria",
+      "imagePath": "assets/countries/austria.png",
+      "hints": [
+        "Birthplace of Sigmund Freud and the waltz dance tradition",
+        "The world's oldest operating ferris wheel is in Vienna's Prater Park",
+        "Capital: Vienna"
+      ]
+    },
+    {
+      "name": "Belarus",
+      "imagePath": "assets/countries/belarus.png",
+      "hints": [
+        "20% of its territory consists of protected marshlands called 'Europe's Lungs'",
+        "Produces the world's largest dump trucks (BelAZ)",
+        "Capital: Minsk"
+      ]
+    },
+    {
+      "name": "Belgium",
+      "imagePath": "assets/countries/belgium.png",
+      "hints": [
+        "Invented fries (though disputed by France) and has over 1,000 beer varieties",
+        "Hosts the EU and NATO headquarters",
+        "Capital: Brussels"
+      ]
+    },
+    {
+      "name": "Bosnia And Herzegovina",
+      "imagePath": "assets/countries/bosnia.png",
+      "hints": [
+        "The only European country with three official presidents representing different ethnic groups",
+        "Home to the ancient Stari Most bridge in Mostar",
+        "Capital: Sarajevo"
+      ]
+    },
+    {
+      "name": "Bulgaria",
+      "imagePath": "assets/countries/bulgaria.png",
+      "hints": [
+        "The Cyrillic alphabet was developed here in the 9th century",
+        "Produces 85% of the world's rose oil",
+        "Capital: Sofia"
+      ]
+    },
+    {
+      "name": "Croatia",
+      "imagePath": "assets/countries/croatia.png",
+      "hints": [
+        "Home to the world's smallest town (Hum) with a population of 30",
+        "Has a coastline with over 1,200 islands",
+        "Capital: Zagreb"
+      ]
+    },
+    {
+      "name": "Cyprus",
+      "imagePath": "assets/countries/cyprus.png",
+      "hints": [
+        "The only divided capital city (Nicosia) in the world",
+        "Legendary birthplace of Aphrodite according to Greek mythology",
+        "Capital: Nicosia"
+      ]
+    },
+    {
+      "name": "Czechia",
+      "imagePath": "assets/countries/czechia.png",
+      "hints": [
+        "Home to the world's largest castle complex (Prague Castle)",
+        "Invented the word 'robot' (from Czech 'robota')",
+        "Capital: Prague"
+      ]
+    },
+    {
+      "name": "Denmark",
+      "imagePath": "assets/countries/denmark.png",
+      "hints": [
+        "The oldest continuously used national flag (Dannebrog, since 1219)",
+        "Legoland in Billund was the first LEGO theme park",
+        "Capital: Copenhagen"
+      ]
+    },
+    {
+      "name": "Estonia",
+      "imagePath": "assets/countries/estonia.png",
+      "hints": [
+        "One of the world's most digitally advanced societies (e-voting since 2005)",
+        "Has over 2,000 islands in the Baltic Sea",
+        "Capital: Tallinn"
+      ]
+    },
+    {
+      "name": "Finland",
+      "imagePath": "assets/countries/finland.png",
+      "hints": [
+        "The 'Land of a Thousand Lakes' actually has over 188,000 lakes",
+        "Home to the Santa Claus Village in Rovaniemi",
+        "Capital: Helsinki"
+      ]
+    },
+    {
+      "name": "France",
+      "imagePath": "assets/countries/france.png",
+      "hints": [
+        "The only country with territories on five continents",
+        "The Louvre is the world's most visited art museum",
+        "Capital: Paris"
+      ]
+    },
+    {
+      "name": "Georgia",
+      "imagePath": "assets/countries/georgia.png",
+      "hints": [
+        "Claims to be the birthplace of wine (8,000-year-old winemaking tradition)",
+        "The cave city of Uplistsikhe dates back to the Iron Age",
+        "Capital: Tbilisi"
+      ]
+    },
+    {
+      "name": "Germany",
+      "imagePath": "assets/countries/germany.png",
+      "hints": [
+        "Invented the printing press (Gutenberg Bible, 1455)",
+        "The Berlin Wall divided the city for 28 years",
+        "Capital: Berlin"
+      ]
+    },
+    {
+      "name": "Greece",
+      "imagePath": "assets/countries/greece.png",
+      "hints": [
+        "First host of the modern Olympic Games (1896)",
+        "Has over 6,000 islands, with only 227 inhabited",
+        "Capital: Athens"
+      ]
+    },
+    {
+      "name": "Hungary",
+      "imagePath": "assets/countries/hungary.png",
+      "hints": [
+        "The Rubik's Cube was invented by a Hungarian architect",
+        "Home to Europe's largest thermal lake (Hévíz)",
+        "Capital: Budapest"
+      ]
+    },
+    {
+      "name": "Iceland",
+      "imagePath": "assets/countries/iceland.png",
+      "hints": [
+        "No mosquitoes exist here due to unique climate conditions",
+        "The only place where you can swim between tectonic plates (Silfra fissure)",
+        "Capital: Reykjavik"
+      ]
+    },
+    {
+      "name": "Ireland",
+      "imagePath": "assets/countries/ireland.png",
+      "hints": [
+        "Halloween originated from the ancient Celtic festival Samhain",
+        "Has the world's oldest yacht club (1720)",
+        "Capital: Dublin"
+      ]
+    },
+    {
+      "name": "Italy",
+      "imagePath": "assets/countries/italy.png",
+      "hints": [
+        "Home to the world's smallest country (Vatican City)",
+        "The Leaning Tower of Pisa took 199 years to complete",
+        "Capital: Rome"
+      ]
+    },
+    {
+      "name": "Kosovo",
+      "imagePath": "assets/countries/kosovo.png",
+      "hints": [
+        "The youngest European country (declared independence in 2008)",
+        "The medieval Gračanica Monastery is a UNESCO site",
+        "Capital: Pristina"
+      ]
+    },
+    {
+      "name": "Latvia",
+      "imagePath": "assets/countries/latvia.png",
+      "hints": [
+        "Invented jeans (Jacob Davis, a Latvian tailor, partnered with Levi Strauss)",
+        "Riga's Central Market is housed in repurposed WWI zeppelin hangars",
+        "Capital: Riga"
+      ]
+    },
+    {
+      "name": "Liechtenstein",
+      "imagePath": "assets/countries/liechtenstein.png",
+      "hints": [
+        "The only country entirely in the Alps",
+        "You can rent the entire country for $70,000/night (2011 offer)",
+        "Capital: Vaduz"
+      ]
+    },
+    {
+      "name": "Lithuania",
+      "imagePath": "assets/countries/lithuania.png",
+      "hints": [
+        "Once the largest country in Europe (14th-century Grand Duchy)",
+        "Hill of Crosses has over 200,000 religious symbols",
+        "Capital: Vilnius"
+      ]
+    },
+    {
+      "name": "Luxembourg",
+      "imagePath": "assets/countries/luxembourg.png",
+      "hints": [
+        "The world's only Grand Duchy still in existence",
+        "Has the highest minimum wage in the EU",
+        "Capital: Luxembourg City"
+      ]
+    },
+    {
+      "name": "Malta",
+      "imagePath": "assets/countries/malta.png",
+      "hints": [
+        "Maltese is the only Semitic language written in Latin script",
+        "The Megalithic Temples are older than Stonehenge",
+        "Capital: Valletta"
+      ]
+    },
+    {
+      "name": "Moldova",
+      "imagePath": "assets/countries/moldova.png",
+      "hints": [
+        "Home to the world's largest wine cellar (Mileștii Mici)",
+        "The national dish is 'mămăligă' (polenta)",
+        "Capital: Chișinău"
+      ]
+    },
+    {
+      "name": "Monaco",
+      "imagePath": "assets/countries/monaco.png",
+      "hints": [
+        "The world's most densely populated country",
+        "Hosts the iconic Formula 1 Grand Prix street race",
+        "Capital: Monaco"
+      ]
+    },
+    {
+      "name": "Montenegro",
+      "imagePath": "assets/countries/montenegro.png",
+      "hints": [
+        "Named after the 'Black Mountain' (Lovćen) dominating its landscape",
+        "The Bay of Kotor is Europe's southernmost fjord",
+        "Capital: Podgorica"
+      ]
+    },
+    {
+      "name": "Netherlands",
+      "imagePath": "assets/countries/netherlands.png",
+      "hints": [
+        "30% of the country lies below sea level",
+        "First country to legalize same-sex marriage (2001)",
+        "Capital: Amsterdam"
+      ]
+    },
+    {
+      "name": "North Macedonia",
+      "imagePath": "assets/countries/north-macedonia.png",
+      "hints": [
+        "Alexander the Great's birthplace (ancient Pella)",
+        "Lake Ohrid is one of Europe's oldest lakes",
+        "Capital: Skopje"
+      ]
+    },
+    {
+      "name": "Norway",
+      "imagePath": "assets/countries/norway.png",
+      "hints": [
+        "Invented the cheese slicer in 1925",
+        "The Svalbard Global Seed Vault preserves crop diversity",
+        "Capital: Oslo"
+      ]
+    },
+    {
+      "name": "Poland",
+      "imagePath": "assets/countries/poland.png",
+      "hints": [
+        "Home to the world's largest castle by land area (Malbork Castle)",
+        "Nicolaus Copernicus first proposed heliocentrism here",
+        "Capital: Warsaw"
+      ]
+    },
+    {
+      "name": "Portugal",
+      "imagePath": "assets/countries/portugal.png",
+      "hints": [
+        "The oldest country in Europe with unchanged borders since 1139",
+        "Invented tempura (via Portuguese traders in Japan)",
+        "Capital: Lisbon"
+      ]
+    },
+    {
+      "name": "Romania",
+      "imagePath": "assets/countries/romania.png",
+      "hints": [
+        "Home to Europe's heaviest building (Palace of the Parliament)",
+        "The Danube Delta hosts over 300 bird species",
+        "Capital: Bucharest"
+      ]
+    },
+    {
+      "name": "Russia",
+      "imagePath": "assets/countries/russia.png",
+      "hints": [
+        "Spans 11 time zones (the most in the world)",
+        "The Trans-Siberian Railway is the longest railway line",
+        "Capital: Moscow"
+      ]
+    },
+    {
+      "name": "San Marino",
+      "imagePath": "assets/countries/san-marino.png",
+      "hints": [
+        "The world's oldest surviving republic (founded 301 AD)",
+        "Has more vehicles than people",
+        "Capital: San Marino"
+      ]
+    },
+    {
+      "name": "Serbia",
+      "imagePath": "assets/countries/serbia.png",
+      "hints": [
+        "Invented the first raspberry gene bank",
+        "The Exit Festival in Novi Sad is one of Europe's largest",
+        "Capital: Belgrade"
+      ]
+    },
+    {
+      "name": "Slovakia",
+      "imagePath": "assets/countries/slovakia.png",
+      "hints": [
+        "Home to more castles per capita than any other country",
+        "The only capital bordering two countries (Austria & Hungary)",
+        "Capital: Bratislava"
+      ]
+    },
+    {
+      "name": "Slovenia",
+      "imagePath": "assets/countries/slovenia.png",
+      "hints": [
+        "The only country with 'LOVE' in its name",
+        "Lake Bled's island church has a wishing bell",
+        "Capital: Ljubljana"
+      ]
+    },
+    {
+      "name": "Spain",
+      "imagePath": "assets/countries/spain.png",
+      "hints": [
+        "The only European country with physical borders in Africa",
+        "Invented the modern novel (Don Quixote, 1605)",
+        "Capital: Madrid"
+      ]
+    },
+    {
+      "name": "Sweden",
+      "imagePath": "assets/countries/sweden.png",
+      "hints": [
+        "Home to the Nobel Prize ceremony",
+        "Has 267,570 islands (more than any other country)",
+        "Capital: Stockholm"
+      ]
+    },
+    {
+      "name": "Switzerland",
+      "imagePath": "assets/countries/switzerland.png",
+      "hints": [
+        "The only country with a square flag",
+        "Invented Velcro and the Swiss Army knife",
+        "Capital: Bern"
+      ]
+    },
+    {
+      "name": "Ukraine",
+      "imagePath": "assets/countries/ukraine.png",
+      "hints": [
+        "The largest country entirely within Europe",
+        "Home to the deepest metro station (Arsenalna, Kyiv)",
+        "Capital: Kyiv"
+      ]
+    },
+    {
+      "name": "United Kingdom",
+      "imagePath": "assets/countries/united-kingdom.png",
+      "hints": [
+        "The only country not required to name itself on postage stamps",
+        "The London Underground is the oldest metro system",
+        "Capital: London"
+      ]
+    },
+    {
+      "name": "Vatican",
+      "imagePath": "assets/countries/vatican.png",
+      "hints": [
+        "The world's smallest country by population (around 800 citizens)",
+        "Home to Michelangelo's Sistine Chapel ceiling",
+        "Capital: Vatican City"
+      ]
+    }
+  ],
+  "Asia": [
+    {
+      "name": "Afghanistan",
+      "imagePath": "assets/countries/afghanistan.png",
+      "hints": [
+        "Home to the ancient 'Silk Road' city of Balkh",
+        "National sport is buzkashi, played with a goat carcass",
+        "Capital: Kabul"
+      ]
+    },
+    {
+      "name": "Armenia",
+      "imagePath": "assets/countries/armenia.png",
+      "hints": [
+        "First country to adopt Christianity as a state religion (301 AD)",
+        "Mount Ararat, a national symbol, lies in neighboring Turkey",
+        "Capital: Yerevan"
+      ]
+    },
+    {
+      "name": "Azerbaijan",
+      "imagePath": "assets/countries/azerbaijan.png",
+      "hints": [
+        "Known as the 'Land of Fire' due to natural gas flames",
+        "Home to over 400 mud volcanoes",
+        "Capital: Baku"
+      ]
+    },
+    {
+      "name": "Bahrain",
+      "imagePath": "assets/countries/bahrain.png",
+      "hints": [
+        "Site of the ancient Dilmun civilization",
+        "The Formula 1 Gulf Air Bahrain Grand Prix is held here",
+        "Capital: Manama"
+      ]
+    },
+    {
+      "name": "Bangladesh",
+      "imagePath": "assets/countries/bangladesh.png",
+      "hints": [
+        "Has the world's largest river delta (Ganges-Brahmaputra)",
+        "Produces 95% of the world's jute fiber",
+        "Capital: Dhaka"
+      ]
+    },
+    {
+      "name": "Bhutan",
+      "imagePath": "assets/countries/bhutan.png",
+      "hints": [
+        "Measures Gross National Happiness instead of GDP",
+        "The only carbon-negative country in the world",
+        "Capital: Thimphu"
+      ]
+    },
+    {
+      "name": "Brunei",
+      "imagePath": "assets/countries/brunei.png",
+      "hints": [
+        "Sultan Hassanal Bolkiah has ruled since 1967",
+        "The Istana Nurul Iman is the world's largest residential palace",
+        "Capital: Bandar Seri Begawan"
+      ]
+    },
+    {
+      "name": "Cambodia",
+      "imagePath": "assets/countries/cambodia.png",
+      "hints": [
+        "Home to Angkor Wat, the largest religious monument",
+        "Uses the riel, but the US dollar is widely accepted",
+        "Capital: Phnom Penh"
+      ]
+    },
+    {
+      "name": "China",
+      "imagePath": "assets/countries/china.png",
+      "hints": [
+        "Invented paper, gunpowder, and the compass",
+        "The Great Wall is visible from space (myth debunked)",
+        "Capital: Beijing"
+      ]
+    },
+    {
+      "name": "East Timor",
+      "imagePath": "assets/countries/east-timor.png",
+      "hints": [
+        "One of the youngest countries (independence in 2002)",
+        "Coffee is a major export, grown in mountainous regions",
+        "Capital: Dili"
+      ]
+    },
+    {
+      "name": "India",
+      "imagePath": "assets/countries/india.png",
+      "hints": [
+        "Birthplace of yoga and the decimal numeral system",
+        "Has the world's largest film industry (Bollywood)",
+        "Capital: New Delhi"
+      ]
+    },
+    {
+      "name": "Indonesia",
+      "imagePath": "assets/countries/indonesia.png",
+      "hints": [
+        "The only country with a natural habitat for Komodo dragons",
+        "Largest archipelago nation with over 17,000 islands",
+        "Capital: Jakarta"
+      ]
+    },
+    {
+      "name": "Iran",
+      "imagePath": "assets/countries/iran.png",
+      "hints": [
+        "Formerly known as Persia, home to the ancient city of Persepolis",
+        "Hosts the world's largest carpet museum",
+        "Capital: Tehran"
+      ]
+    },
+    {
+      "name": "Iraq",
+      "imagePath": "assets/countries/iraq.png",
+      "hints": [
+        "Ancient Mesopotamia, where writing was invented",
+        "Holds the world's third-largest oil reserves",
+        "Capital: Baghdad"
+      ]
+    },
+    {
+      "name": "Israel",
+      "imagePath": "assets/countries/israel.png",
+      "hints": [
+        "The Dead Sea here is Earth's lowest elevation on land",
+        "Home to the tech hub 'Silicon Wadi'",
+        "Capital: Jerusalem"
+      ]
+    },
+    {
+      "name": "Japan",
+      "imagePath": "assets/countries/japan.png",
+      "hints": [
+        "Hosts the world's busiest pedestrian crossing (Shibuya)",
+        "Invented karaoke and emojis",
+        "Capital: Tokyo"
+      ]
+    },
+    {
+      "name": "Jordan",
+      "imagePath": "assets/countries/jordan.png",
+      "hints": [
+        "Home to Petra, the 'Rose City' carved into cliffs",
+        "The Dead Sea borders its western edge",
+        "Capital: Amman"
+      ]
+    },
+    {
+      "name": "Kazakhstan",
+      "imagePath": "assets/countries/kazakhstan.png",
+      "hints": [
+        "Largest landlocked country in the world",
+        "Baikonur Cosmodrome launches Russian spacecraft",
+        "Capital: Nur-Sultan"
+      ]
+    },
+    {
+      "name": "Kuwait",
+      "imagePath": "assets/countries/kuwait.png",
+      "hints": [
+        "Currency is the highest-valued unit in the world (1 KWD ≈ 3.3 USD)",
+        "Rebuilt after the 1990 Iraqi invasion",
+        "Capital: Kuwait City"
+      ]
+    },
+    {
+      "name": "Kyrgyzstan",
+      "imagePath": "assets/countries/kyrgyzstan.png",
+      "hints": [
+        "Over 90% of the country is mountainous",
+        "Known for its nomadic eagle hunters",
+        "Capital: Bishkek"
+      ]
+    },
+    {
+      "name": "Laos",
+      "imagePath": "assets/countries/laos.png",
+      "hints": [
+        "Only landlocked country in Southeast Asia",
+        "The Plain of Jars has thousands of ancient stone jars",
+        "Capital: Vientiane"
+      ]
+    },
+    {
+      "name": "Lebanon",
+      "imagePath": "assets/countries/lebanon.png",
+      "hints": [
+        "Phoenician civilization originated here",
+        "National symbol is the cedar tree",
+        "Capital: Beirut"
+      ]
+    },
+    {
+      "name": "Malaysia",
+      "imagePath": "assets/countries/malaysia.png",
+      "hints": [
+        "Home to the Petronas Twin Towers (once the world's tallest)",
+        "One of only two countries with territory on mainland Asia and an island (Borneo)",
+        "Capital: Kuala Lumpur"
+      ]
+    },
+    {
+      "name": "Maldives",
+      "imagePath": "assets/countries/maldives.png",
+      "hints": [
+        "Lowest country in the world (average elevation: 1.5m)",
+        "Each island is a single resort",
+        "Capital: Malé"
+      ]
+    },
+    {
+      "name": "Mongolia",
+      "imagePath": "assets/countries/mongolia.png",
+      "hints": [
+        "The least densely populated country in the world",
+        "Genghis Khan founded the largest contiguous empire from here",
+        "Capital: Ulaanbaatar"
+      ]
+    },
+    {
+      "name": "Myanmar",
+      "imagePath": "assets/countries/myanmar.png",
+      "hints": [
+        "Formerly known as Burma until 1989",
+        "Shwedagon Pagoda is covered in 27 tons of gold",
+        "Capital: Naypyidaw"
+      ]
+    },
+    {
+      "name": "Nepal",
+      "imagePath": "assets/countries/nepal.png",
+      "hints": [
+        "Home to Mount Everest, the world's highest peak",
+        "Birthplace of Siddhartha Gautama (Buddha)",
+        "Capital: Kathmandu"
+      ]
+    },
+    {
+      "name": "North Korea",
+      "imagePath": "assets/countries/north-korea.png",
+      "hints": [
+        "The Demilitarized Zone (DMZ) separates it from South Korea",
+        "Has its own calendar system (Juche era)",
+        "Capital: Pyongyang"
+      ]
+    },
+    {
+      "name": "Oman",
+      "imagePath": "assets/countries/oman.png",
+      "hints": [
+        "Once a major hub for the frankincense trade",
+        "Sultan Qaboos ruled for 50 years (1970–2020)",
+        "Capital: Muscat"
+      ]
+    },
+    {
+      "name": "Pakistan",
+      "imagePath": "assets/countries/pakistan.png",
+      "hints": [
+        "K2, the world's second-highest mountain, is located here",
+        "Indus Valley Civilization dates back to 3300 BCE",
+        "Capital: Islamabad"
+      ]
+    },
+    {
+      "name": "Palestine",
+      "imagePath": "assets/countries/palestine.png",
+      "hints": [
+        "Recognized by the UN as a non-member observer state",
+        "The Church of the Nativity is in Bethlehem",
+        "Capital: Ramallah (administrative)"
+      ]
+    },
+    {
+      "name": "Philippines",
+      "imagePath": "assets/countries/philippines.png",
+      "hints": [
+        "Archipelago of over 7,600 islands",
+        "Hosts the world's longest Christmas celebration",
+        "Capital: Manila"
+      ]
+    },
+    {
+      "name": "Qatar",
+      "imagePath": "assets/countries/qatar.png",
+      "hints": [
+        "Hosted the 2022 FIFA World Cup",
+        "Richest country in the world by GDP per capita",
+        "Capital: Doha"
+      ]
+    },
+    {
+      "name": "Saudi Arabia",
+      "imagePath": "assets/countries/saudi-arabia.png",
+      "hints": [
+        "Birthplace of Islam and home to Mecca",
+        "Largest oil exporter in the world",
+        "Capital: Riyadh"
+      ]
+    },
+    {
+      "name": "Singapore",
+      "imagePath": "assets/countries/singapore.png",
+      "hints": [
+        "A city-state with four official languages",
+        "Chewing gum sales are banned (except medicinal)",
+        "Capital: Singapore"
+      ]
+    },
+    {
+      "name": "South Korea",
+      "imagePath": "assets/countries/south-korea.png",
+      "hints": [
+        "Global leader in esports and K-pop culture",
+        "Invented the modern rainy-day dish bibimbap",
+        "Capital: Seoul"
+      ]
+    },
+    {
+      "name": "Sri Lanka",
+      "imagePath": "assets/countries/sri-lanka.png",
+      "hints": [
+        "Formerly known as Ceylon (famous for tea)",
+        "Home to the ancient rock fortress Sigiriya",
+        "Capital: Colombo"
+      ]
+    },
+    {
+      "name": "Syria",
+      "imagePath": "assets/countries/syria.png",
+      "hints": [
+        "Damascus is one of the oldest continuously inhabited cities",
+        "Ancient city of Palmyra is a UNESCO World Heritage Site",
+        "Capital: Damascus"
+      ]
+    },
+    {
+        "name": "Taiwan",
+        "imagePath": "assets/countries/taiwan.png",
+        "hints": [
+          "This island nation is home to the highest mountain in East Asia outside of the Himalayas — Yushan",
+          "It is renowned for its technology industry and is the headquarters of TSMC, a major semiconductor manufacturer.",
+          "Capital: Taipei"
+        ]
+    },
+    {
+      "name": "Tajikistan",
+      "imagePath": "assets/countries/tajikistan.png",
+      "hints": [
+        "Over 90% of the country is mountainous",
+        "Pamir Highway is one of the world's highest roads",
+        "Capital: Dushanbe"
+      ]
+    },
+    {
+      "name": "Thailand",
+      "imagePath": "assets/countries/thailand.png",
+      "hints": [
+        "Formerly called Siam until 1939",
+        "Home to the world’s smallest mammal (bumblebee bat)",
+        "Capital: Bangkok"
+      ]
+    },
+    {
+      "name": "Turkey",
+      "imagePath": "assets/countries/turkey.png",
+      "hints": [
+        "Istanbul is the only city spanning two continents",
+        "Ancient site of Troy is located here",
+        "Capital: Ankara"
+      ]
+    },
+    {
+      "name": "Turkmenistan",
+      "imagePath": "assets/countries/turkmenistan.png",
+      "hints": [
+        "The Darvaza Gas Crater has burned since 1971",
+        "Declared permanent neutrality in the UN",
+        "Capital: Ashgabat"
+      ]
+    },
+    {
+      "name": "United Arab Emirates",
+      "imagePath": "assets/countries/united-arab-emirates.png",
+      "hints": [
+        "Home to the Burj Khalifa, the tallest building",
+        "Abu Dhabi holds 6% of global oil reserves",
+        "Capital: Abu Dhabi"
+      ]
+    },
+    {
+      "name": "Uzbekistan",
+      "imagePath": "assets/countries/uzbekistan.png",
+      "hints": [
+        "Samarkand was a key Silk Road city",
+        "Largest producer of cotton in Central Asia",
+        "Capital: Tashkent"
+      ]
+    },
+    {
+      "name": "Vietnam",
+      "imagePath": "assets/countries/vietnam.png",
+      "hints": [
+        "World’s second-largest coffee exporter",
+        "Ha Long Bay has over 1,600 limestone islands",
+        "Capital: Hanoi"
+      ]
+    },
+    {
+      "name": "Yemen",
+      "imagePath": "assets/countries/yemen.png",
+      "hints": [
+        "Mocha coffee originated from its port city Al Mokha",
+        "Socotra Island has unique dragon’s blood trees",
+        "Capital: Sana'a"
+      ]
+    }
+  ],
+  "Africa": [
+    {
+      "name": "Algeria",
+      "imagePath": "assets/countries/algeria.png",
+      "hints": [
+        "Home to the Sahara Desert, covering 85% of its territory",
+        "The ancient Roman city of Timgad has perfectly preserved grid architecture",
+        "Capital: Algiers"
+      ]
+    },
+    {
+      "name": "Angola",
+      "imagePath": "assets/countries/angola.png",
+      "hints": [
+        "Kalandula Falls are Africa's second-largest waterfalls by volume",
+        "Currency features a dagger-toothed antelope (Giant Sable Antelope)",
+        "Capital: Luanda"
+      ]
+    },
+    {
+      "name": "Benin",
+      "imagePath": "assets/countries/benin.png",
+      "hints": [
+        "Birthplace of Vodun (Voodoo) religion",
+        "The floating village of Ganvié is called 'Venice of Africa'",
+        "Capital: Porto-Novo"
+      ]
+    },
+    {
+      "name": "Botswana",
+      "imagePath": "assets/countries/botswana.png",
+      "hints": [
+        "World's largest diamond producer by value",
+        "Okavango Delta transforms into a wildlife-rich wetland annually",
+        "Capital: Gaborone"
+      ]
+    },
+    {
+      "name": "Burkina Faso",
+      "imagePath": "assets/countries/burkina-faso.png",
+      "hints": [
+        "Name means 'Land of Honest People' in local languages",
+        "Hosts the International Art and Craft Fair (SIAO)",
+        "Capital: Ouagadougou"
+      ]
+    },
+    {
+      "name": "Burundi",
+      "imagePath": "assets/countries/burundi.png",
+      "hints": [
+        "One of the few countries with a traditional drumming ritual as UNESCO heritage",
+        "Source of the southernmost tributary of the Nile River",
+        "Capital: Gitega"
+      ]
+    },
+    {
+      "name": "Cabo Verde",
+      "imagePath": "assets/countries/cabo-verde.png",
+      "hints": [
+        "Archipelago formed by volcanic activity",
+        "Cesária Évora, the 'Barefoot Diva', popularized morna music globally",
+        "Capital: Praia"
+      ]
+    },
+    {
+      "name": "Cameroon",
+      "imagePath": "assets/countries/cameroon.png",
+      "hints": [
+        "Known as 'Africa in Miniature' for its geographical diversity",
+        "Invented makossa dance music style",
+        "Capital: Yaoundé"
+      ]
+    },
+    {
+      "name": "Central African Republic",
+      "imagePath": "assets/countries/central-african-republic.png",
+      "hints": [
+        "Contains the Dzanga-Sangha rainforest, a gorilla sanctuary",
+        "Uses the CFA franc despite no coastline",
+        "Capital: Bangui"
+      ]
+    },
+    {
+      "name": "Chad",
+      "imagePath": "assets/countries/chad.png",
+      "hints": [
+        "Lake Chad has shrunk by 90% since the 1960s",
+        "Toubou nomads traverse the Tibesti Mountains",
+        "Capital: N'Djamena"
+      ]
+    },
+    {
+      "name": "Comoros",
+      "imagePath": "assets/countries/comoros.png",
+      "hints": [
+        "Volcanic archipelago producing ylang-ylang perfume essence",
+        "Only Arab League member entirely in the Southern Hemisphere",
+        "Capital: Moroni"
+      ]
+    },
+    {
+      "name": "Cote Divoire",
+      "imagePath": "assets/countries/cote-divoire.png",
+      "hints": [
+        "World's largest cocoa producer",
+        "Traditional Zaouli mask dance is UNESCO-protected",
+        "Capital: Yamoussoukro"
+      ]
+    },
+    {
+      "name": "Democratic Republic Of The Congo",
+      "imagePath": "assets/countries/democratic-republic-of-the-congo.png",
+      "hints": [
+        "Contains the Congo River (deepest in the world)",
+        "Home to critically endangered mountain gorillas",
+        "Capital: Kinshasa"
+      ]
+    },
+    {
+      "name": "Djibouti",
+      "imagePath": "assets/countries/djibouti.png",
+      "hints": [
+        "Strategic location hosts foreign military bases",
+        "Lake Assal is Africa's lowest point and saltiest lake",
+        "Capital: Djibouti"
+      ]
+    },
+    {
+      "name": "Egypt",
+      "imagePath": "assets/countries/egypt.png",
+      "hints": [
+        "Home to the only remaining Wonder of the Ancient World (Giza Pyramids)",
+        "Suez Canal shortens Europe-Asia travel by 7,000 km",
+        "Capital: Cairo"
+      ]
+    },
+    {
+      "name": "Equatorial Guinea",
+      "imagePath": "assets/countries/equatorial-guinea.png",
+      "hints": [
+        "Only African country with Spanish as an official language",
+        "Bioko Island hosts drill monkeys found nowhere else",
+        "Capital: Malabo"
+      ]
+    },
+    {
+      "name": "Eritrea",
+      "imagePath": "assets/countries/eritrea.png",
+      "hints": [
+        "Name derives from ancient Greek 'Erythra Thalassa' (Red Sea)",
+        "Asmara's Art Deco architecture is UNESCO-listed",
+        "Capital: Asmara"
+      ]
+    },
+    {
+      "name": "Eswatini",
+      "imagePath": "assets/countries/eswatini.png",
+      "hints": [
+        "Africa's last absolute monarchy",
+        "Umhlanga (Reed Dance) attracts thousands annually",
+        "Capital: Mbabane"
+      ]
+    },
+    {
+      "name": "Ethiopia",
+      "imagePath": "assets/countries/ethiopia.png",
+      "hints": [
+        "Only African country never colonized",
+        "Invented coffee according to legend",
+        "Capital: Addis Ababa"
+      ]
+    },
+    {
+      "name": "Gabon",
+      "imagePath": "assets/countries/gabon.png",
+      "hints": [
+        "Over 80% rainforest cover with low deforestation",
+        "Mandrill monkeys thrive in Loango National Park",
+        "Capital: Libreville"
+      ]
+    },
+    {
+      "name": "Gambia",
+      "imagePath": "assets/countries/gambia.png",
+      "hints": [
+        "Smallest mainland African country",
+        "River Gambia flows entirely through its territory",
+        "Capital: Banjul"
+      ]
+    },
+    {
+      "name": "Ghana",
+      "imagePath": "assets/countries/ghana.png",
+      "hints": [
+        "First sub-Saharan country to gain independence (1957)",
+        "Kente cloth patterns symbolize cultural heritage",
+        "Capital: Accra"
+      ]
+    },
+    {
+      "name": "Guinea",
+      "imagePath": "assets/countries/guinea.png",
+      "hints": [
+        "Source of the Niger, Senegal, and Gambia rivers",
+        "Simandou Range holds world's largest untapped iron ore reserves",
+        "Capital: Conakry"
+      ]
+    },
+    {
+      "name": "Guinea Bissau",
+      "imagePath": "assets/countries/guinea-bissau.png",
+      "hints": [
+        "Bijagós Islands are a UNESCO Biosphere Reserve",
+        "Cashew nuts account for 90% of exports",
+        "Capital: Bissau"
+      ]
+    },
+    {
+      "name": "Kenya",
+      "imagePath": "assets/countries/kenya.png",
+      "hints": [
+        "Great Migration sees 1.5 million wildebeest cross the Mara River",
+        "Invented mobile money transfer (M-Pesa)",
+        "Capital: Nairobi"
+      ]
+    },
+    {
+      "name": "Lesotho",
+      "imagePath": "assets/countries/lesotho.png",
+      "hints": [
+        "Only country entirely above 1,000m elevation",
+        "Traditional Basotho blanket is a cultural icon",
+        "Capital: Maseru"
+      ]
+    },
+    {
+      "name": "Liberia",
+      "imagePath": "assets/countries/liberia.png",
+      "hints": [
+        "Founded by freed American slaves in 1847",
+        "Sapo National Park houses West Africa's largest rainforest",
+        "Capital: Monrovia"
+      ]
+    },
+    {
+      "name": "Libya",
+      "imagePath": "assets/countries/libya.png",
+      "hints": [
+        "Over 90% desert with the Sahara's hottest recorded temperature",
+        "Leptis Magna has pristine Roman ruins",
+        "Capital: Tripoli"
+      ]
+    },
+    {
+      "name": "Madagascar",
+      "imagePath": "assets/countries/madagascar.png",
+      "hints": [
+        "90% of wildlife exists nowhere else (lemurs, baobabs)",
+        "Vanilla is a major export crop",
+        "Capital: Antananarivo"
+      ]
+    },
+    {
+      "name": "Malawi",
+      "imagePath": "assets/countries/malawi.png",
+      "hints": [
+        "Lake Malawi contains more fish species than any other lake",
+        "The 'Warm Heart of Africa' nickname reflects hospitality",
+        "Capital: Lilongwe"
+      ]
+    },
+    {
+      "name": "Mali",
+      "imagePath": "assets/countries/mali.png",
+      "hints": [
+        "Timbuktu's ancient manuscripts are UNESCO-protected",
+        "Mansa Musa was history's richest person (14th century)",
+        "Capital: Bamako"
+      ]
+    },
+    {
+      "name": "Mauritania",
+      "imagePath": "assets/countries/mauritania.png",
+      "hints": [
+        "Sahara covers 90% of its land",
+        "Ancient Chinguetti is a UNESCO 'librarian city'",
+        "Capital: Nouakchott"
+      ]
+    },
+    {
+      "name": "Mauritius",
+      "imagePath": "assets/countries/mauritius.png",
+      "hints": [
+        "Home to the extinct dodo bird",
+        "Underwater waterfall optical illusion off its coast",
+        "Capital: Port Louis"
+      ]
+    },
+    {
+      "name": "Morocco",
+      "imagePath": "assets/countries/morocco.png",
+      "hints": [
+        "Only African country with both Atlantic and Mediterranean coastlines",
+        "Chefchaouen's blue-painted streets attract photographers",
+        "Capital: Rabat"
+      ]
+    },
+    {
+      "name": "Mozambique",
+      "imagePath": "assets/countries/mozambique.png",
+      "hints": [
+        "Island of Mozambique is a UNESCO World Heritage Site",
+        "Vibrant capulana fabrics are cultural symbols",
+        "Capital: Maputo"
+      ]
+    },
+    {
+      "name": "Namibia",
+      "imagePath": "assets/countries/namibia.png",
+      "hints": [
+        "Namib Desert has 1,000-year-old dunes",
+        "Largest free-roaming cheetah population",
+        "Capital: Windhoek"
+      ]
+    },
+    {
+      "name": "Niger",
+      "imagePath": "assets/countries/niger.png",
+      "hints": [
+        "Named after the Niger River (though most territory is desert)",
+        "Traditional Tuareg blue clothing protects against sun",
+        "Capital: Niamey"
+      ]
+    },
+    {
+      "name": "Nigeria",
+      "imagePath": "assets/countries/nigeria.png",
+      "hints": [
+        "Africa's largest economy and population",
+        "Nollywood produces more films than Hollywood",
+        "Capital: Abuja"
+      ]
+    },
+    {
+      "name": "Republic Of The Congo",
+      "imagePath": "assets/countries/republic-of-the-congo.png",
+      "hints": [
+        "Often called Congo-Brazzaville to distinguish from DRC",
+        "Odzala National Park shelters forest elephants",
+        "Capital: Brazzaville"
+      ]
+    },
+    {
+      "name": "Rwanda",
+      "imagePath": "assets/countries/rwanda.png",
+      "hints": [
+        "Mountain gorillas thrive in Volcanoes National Park",
+        "Banned plastic bags since 2008",
+        "Capital: Kigali"
+      ]
+    },
+    {
+      "name": "Senegal",
+      "imagePath": "assets/countries/senegal.png",
+      "hints": [
+        "Dakar hosts the Monument of African Renaissance",
+        "Lake Retba has pink waters from algae",
+        "Capital: Dakar"
+      ]
+    },
+    {
+      "name": "Sierra Leone",
+      "imagePath": "assets/countries/sierra-leone.png",
+      "hints": [
+        "Name means 'Lion Mountains' from Portuguese explorers",
+        "Tiwai Island Wildlife Sanctuary protects pygmy hippos",
+        "Capital: Freetown"
+      ]
+    },
+    {
+      "name": "Somalia",
+      "imagePath": "assets/countries/somalia.png",
+      "hints": [
+        "Longest coastline in mainland Africa",
+        "Ancient Land of Punt traded with Egyptian pharaohs",
+        "Capital: Mogadishu"
+      ]
+    },
+    {
+      "name": "South Africa",
+      "imagePath": "assets/countries/south-africa.png",
+      "hints": [
+        "Only country with three capital cities",
+        "Table Mountain is older than the Himalayas",
+        "Capital: Pretoria (administrative)"
+      ]
+    },
+    {
+      "name": "South Sudan",
+      "imagePath": "assets/countries/south-sudan.png",
+      "hints": [
+        "Youngest country globally (independence in 2011)",
+        "Sudd swamp is one of Africa's largest wetlands",
+        "Capital: Juba"
+      ]
+    },
+    {
+      "name": "Sudan",
+      "imagePath": "assets/countries/sudan.png",
+      "hints": [
+        "More pyramids than Egypt (over 200)",
+        "Meroë was an ancient iron production hub",
+        "Capital: Khartoum"
+      ]
+    },
+    {
+      "name": "Tanzania",
+      "imagePath": "assets/countries/tanzania.png",
+      "hints": [
+        "Home to Kilimanjaro, Africa's highest peak",
+        "Serengeti hosts the Great Migration",
+        "Capital: Dodoma"
+      ]
+    },
+    {
+      "name": "Togo",
+      "imagePath": "assets/countries/togo.png",
+      "hints": [
+        "Name means 'behind the sea' in Ewe language",
+        "Fetish markets sell traditional healing items",
+        "Capital: Lomé"
+      ]
+    },
+    {
+      "name": "Tunisia",
+      "imagePath": "assets/countries/tunisia.png",
+      "hints": [
+        "Ancient Carthage rivaled Rome",
+        "Star Wars' Tatooine scenes filmed here",
+        "Capital: Tunis"
+      ]
+    },
+    {
+      "name": "Uganda",
+      "imagePath": "assets/countries/uganda.png",
+      "hints": [
+        "Source of the Nile River at Jinja",
+        "Half of the world's mountain gorillas live here",
+        "Capital: Kampala"
+      ]
+    },
+    {
+      "name": "Zambia",
+      "imagePath": "assets/countries/zambia.png",
+      "hints": [
+        "Victoria Falls ('Mosi-oa-Tunya') borders Zimbabwe",
+        "Walking safaris originated here",
+        "Capital: Lusaka"
+      ]
+    },
+    {
+      "name": "Zimbabwe",
+      "imagePath": "assets/countries/zimbabwe.png",
+      "hints": [
+        "Great Zimbabwe ruins inspired the country's name",
+        "Hyperinflation led to trillion-dollar banknotes",
+        "Capital: Harare"
+      ]
+    },
+    {
+      "name": "Western Sahara",
+      "imagePath": "assets/countries/western-sahara.png",
+      "hints": [
+        "Largely uninhabited desert territory",
+        "Phosphate reserves are a key resource",
+        "Capital: Laayoune"
+      ]
+    }
+  ],
+  "America": [
+    {
+      "name": "Argentina",
+      "imagePath": "assets/countries/argentina.png",
+      "hints": [
+        "Home to the southernmost city in the world (Ushuaia)",
+        "Tango dance originated in its capital's working-class neighborhoods",
+        "Capital: Buenos Aires"
+      ]
+    },
+    {
+      "name": "Bahamas",
+      "imagePath": "assets/countries/bahamas.png",
+      "hints": [
+        "Consists of over 700 islands and 2,000 cays",
+        "Famous for the swimming pigs of Exuma",
+        "Capital: Nassau"
+      ]
+    },
+    {
+      "name": "Barbados",
+      "imagePath": "assets/countries/barbados.png",
+      "hints": [
+        "Birthplace of rum, with the oldest rum brand (Mount Gay, 1703)",
+        "Rihanna, global pop icon, was born here",
+        "Capital: Bridgetown"
+      ]
+    },
+    {
+      "name": "Belize",
+      "imagePath": "assets/countries/belize.png",
+      "hints": [
+        "Only Central American country with English as the official language",
+        "The Great Blue Hole is a UNESCO-listed marine sinkhole",
+        "Capital: Belmopan"
+      ]
+    },
+    {
+      "name": "Bolivia",
+      "imagePath": "assets/countries/bolivia.png",
+      "hints": [
+        "Home to Salar de Uyuni, the world's largest salt flat",
+        "Has two capitals: Sucre (constitutional) and La Paz (administrative)",
+        "Capital: Sucre"
+      ]
+    },
+    {
+      "name": "Brazil",
+      "imagePath": "assets/countries/brazil.png",
+      "hints": [
+        "Contains 60% of the Amazon Rainforest",
+        "Carnival in Rio de Janeiro attracts 2 million visitors daily",
+        "Capital: Brasília"
+      ]
+    },
+    {
+      "name": "Canada",
+      "imagePath": "assets/countries/canada.png",
+      "hints": [
+        "Longest coastline in the world (202,080 km)",
+        "Maple syrup production accounts for 71% of global supply",
+        "Capital: Ottawa"
+      ]
+    },
+    {
+      "name": "Chile",
+      "imagePath": "assets/countries/chile.png",
+      "hints": [
+        "Atacama Desert is the driest non-polar place on Earth",
+        "Produces 1/3 of the world's copper",
+        "Capital: Santiago"
+      ]
+    },
+    {
+      "name": "Colombia",
+      "imagePath": "assets/countries/colombia.png",
+      "hints": [
+        "Second-most biodiverse country globally",
+        "Home to the 'Lost City' (Ciudad Perdida), older than Machu Picchu",
+        "Capital: Bogotá"
+      ]
+    },
+    {
+      "name": "Costa Rica",
+      "imagePath": "assets/countries/costa-rica.png",
+      "hints": [
+        "Generates 99% of its electricity from renewable sources",
+        "Monteverde Cloud Forest hosts 2.5% of Earth's biodiversity",
+        "Capital: San José"
+      ]
+    },
+    {
+      "name": "Cuba",
+      "imagePath": "assets/countries/cuba.png",
+      "hints": [
+        "Largest island in the Caribbean",
+        "Classic American cars from the 1950s are still widely used",
+        "Capital: Havana"
+      ]
+    },
+    {
+      "name": "Dominica",
+      "imagePath": "assets/countries/dominica.png",
+      "hints": [
+        "Known as the 'Nature Isle' for its untouched rainforests",
+        "Boiling Lake is the second-largest hot spring globally",
+        "Capital: Roseau"
+      ]
+    },
+    {
+      "name": "Dominican Republic",
+      "imagePath": "assets/countries/dominican-republic.png",
+      "hints": [
+        "First permanent European settlement in the Americas (Santo Domingo)",
+        "Merengue music and dance originated here",
+        "Capital: Santo Domingo"
+      ]
+    },
+    {
+      "name": "Ecuador",
+      "imagePath": "assets/countries/ecuador.png",
+      "hints": [
+        "Named after the equator, which crosses the country",
+        "Galápagos Islands inspired Darwin's theory of evolution",
+        "Capital: Quito"
+      ]
+    },
+    {
+      "name": "El Salvador",
+      "imagePath": "assets/countries/el-salvador.png",
+      "hints": [
+        "Smallest and most densely populated Central American country",
+        "Uses the US dollar as its official currency",
+        "Capital: San Salvador"
+      ]
+    },
+    {
+      "name": "Grenada",
+      "imagePath": "assets/countries/grenada.png",
+      "hints": [
+        "Known as the 'Island of Spice' for nutmeg production",
+        "Underwater Sculpture Park blends art and marine conservation",
+        "Capital: St. George's"
+      ]
+    },
+    {
+      "name": "Guatemala",
+      "imagePath": "assets/countries/guatemala.png",
+      "hints": [
+        "Tikal was one of the largest Mayan cities",
+        "Lake Atitlán is surrounded by three volcanoes",
+        "Capital: Guatemala City"
+      ]
+    },
+    {
+      "name": "Guyana",
+      "imagePath": "assets/countries/guyana.png",
+      "hints": [
+        "Only English-speaking country in South America",
+        "Kaieteur Falls is 5 times taller than Niagara Falls",
+        "Capital: Georgetown"
+      ]
+    },
+    {
+      "name": "Haiti",
+      "imagePath": "assets/countries/haiti.png",
+      "hints": [
+        "First independent nation in Latin America (1804)",
+        "Citadelle Laferrière is the largest fortress in the Americas",
+        "Capital: Port-au-Prince"
+      ]
+    },
+    {
+      "name": "Honduras",
+      "imagePath": "assets/countries/honduras.png",
+      "hints": [
+        "Home to the UNESCO-listed Copán Mayan ruins",
+        "The Río Plátano Biosphere Reserve shelters jaguars and macaws",
+        "Capital: Tegucigalpa"
+      ]
+    },
+    {
+      "name": "Jamaica",
+      "imagePath": "assets/countries/jamaica.png",
+      "hints": [
+        "Birthplace of reggae music and Bob Marley",
+        "Blue Mountain coffee is among the world's most expensive",
+        "Capital: Kingston"
+      ]
+    },
+    {
+      "name": "Mexico",
+      "imagePath": "assets/countries/mexico.png",
+      "hints": [
+        "Chocolate was first consumed here by the Aztecs",
+        "Day of the Dead celebrations feature colorful calaveras",
+        "Capital: Mexico City"
+      ]
+    },
+    {
+      "name": "Nicaragua",
+      "imagePath": "assets/countries/nicaragua.png",
+      "hints": [
+        "Largest country in Central America",
+        "Lake Nicaragua has freshwater sharks",
+        "Capital: Managua"
+      ]
+    },
+    {
+      "name": "Panama",
+      "imagePath": "assets/countries/panama.png",
+      "hints": [
+        "Panama Canal generates 40% of the country's economy",
+        "Indigenous Guna people govern the San Blas Islands",
+        "Capital: Panama City"
+      ]
+    },
+    {
+      "name": "Paraguay",
+      "imagePath": "assets/countries/paraguay.png",
+      "hints": [
+        "Guaraní is widely spoken alongside Spanish",
+        "Itaipu Dam is the world's second-largest hydroelectric plant",
+        "Capital: Asunción"
+      ]
+    },
+    {
+      "name": "Peru",
+      "imagePath": "assets/countries/peru.png",
+      "hints": [
+        "Machu Picchu was a 15th-century Inca citadel",
+        "Guinea pig (cuy) is a traditional dish",
+        "Capital: Lima"
+      ]
+    },
+    {
+      "name": "Saint Kitts and Nevis",
+      "imagePath": "assets/countries/saint-kitts-and-nevis.png",
+      "hints": [
+        "Smallest sovereign state in the Americas by area and population",
+        "Brimstone Hill Fortress is a UNESCO 'Gibraltar of the Caribbean'",
+        "Capital: Basseterre"
+      ]
+    },
+    {
+      "name": "Saint Lucia",
+      "imagePath": "assets/countries/saint-lucia.png",
+      "hints": [
+        "Only country named after a woman (Saint Lucy of Syracuse)",
+        "The Pitons are UNESCO-listed volcanic peaks",
+        "Capital: Castries"
+      ]
+    },
+    {
+      "name": "Saint Vincent and the Grenadines",
+      "imagePath": "assets/countries/saint-vincent-and-the-grenadines.png",
+      "hints": [
+        "Filming location for Pirates of the Caribbean",
+        "La Soufrière volcano erupted explosively in 2021",
+        "Capital: Kingstown"
+      ]
+    },
+    {
+      "name": "Suriname",
+      "imagePath": "assets/countries/suriname.png",
+      "hints": [
+        "Only Dutch-speaking country in South America",
+        "Over 90% of its land is rainforest",
+        "Capital: Paramaribo"
+      ]
+    },
+    {
+      "name": "Trinidad and Tobago",
+      "imagePath": "assets/countries/trinidad-and-tobago.png",
+      "hints": [
+        "Largest natural deposit of asphalt (Pitch Lake)",
+        "Birthplace of steelpan drums and limbo dancing",
+        "Capital: Port of Spain"
+      ]
+    },
+    {
+      "name": "Uruguay",
+      "imagePath": "assets/countries/uruguay.png",
+      "hints": [
+        "First country to legalize cannabis globally (2013)",
+        "Punta del Este hosts giant hand sculpture 'La Mano'",
+        "Capital: Montevideo"
+      ]
+    },
+    {
+      "name": "Venezuela",
+      "imagePath": "assets/countries/venezuela.png",
+      "hints": [
+        "Angel Falls is the world's highest uninterrupted waterfall",
+        "Oil reserves exceed Saudi Arabia's",
+        "Capital: Caracas"
+      ]
+    }
+  ],
+  "Others": [
+    {
+      "name": "Antigua and Barbuda",
+      "imagePath": "assets/countries/antigua-and-barbuda.png",
+      "hints": [
+        "Boasts 365 beaches—one for each day of the year",
+        "Hosts Antigua Sailing Week, a premier regatta event",
+        "Capital: Saint John's"
+      ]
+    },
+    {
+      "name": "Australia",
+      "imagePath": "assets/countries/australia.png",
+      "hints": [
+        "Home to the Great Barrier Reef, visible from space",
+        "The only continent with no active volcanoes",
+        "Capital: Canberra"
+      ]
+    },
+    {
+      "name": "Fiji",
+      "imagePath": "assets/countries/fiji.png",
+      "hints": [
+        "One of the first countries to welcome the New Year due to its time zone",
+        "Traditional kava ceremonies are central to Fijian culture",
+        "Capital: Suva"
+      ]
+    },
+    {
+      "name": "Nauru",
+      "imagePath": "assets/countries/nauru.png",
+      "hints": [
+        "World's smallest island nation (21 km²)",
+        "Once had the highest GDP per capita due to phosphate mining",
+        "Capital: Yaren (de facto)"
+      ]
+    },
+    {
+      "name": "New Zealand",
+      "imagePath": "assets/countries/new-zealand.png",
+      "hints": [
+        "First country to grant women voting rights (1893)",
+        "Middle-earth in *The Lord of the Rings* was filmed here",
+        "Capital: Wellington"
+      ]
+    },
+    {
+      "name": "Papua New Guinea",
+      "imagePath": "assets/countries/papua-new-guinea.png",
+      "hints": [
+        "Over 850 indigenous languages are spoken",
+        "Home to the world’s largest butterfly (Queen Alexandra’s birdwing)",
+        "Capital: Port Moresby"
+      ]
+    },
+    {
+      "name": "Samoa",
+      "imagePath": "assets/countries/samoa.png",
+      "hints": [
+        "Skipped a day in 2011 to align with Asia-Pacific time zones",
+        "Traditional *tatau* tattoos symbolize cultural identity",
+        "Capital: Apia"
+      ]
+    },
+    {
+      "name": "Vanuatu",
+      "imagePath": "assets/countries/vanuatu.png",
+      "hints": [
+        "Land diving (naghol) here inspired modern bungee jumping",
+        "One of the world’s most volcanic countries with 9 active volcanoes",
+        "Capital: Port Vila"
+      ]
+    }
+  ]
+}
