@@ -13,6 +13,56 @@ const hintContainer = document.getElementById('hint-container');
 const roundInfo = document.getElementById('round-info');
 const scoreElement = document.getElementById('score');
 
+async function fetchCountries(region = 'World') { // получаем данные про страны с сервера
+  try {
+    const response = await fetch(`/api/countries/${region}`);
+    if (!response.ok) throw new Error('Failed to fetch countries');
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching countries:', error);
+    return [];
+  }
+}
+
+async function initGame(region = 'World') { // инициализируем игру
+  currentRound = 1;
+  score = 0;
+  usedCountries.clear();
+
+  countries = await fetchCountries(region);
+  if (countries.length === 0) {
+    alert('Failed to load countries. Please try again');
+    return;
+  }
+
+  updateRoundInfo();
+  updateScore();
+
+  startNewRound();
+}
+
+function startNewRound() {
+  hintCount = 0;
+  hintContainer.innerHTML = '';
+  hintButton.style.display = 'block';
+
+  let availableCountries = countries.filter(country => !usedCountries.has(country.name));
+
+  if (availableCountries.length === 0) { //если все страны использованы, начинаем заного
+    usedCountries.clear();
+    availableCountries = countries;
+  }
+
+  const randomIndex = Math.floor(Math.random() * availableCountries.length);
+  currentCountry = availableCountries[randomIndex];
+  usedCountries.add(currentCountry.name);
+
+  countryImage.src = currentCountry.imagePath;
+  countryImage.alt = `Country outline`;
+
+  generateOptions();
+}
+
 function generateOptions() {
   optionsContainer.innerHTML = '';
 
@@ -51,6 +101,14 @@ function checkAnswer(selectedCountry) {
   if (selectedCountry === currentCountry.name) {
     score++;
     updateScore();
+
+    setTimeout(() => { // переход на след. раунд после небольшой задержки
+      currentRound++;
+      updateRoundInfo();
+      startNewRound();
+    }, 1500);
+  } else {
+    hintButton.style.display = 'block'; // если неправильный ответ - выскакивает кнопка подсказки
   }
 }
 
