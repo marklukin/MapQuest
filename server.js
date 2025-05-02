@@ -29,7 +29,10 @@ fastify.register(require('@fastify/static'), {
 });
 
 fastify.setErrorHandler(errorHandler);
-fastify.register(require('./src/routes/players'));
+fastify.register(
+  require('./src/routes/players'),
+  { prefix: 'api/v1' },
+);
 
 fastify.listen({ port, hostname }, (err, address) => {
   createDatabase();
