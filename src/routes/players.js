@@ -6,6 +6,12 @@ const {
   deletePlayer,
 } = require('../database/player');
 
+const {
+  generateToken,
+  generatePassword,
+  validPassword,
+} = require('../utils');
+
 const Player = {
   type: 'object',
   properties: {
@@ -29,14 +35,20 @@ const getPlayerOpts = {
 const registerPlayerOpts = {
   schema: {
     response: {
-      201: Player,
+      201: {
+        type: 'object',
+        properties: {
+          token: { type: 'string' },
+          tokenExpireDate: { type: 'string' },
+        },
+      },
     },
     body: {
       type: 'object',
-      required: ['username', 'hashedPassword'],
+      required: ['username', 'password'],
       properties: {
         username: { type: 'string' },
-        hashedPassword: { type: 'string' },
+        password: { type: 'string' },
       },
     },
   },
@@ -56,6 +68,31 @@ const deletePlayerOpts = {
 };
 
 const playerRoutes = (fastify, options, done) => {
+  fastify.post(
+    '/players/register',
+    registerPlayerOpts,
+    (req, reply) => {
+      const { username, password } = req.body;
+
+      const encryptedPassword = generatePassword(password);
+      const token = generateToken();
+
+      const days = 7;
+      let tokenExpireDate = new Date();
+      tokenExpireDate.setDate(tokenExpireDate.getDate() + days);
+      tokenExpireDate = tokenExpireDate.toISOString();
+
+      createPlayer(
+        username,
+        encryptedPassword,
+        token,
+        tokenExpireDate,
+      );
+
+      reply.code(201).send({ token, tokenExpireDate });
+    },
+  );
+
   fastify.get(
     '/players/:username',
     getPlayerOpts,
@@ -63,20 +100,6 @@ const playerRoutes = (fastify, options, done) => {
       const { username } = req.params;
       const player = findPlayerByUsername(username);
       reply.send(player);
-    },
-  );
-
-
-  fastify.post(
-    '/players/register',
-    registerPlayerOpts,
-    (req, reply) => {
-      const { username, hashedPassword } = req.body;
-
-      createPlayer(username, hashedPassword);
-      const user = findPlayerByUsername(username);
-
-      reply.code(201).send(user);
     },
   );
 
