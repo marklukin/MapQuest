@@ -10,6 +10,8 @@ const createDatabase = () => {
       username TEXT NOT NULL,
       password_hash TEXT NOT NULL,
       password_salt TEXT NOT NULL,
+      token TEXT NOT NULL,
+      token_expire_date TEXT NOT NULL,
       world_score INTEGER DEFAULT 0,
       europe_score INTEGER DEFAULT 0,
       asia_score INTEGER DEFAULT 0,
