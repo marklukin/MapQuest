@@ -1,8 +1,7 @@
 'use strict';
 
 const { db } = require('./connection');
-const { NotFoundException } = require('../error-handler');
-
+const { NotFoundException, AlredyExists } = require('../error-handler');
 const playerExists = (username) => {
   const record = db.prepare(`
     SELECT COUNT(*) AS count FROM Players WHERE username = ?
@@ -20,6 +19,10 @@ const createPlayer = (
   token,
   tokenExpireDate,
 ) => {
+  const exists = playerExists(username);
+  if (exists) {
+    throw new AlredyExists(`User with username ${username} is not found`);
+  }
   const record = db.prepare(`
     INSERT INTO Players 
     (username, password_hash, password_salt, token, token_expire_date) 
