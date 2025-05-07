@@ -14,22 +14,21 @@ const playerExists = (username) => {
 
 const createPlayer = (
   username,
-  passwordHash,
-  passwordSalt,
+  password,
   token,
   tokenExpireDate,
 ) => {
   const exists = playerExists(username);
   if (exists) {
-    throw new AlredyExists(`User with username ${username} is not found`);
+    throw new AlredyExists(`User with username ${username} is alredy exists`);
   }
   const record = db.prepare(`
     INSERT INTO Players 
     (username, password_hash, password_salt, token, token_expire_date) 
-    VALUES(?, ?)
+    VALUES(?, ?, ?, ?, ?)
   `);
 
-  record.run(username, passwordHash, passwordSalt, token, tokenExpireDate);
+  record.run(username, password.hash, password.salt, token, tokenExpireDate);
 };
 
 const deletePlayer = (username) => {
