@@ -13,25 +13,28 @@ const playerExists = (username) => {
   else return false;
 };
 
-const handleNotFound = (username) => {
+const createPlayer = (
+  username,
+  passwordHash,
+  passwordSalt,
+  token,
+  tokenExpireDate,
+) => {
+  const record = db.prepare(`
+    INSERT INTO Players 
+    (username, password_hash, password_salt, token, token_expire_date) 
+    VALUES(?, ?)
+  `);
+
+  record.run(username, passwordHash, passwordSalt, token, tokenExpireDate);
+};
+
+const deletePlayer = (username) => {
   const exists = playerExists(username);
   if (!exists) {
     throw new NotFoundException(`User with username ${username} is not found`);
   }
-};
 
-const createPlayer = (username, hashedPassword) => {
-  const record = db.prepare(`
-    INSERT INTO Players 
-    (username, hashed_password) 
-    VALUES(?, ?)
-  `);
-
-  record.run(username, hashedPassword);
-};
-
-const deletePlayer = (username) => {
-  handleNotFound(username);
   const record = db.prepare(`
     DELETE FROM Players
     WHERE username = ?
@@ -41,7 +44,11 @@ const deletePlayer = (username) => {
 };
 
 const findPlayerByUsername = (username) => {
-  handleNotFound(username);
+  const exists = playerExists(username);
+  if (!exists) {
+    throw new NotFoundException(`User with username ${username} is not found`);
+  }
+
   const record = db.prepare(`
     SELECT * FROM Players WHERE username = ?
   `);
