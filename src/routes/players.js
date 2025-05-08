@@ -4,7 +4,15 @@ const {
   findPlayerByUsername,
   createPlayer,
   deletePlayer,
+  findPlayerByToken,
+  updateUserToken,
 } = require('../database/player');
+
+const {
+  generateToken,
+  generatePassword,
+  validPassword,
+} = require('../utils');
 
 const Player = {
   type: 'object',
@@ -29,14 +37,41 @@ const getPlayerOpts = {
 const registerPlayerOpts = {
   schema: {
     response: {
-      201: Player,
+      201: {
+        type: 'object',
+        properties: {
+          token: { type: 'string' },
+          tokenExpireDate: { type: 'string' },
+        },
+      },
     },
     body: {
       type: 'object',
-      required: ['username', 'hashedPassword'],
+      required: ['username', 'password'],
       properties: {
         username: { type: 'string' },
-        hashedPassword: { type: 'string' },
+        password: { type: 'string' },
+      },
+    },
+  },
+};
+
+const loginPlayerOpts = {
+  schema: {
+    response: {
+      201: {
+        type: 'object',
+        properties: {
+          token: { type: 'string' },
+          tokenExpireDate: { type: 'string' },
+        },
+      },
+    },
+    body: {
+      required: ['username', 'password'],
+      properties: {
+        username: { type: 'string' },
+        password: { type: 'string' },
       },
     },
   },
@@ -52,10 +87,72 @@ const deletePlayerOpts = {
         },
       },
     },
+
+    body: {
+      type: 'object',
+      required: ['token'],
+      properties: {
+        token: { type: 'string' },
+      },
+    },
   },
 };
 
 const playerRoutes = (fastify, options, done) => {
+  fastify.post(
+    '/players/register',
+    registerPlayerOpts,
+    (req, reply) => {
+      const { username, password } = req.body;
+
+      const encryptedPassword = generatePassword(password);
+      const token = generateToken();
+
+      const days = 1;
+      let tokenExpireDate = new Date();
+      tokenExpireDate.setDate(tokenExpireDate.getDate() + days);
+      tokenExpireDate = tokenExpireDate.toISOString();
+
+      createPlayer(
+        username,
+        encryptedPassword,
+        token,
+        tokenExpireDate,
+      );
+
+      reply.code(201).send({ token, tokenExpireDate });
+    },
+  );
+
+  fastify.post(
+    '/players/log-in',
+    loginPlayerOpts,
+    (req, reply) => {
+      const { username, password } = req.body;
+
+      const user = findPlayerByUsername(username);
+      const isValidPassword = validPassword(
+        password,
+        user.password_hash,
+        user.password_salt,
+      );
+      // FIX: fix error
+      if (!isValidPassword) {
+        reply.code(401).send({ error: 'unautherized' });
+      }
+
+      const days = 1;
+      let tokenExpireDate = new Date();
+      tokenExpireDate.setDate(tokenExpireDate.getDate() + days);
+      tokenExpireDate = tokenExpireDate.toISOString();
+
+      const token = generateToken();
+      updateUserToken(user.token, token, tokenExpireDate);
+
+      reply.code(201).send({ token, tokenExpireDate });
+    },
+  );
+
   fastify.get(
     '/players/:username',
     getPlayerOpts,
@@ -66,28 +163,18 @@ const playerRoutes = (fastify, options, done) => {
     },
   );
 
-
-  fastify.post(
-    '/players/register',
-    registerPlayerOpts,
-    (req, reply) => {
-      const { username, hashedPassword } = req.body;
-
-      createPlayer(username, hashedPassword);
-      const user = findPlayerByUsername(username);
-
-      reply.code(201).send(user);
-    },
-  );
-
   fastify.delete(
-    '/players/:username',
+    '/players',
     deletePlayerOpts,
     (req, reply) => {
-      const { username } = req.params;
-      deletePlayer(username);
+      const { token } = req.body;
 
-      reply.send({ 'message': `Player with ${username} has been deleted` });
+      const player = findPlayerByToken(token);
+      deletePlayer(player.username);
+
+      reply.send({
+        'message': `Player with ${player.username} has been deleted`,
+      });
     },
   );
 
