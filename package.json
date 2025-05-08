@@ -19,7 +19,7 @@
     "start": "node --experimental-sqlite server.js"
   },
   "devDependencies": {
-    "eslint": "^9.22.0",
+    "eslint": "^9.26.0",
     "eslint-config-metarhia": "^9.1.1",
     "globals": "^16.0.0",
     "prettier": "3.5.3"
