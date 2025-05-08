@@ -2,8 +2,9 @@
 
 const fastify = require('fastify')({ logger: true });
 const path = require('node:path');
-const { createDatabase } = require('./src/database/connection');
+
 const { errorHandler } = require('./src/error-handler');
+const { createDatabase } = require('./src/database/connection');
 
 const result = require('dotenv').config();
 if (result.error) {
@@ -29,8 +30,7 @@ fastify.register(require('@fastify/static'), {
 });
 
 fastify.setErrorHandler(errorHandler);
-fastify.register(
-  require('./src/routes/players'),
+fastify.register(require('./src/routes/players'),
   { prefix: 'api/v1' },
 );
 
