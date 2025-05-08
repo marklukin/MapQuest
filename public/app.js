@@ -157,3 +157,51 @@ function shuffleArray(arr) {
 
   return newArray;
 } // функція для перетасовки масиву, знадобиться щоб і країни перетасовувати, і варіанти відповідей
+
+document.addEventListener('DOMContentLoaded', () => {
+  auth.addAuthListener((isAuthenticated) => {
+    document.querySelectorAll('[data-auth]').forEach(el => 
+      el.classList.toggle('d-none', !isAuthenticated)
+    );
+    document.querySelectorAll('[data-unauth]').forEach(el => 
+      el.classList.toggle('d-none', isAuthenticated)
+    );
+  });
+
+  if (!auth.isAuthenticated()) {
+    new bootstrap.Modal('#authModal').show();
+  }
+
+  document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    try {
+      await auth.login(formData.get('username'), formData.get('password'));
+      bootstrap.Modal.getInstance('#authModal').hide();
+      initGame();
+    } catch (error) {
+      alert(error.message);
+    }
+  });
+
+  document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    try {
+      await auth.register(formData.get('username'), formData.get('password'));
+      bootstrap.Modal.getInstance('#authModal').hide();
+      initGame();
+    } catch (error) {
+      alert(error.message);
+    }
+  });
+
+  document.querySelector('[data-logout]')?.addEventListener('click', () => {
+    auth.logout();
+    location.reload();
+  });
+
+  if (auth.isAuthenticated()) {
+    initGame();
+  }
+});
