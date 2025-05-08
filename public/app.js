@@ -1,3 +1,5 @@
+import { auth } from './auth.js';
+
 let countries = [];
 let currentRound = 1;
 const totalRounds = 15;
