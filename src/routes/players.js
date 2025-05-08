@@ -4,6 +4,8 @@ const {
   findPlayerByUsername,
   createPlayer,
   deletePlayer,
+  findPlayerByToken,
+  updateUserToken,
 } = require('../database/player');
 
 const {
@@ -54,6 +56,27 @@ const registerPlayerOpts = {
   },
 };
 
+const loginPlayerOpts = {
+  schema: {
+    response: {
+      201: {
+        type: 'object',
+        properties: {
+          token: { type: 'string' },
+          tokenExpireDate: { type: 'string' },
+        },
+      },
+    },
+    body: {
+      required: ['username', 'password'],
+      properties: {
+        username: { type: 'string' },
+        password: { type: 'string' },
+      },
+    },
+  },
+};
+
 const deletePlayerOpts = {
   schema: {
     response: {
@@ -62,6 +85,14 @@ const deletePlayerOpts = {
         properties: {
           message: { type: 'string' },
         },
+      },
+    },
+
+    body: {
+      type: 'object',
+      required: ['token'],
+      properties: {
+        token: { type: 'string' },
       },
     },
   },
@@ -77,7 +108,7 @@ const playerRoutes = (fastify, options, done) => {
       const encryptedPassword = generatePassword(password);
       const token = generateToken();
 
-      const days = 7;
+      const days = 1;
       let tokenExpireDate = new Date();
       tokenExpireDate.setDate(tokenExpireDate.getDate() + days);
       tokenExpireDate = tokenExpireDate.toISOString();
@@ -88,6 +119,35 @@ const playerRoutes = (fastify, options, done) => {
         token,
         tokenExpireDate,
       );
+
+      reply.code(201).send({ token, tokenExpireDate });
+    },
+  );
+
+  fastify.post(
+    '/players/log-in',
+    loginPlayerOpts,
+    (req, reply) => {
+      const { username, password } = req.body;
+
+      const user = findPlayerByUsername(username);
+      const isValidPassword = validPassword(
+        password,
+        user.password_hash,
+        user.password_salt,
+      );
+      // FIX: fix error
+      if (!isValidPassword) {
+        reply.code(401).send({ error: 'unautherized' });
+      }
+
+      const days = 1;
+      let tokenExpireDate = new Date();
+      tokenExpireDate.setDate(tokenExpireDate.getDate() + days);
+      tokenExpireDate = tokenExpireDate.toISOString();
+
+      const token = generateToken();
+      updateUserToken(user.token, token, tokenExpireDate);
 
       reply.code(201).send({ token, tokenExpireDate });
     },
@@ -104,13 +164,17 @@ const playerRoutes = (fastify, options, done) => {
   );
 
   fastify.delete(
-    '/players/:username',
+    '/players',
     deletePlayerOpts,
     (req, reply) => {
-      const { username } = req.params;
-      deletePlayer(username);
+      const { token } = req.body;
 
-      reply.send({ 'message': `Player with ${username} has been deleted` });
+      const player = findPlayerByToken(token);
+      deletePlayer(player.username);
+
+      reply.send({
+        'message': `Player with ${player.username} has been deleted`,
+      });
     },
   );
 
