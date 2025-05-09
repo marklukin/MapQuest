@@ -43,6 +43,54 @@
       </div>
     </div>
   </nav>
+  <div class="modal fade" id="authModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Auth</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <ul class="nav nav-tabs mb-3">
+            <li class="nav-item">
+              <a class="nav-link active" data-bs-toggle="tab" href="#login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="tab" href="#register">Register</a>
+            </li>
+          </ul>
+
+          <div class="tab-content">
+            <!-- Login Form -->
+            <div class="tab-pane fade show active" id="login">
+              <form id="loginForm">
+                <div class="mb-3">
+                  <input type="text" class="form-control" placeholder="Username" required>
+                </div>
+                <div class="mb-3">
+                  <input type="password" class="form-control" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Log In</button>
+              </form>
+            </div>
+
+            <!-- Register Form -->
+            <div class="tab-pane fade" id="register">
+              <form id="registerForm">
+                <div class="mb-3">
+                  <input type="text" class="form-control" placeholder="Username" required>
+                </div>
+                <div class="mb-3">
+                  <input type="password" class="form-control" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Register</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="container mt-4">
     <div class="row">
       <div class="col-md-8">
