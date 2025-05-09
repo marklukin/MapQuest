@@ -26,8 +26,15 @@ const checkPassword = (password, hash, salt) => {
   return hash === checkHash;
 };
 
+const addHoursToDatetime = (date, hours) => {
+  const result = new Date(date.getTime());
+  result.setTime(date.getTime() + hours * 3600 * 1000);
+  return result;
+};
+
 module.exports = {
   hashPassword,
   checkPassword,
   generateToken,
+  addHoursToDatetime,
 };

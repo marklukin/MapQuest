@@ -12,6 +12,7 @@ const {
   generateToken,
   checkPassword,
   hashPassword,
+  addHoursToDatetime,
 } = require('../utils');
 
 const Player = {
@@ -108,10 +109,7 @@ const playerRoutes = (fastify, options, done) => {
       const hashedPassword = hashPassword(password);
       const token = generateToken();
 
-      const days = 1;
-      let tokenExpireDate = new Date();
-      tokenExpireDate.setDate(tokenExpireDate.getDate() + days);
-      tokenExpireDate = tokenExpireDate.toISOString();
+      const tokenExpireDate = addHoursToDatetime(new Date(), 6);
 
       createPlayer(
         username,
@@ -140,11 +138,7 @@ const playerRoutes = (fastify, options, done) => {
       if (!isValidPassword) {
         reply.code(401).send({ error: 'unautherized' });
       }
-
-      const days = 1;
-      let tokenExpireDate = new Date();
-      tokenExpireDate.setDate(tokenExpireDate.getDate() + days);
-      tokenExpireDate = tokenExpireDate.toISOString();
+      const tokenExpireDate = addHoursToDatetime(new Date(), 6);
 
       const token = generateToken();
       updateUserToken(user.token, token, tokenExpireDate);
