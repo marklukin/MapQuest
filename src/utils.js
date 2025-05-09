@@ -4,7 +4,7 @@ const crypto = require('node:crypto');
 
 const generateToken = () => crypto.randomBytes(128).toString('hex');
 
-const generatePassword = (password) => {
+const hashPassword = (password) => {
   const salt = crypto.randomBytes(32).toString('hex');
   const hash =
     crypto
@@ -17,7 +17,7 @@ const generatePassword = (password) => {
   };
 };
 
-const validPassword = (password, hash, salt) => {
+const checkPassword = (password, hash, salt) => {
   const checkHash =
     crypto
     .pbkdf2Sync(password, salt, 10000, 64, 'sha512')
@@ -27,7 +27,7 @@ const validPassword = (password, hash, salt) => {
 };
 
 module.exports = {
-  generatePassword,
-  validPassword,
+  hashPassword,
+  checkPassword,
   generateToken,
 };

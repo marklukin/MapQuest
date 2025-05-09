@@ -10,8 +10,8 @@ const {
 
 const {
   generateToken,
-  generatePassword,
-  validPassword,
+  checkPassword,
+  hashPassword,
 } = require('../utils');
 
 const Player = {
@@ -105,7 +105,7 @@ const playerRoutes = (fastify, options, done) => {
     (req, reply) => {
       const { username, password } = req.body;
 
-      const encryptedPassword = generatePassword(password);
+      const hashedPassword = hashPassword(password);
       const token = generateToken();
 
       const days = 1;
@@ -115,7 +115,7 @@ const playerRoutes = (fastify, options, done) => {
 
       createPlayer(
         username,
-        encryptedPassword,
+        hashedPassword,
         token,
         tokenExpireDate,
       );
@@ -131,7 +131,7 @@ const playerRoutes = (fastify, options, done) => {
       const { username, password } = req.body;
 
       const user = findPlayerByUsername(username);
-      const isValidPassword = validPassword(
+      const isValidPassword = checkPassword(
         password,
         user.password_hash,
         user.password_salt,
