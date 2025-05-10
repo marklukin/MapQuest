@@ -1,48 +1,41 @@
 'use strict';
 
-class NotFoundException extends Error {
-  constructor(message) {
+class AppException extends Error {
+  constructor(message, statusCode) {
     super(message);
-    Object.setPrototypeOf(this, NotFoundException.prototype);
+    this.name = this.constructor.name;
+    this.statusCode = statusCode || 500;
+    Object.setPrototypeOf(this, new.target.prototype);
   }
 }
 
-class AlredyExists extends Error {
+class RecordNotFound extends AppException {
   constructor(message) {
-    super(message);
-    Object.setPrototypeOf(this, NotFoundException.prototype);
+    super(message, 404);
   }
-}
+};
 
-class InvalidToken extends Error {
+class RecordAlreadyExists extends AppException {
   constructor(message) {
-    super(message);
-    Object.setPrototypeOf(this, InvalidToken.prototype);
+    super(message, 409);
   }
-}
+};
 
-class TokenExpired extends Error {
+class InvalidToken extends AppException {
   constructor(message) {
-    super(message);
-    Object.setPrototypeOf(this, InvalidToken.prototype);
+    super(message, 401);
   }
-}
+};
+
+class TokenExpired extends AppException {
+  constructor(message) {
+    super(message, 401);
+  }
+};
 
 const errorHandler = (err, req, reply) => {
-  if (err instanceof NotFoundException) {
-    return reply.code(404).send({ error: err.message });
-  }
-
-  if (err instanceof AlredyExists) {
-    return reply.code(409).send({ error: err.message });
-  }
-
-  if (err instanceof InvalidToken) {
-    return reply.code(401).send({ error: err.message });
-  }
-
-  if (err instanceof TokenExpired) {
-    return reply.code(401).send({ error: err.message });
+  if (err instanceof AppException) {
+    return reply.code(err.statusCode).send({ error: err.message });
   }
 
   reply.log.error({
@@ -61,8 +54,8 @@ const errorHandler = (err, req, reply) => {
 };
 
 module.exports = {
-  NotFoundException,
-  AlredyExists,
+  RecordNotFound,
+  RecordAlreadyExists,
   InvalidToken,
   TokenExpired,
   errorHandler,

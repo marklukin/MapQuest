@@ -2,8 +2,8 @@
 
 const { db } = require('./connection');
 const {
-  NotFoundException,
-  AlredyExists,
+  RecordNotFound,
+  RecordAlreadyExists,
   InvalidToken,
   TokenExpired,
 } = require('../error-handler');
@@ -36,7 +36,9 @@ const createPlayer = (
 ) => {
   const exists = playerExists(username);
   if (exists) {
-    throw new AlredyExists(`User with username ${username} is alredy exists`);
+    throw new RecordAlreadyExists(
+      `User with username ${username} is alredy exists`,
+    );
   }
   const record = db.prepare(`
     INSERT INTO Players 
@@ -85,7 +87,7 @@ const updateUserToken = (oldToken, newToken, tokenExpireDate) => {
 const deletePlayer = (username) => {
   const exists = playerExists(username);
   if (!exists) {
-    throw new NotFoundException(`User with username ${username} is not found`);
+    throw new RecordNotFound(`User with username ${username} is not found`);
   }
 
   const record = db.prepare(`
@@ -99,7 +101,7 @@ const deletePlayer = (username) => {
 const findPlayerByUsername = (username) => {
   const exists = playerExists(username);
   if (!exists) {
-    throw new NotFoundException(`User with username ${username} is not found`);
+    throw new RecordNotFound(`User with username ${username} is not found`);
   }
 
   const record = db.prepare(`
