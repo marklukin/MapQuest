@@ -70,6 +70,7 @@ const loginPlayerOpts = {
     },
     body: {
       required: ['username', 'password'],
+      type: 'object',
       properties: {
         username: { type: 'string' },
         password: { type: 'string' },
