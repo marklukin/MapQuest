@@ -31,8 +31,6 @@ const tokenExists = (token) => {
 const createPlayer = (
   username,
   password,
-  token,
-  tokenExpireDate,
 ) => {
   const exists = playerExists(username);
   if (exists) {
@@ -42,11 +40,11 @@ const createPlayer = (
   }
   const record = db.prepare(`
     INSERT INTO Players 
-    (username, password_hash, password_salt, token, token_expire_date) 
-    VALUES(?, ?, ?, ?, ?)
+    (username, password_hash, password_salt) 
+    VALUES(?, ?, ?)
   `);
 
-  record.run(username, password.hash, password.salt, token, tokenExpireDate);
+  record.run(username, password.hash, password.salt);
 };
 
 const findPlayerByToken = (token) => {
@@ -68,20 +66,6 @@ const findPlayerByToken = (token) => {
   }
 
   return user;
-};
-
-const updateUserToken = (oldToken, newToken, tokenExpireDate) => {
-  const exists = tokenExists(oldToken);
-  if (!exists) {
-    throw new InvalidToken(`Token is invalid`);
-  }
-  const record = db.prepare(`
-    UPDATE Players
-    SET token = ?, token_expire_date = ?
-    WHERE token = ?
-  `);
-
-  record.run(newToken, tokenExpireDate, oldToken);
 };
 
 const deletePlayer = (username) => {
@@ -118,5 +102,4 @@ module.exports = {
   deletePlayer,
   findPlayerByUsername,
   findPlayerByToken,
-  updateUserToken,
 };
