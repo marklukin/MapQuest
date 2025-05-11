@@ -16,12 +16,12 @@ const createDatabase = () => {
       usa_score INTEGER DEFAULT 0
     )
   `);
-  
+
   db.exec(`
     CREATE TABLE IF NOT EXISTS Tokens(
       token_id INTEGER PRIMARY KEY AUTOINCREMENT 
-      player_id INTEGER NOT NULL,
-      FOREIGN KEY(player_id) REFERENCES Players(player_id),
+      creator_id INTEGER NOT NULL,
+      FOREIGN KEY(creator_id) REFERENCES Players(player_id),
       token TEXT NOT NULL,
       token_expire_date TEXT NOT NULL,
     )
