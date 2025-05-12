@@ -8,7 +8,7 @@ const {
 
 const {
   createToken,
-  findPlayerByToken,
+  findToken,
   renewTokenExpireDate,
   deleteAllPlayerTokens,
 } = require('../database/token');
@@ -170,8 +170,9 @@ const playerRoutes = (fastify, options, done) => {
     (req, reply) => {
       const { token } = req.body;
 
-      const player = findPlayerByToken(token);
-      deleteAllPlayerTokens(player.player_id);
+      const tokenRecord = findToken(token);
+      const player = findPlayer('player_id', tokenRecord.creator_id);
+      deleteAllPlayerTokens(tokenRecord.creator_id);
       deletePlayer(player.username);
       reply.send({
         'message': `Player with ${player.username} has been deleted`,
