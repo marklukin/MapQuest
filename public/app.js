@@ -1,3 +1,4 @@
+import { auth } from './auth.js';
 
 let countries = [];
 let currentRound = 1;
@@ -243,7 +244,7 @@ function shuffleArray(arr) { //shuffle
   return newArray;
 }
 
-document.querySelectorAll('.nav-link').forEach(link => { // обрабатываем ивенты для навигационных ссылок
+document.querySelectorAll('.navbar .nav-link').forEach(link => { // обрабатываем ивенты для навигационных ссылок
   link.addEventListener('click', event => {
     event.preventDefault();
 
@@ -270,7 +271,27 @@ window.addEventListener('DOMContentLoaded', () => { //начало игры ко
   initGame('World');
 })
 
+
+
+// AUTHORIZATION
+function handlePostLogin() {
+  const modalEl = document.getElementById('authModal');
+  const modalInstance = bootstrap.Modal.getInstance(modalEl);
+  if (modalInstance) modalInstance.hide();
+
+  document.querySelectorAll('[data-auth]').forEach(el =>
+    el.classList.remove('d-none')
+  );
+  document.querySelectorAll('[data-unauth]').forEach(el =>
+    el.classList.add('d-none')
+  );
+  setTimeout(() => initGame('World'), 200);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  const modalEl = document.getElementById('authModal');
+  const modal = new bootstrap.Modal(modalEl);
+
   auth.addAuthListener((isAuthenticated) => {
     document.querySelectorAll('[data-auth]').forEach(el => 
       el.classList.toggle('d-none', !isAuthenticated)
@@ -280,31 +301,34 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   });
 
-  if (!auth.isAuthenticated()) {
-    new bootstrap.Modal('#authModal').show();
+  if (auth.isAuthenticated()) {
+    handlePostLogin();
+  }
+  else {
+    modal.show();
   }
 
+  //LOGIN
   document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
       await auth.login(formData.get('username'), formData.get('password'));
-      bootstrap.Modal.getInstance('#authModal').hide();
-      initGame();
+      handlePostLogin();
     } catch (error) {
-      alert(error.message);
+      alert('Login failed: ' + error.message);
     }
   });
 
+  //REGISTER
   document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
       await auth.register(formData.get('username'), formData.get('password'));
-      bootstrap.Modal.getInstance('#authModal').hide();
-      initGame();
+      handlePostLogin();
     } catch (error) {
-      alert(error.message);
+      alert('Registration failed: ' + error.message);
     }
   });
 
@@ -312,8 +336,4 @@ document.addEventListener('DOMContentLoaded', () => {
     auth.logout();
     location.reload();
   });
-
-  if (auth.isAuthenticated()) {
-    initGame();
-  }
 });

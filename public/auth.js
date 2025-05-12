@@ -1,4 +1,6 @@
-class AuthService {
+'use strict';
+
+export class AuthService {
   constructor() {
     this.token = localStorage.getItem('token') || null;
     this.expireDate = localStorage.getItem('tokenExpire') || null;
@@ -43,23 +45,18 @@ class AuthService {
     this.authUpdateCallbacks.push(callback);
   }
 
-  removeAuthListener(callback) {
-    this.authUpdateCallbacks = this.authUpdateCallbacks.filter(cb => cb !== callback);
-  }
-
-  async _fetchAuth(url, data) {
-    const response = await fetch(url, {
+  _fetchAuth(url, data) {
+    return fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
+    }).then(async res => {
+      if (!res.ok) {
+        const error = await res.text();
+        throw new Error(error || 'Authentication failed');
+      }
+      return res.json();
     });
-
-    if (!response.ok) {
-      const error = await response.text();
-      throw new Error(error || 'Authentication failed');
-    }
-
-    return await response.json();
   }
 
   _setTokens(token, expireDate) {
