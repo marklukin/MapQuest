@@ -123,7 +123,7 @@ const playerRoutes = (fastify, options, done) => {
       );
 
       const player = findPlayer(username);
-      createToken(token, tokenExpireDate.toISOString(), player.player_id);
+      createToken(token, tokenExpireDate.toISOString(), player.id);
 
       reply.code(201).send({ token, tokenExpireDate });
     },
@@ -148,7 +148,7 @@ const playerRoutes = (fastify, options, done) => {
 
       const token = generateToken();
       const tokenExpireDate = addHoursToDatetime(new Date(), 6);
-      createToken(token, tokenExpireDate.toISOString(), player.player_id);
+      createToken(token, tokenExpireDate.toISOString(), player.id);
 
       reply.code(201).send({ token, tokenExpireDate });
     },
@@ -171,7 +171,7 @@ const playerRoutes = (fastify, options, done) => {
       const { token } = req.body;
 
       const tokenRecord = findToken(token);
-      const player = findPlayer(tokenRecord.creator_id, 'player_id');
+      const player = findPlayer(tokenRecord.creator_id, 'id');
 
       deleteAllPlayerTokens(tokenRecord.creator_id);
       deletePlayer(player.username);

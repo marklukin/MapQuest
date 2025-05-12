@@ -6,7 +6,7 @@ const db = new DatabaseSync('./database.db');
 const createDatabase = () => {
   db.exec(`
     CREATE TABLE IF NOT EXISTS Players(
-      player_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT NOT NULL,
       password_hash TEXT NOT NULL,
       password_salt TEXT NOT NULL,
@@ -19,11 +19,11 @@ const createDatabase = () => {
 
   db.exec(`
     CREATE TABLE IF NOT EXISTS Tokens(
-      token_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       token TEXT NOT NULL,
       token_expire_date TEXT NOT NULL,
       creator_id INTEGER NOT NULL,
-      FOREIGN KEY(creator_id) REFERENCES Players(player_id)
+      FOREIGN KEY(creator_id) REFERENCES Players(id)
     )
   `);
 
