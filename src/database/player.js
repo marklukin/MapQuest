@@ -6,12 +6,12 @@ const {
   RecordAlreadyExists,
 } = require('../error-handler');
 
-const playerExists = (field = 'username', value) => {
+const playerExists = (value, field = 'username') => {
   const record = db.prepare(`
-    SELECT COUNT(*) AS count FROM Players WHERE ? = ?
+    SELECT COUNT(*) AS count FROM Players WHERE ${field} = ?
   `);
 
-  const count = record.get(field, value).count;
+  const count = record.get(value).count;
   if (count) return true;
   else return false;
 };
@@ -50,17 +50,17 @@ const deletePlayer = (username) => {
   record.run(username);
 };
 
-const findPlayer = (field = 'username', value) => {
-  const exists = playerExists(field, value);
+const findPlayer = (value, field = 'username') => {
+  const exists = playerExists(value, field);
   if (!exists) {
     throw new RecordNotFound(`User with ${field} ${value} is not found`);
   }
 
   const record = db.prepare(`
-    SELECT * FROM Players WHERE ? = ?
+    SELECT * FROM Players WHERE ${field} = ?
   `);
 
-  const user = record.get(field, value);
+  const user = record.get(value);
 
   return user;
 };
