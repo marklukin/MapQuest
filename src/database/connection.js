@@ -19,11 +19,11 @@ const createDatabase = () => {
 
   db.exec(`
     CREATE TABLE IF NOT EXISTS Tokens(
-      token_id INTEGER PRIMARY KEY AUTOINCREMENT 
-      creator_id INTEGER NOT NULL,
-      FOREIGN KEY(creator_id) REFERENCES Players(player_id),
+      token_id INTEGER PRIMARY KEY AUTOINCREMENT,
       token TEXT NOT NULL,
       token_expire_date TEXT NOT NULL,
+      creator_id INTEGER NOT NULL,
+      FOREIGN KEY(creator_id) REFERENCES Players(player_id)
     )
   `);
 
