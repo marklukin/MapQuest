@@ -1,9 +1,9 @@
 'use strict';
 
 const {
-  findPlayerByUsername,
   createPlayer,
   deletePlayer,
+  findPlayer,
 } = require('../database/player');
 
 const {
@@ -122,7 +122,7 @@ const playerRoutes = (fastify, options, done) => {
         hashedPassword,
       );
 
-      const player = findPlayerByUsername(username);
+      const player = findPlayer(username);
       createToken(token, tokenExpireDate.toISOString(), player.player_id);
 
       reply.code(201).send({ token, tokenExpireDate });
@@ -135,7 +135,7 @@ const playerRoutes = (fastify, options, done) => {
     (req, reply) => {
       const { username, password } = req.body;
 
-      const player = findPlayerByUsername(username);
+      const player = findPlayer(username);
       const isValidPassword = checkPassword(
         password,
         player.password_hash,
@@ -159,7 +159,7 @@ const playerRoutes = (fastify, options, done) => {
     getPlayerOpts,
     (req, reply) => {
       const { username } = req.params;
-      const player = findPlayerByUsername(username);
+      const player = findPlayer(username);
       reply.send(player);
     },
   );

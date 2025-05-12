@@ -50,17 +50,17 @@ const deletePlayer = (username) => {
   record.run(username);
 };
 
-const findPlayerByUsername = (username) => {
-  const exists = playerExists(username);
+const findPlayer = (field = 'username', value) => {
+  const exists = playerExists(field, value);
   if (!exists) {
-    throw new RecordNotFound(`User with username ${username} is not found`);
+    throw new RecordNotFound(`User with ${field} ${value} is not found`);
   }
 
   const record = db.prepare(`
-    SELECT * FROM Players WHERE username = ?
+    SELECT * FROM Players WHERE ? = ?
   `);
 
-  const user = record.get(username);
+  const user = record.get(field, value);
 
   return user;
 };
@@ -68,5 +68,5 @@ const findPlayerByUsername = (username) => {
 module.exports = {
   createPlayer,
   deletePlayer,
-  findPlayerByUsername,
+  findPlayer,
 };
