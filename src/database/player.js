@@ -6,12 +6,12 @@ const {
   RecordAlreadyExists,
 } = require('../error-handler');
 
-const playerExists = (username) => {
+const playerExists = (field = 'username', value) => {
   const record = db.prepare(`
-    SELECT COUNT(*) AS count FROM Players WHERE username = ?
+    SELECT COUNT(*) AS count FROM Players WHERE ? = ?
   `);
 
-  const count = record.get(username).count;
+  const count = record.get(field, value).count;
   if (count) return true;
   else return false;
 };
