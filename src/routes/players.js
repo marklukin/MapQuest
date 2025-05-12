@@ -171,7 +171,8 @@ const playerRoutes = (fastify, options, done) => {
       const { token } = req.body;
 
       const tokenRecord = findToken(token);
-      const player = findPlayer('player_id', tokenRecord.creator_id);
+      const player = findPlayer(tokenRecord.creator_id, 'player_id');
+
       deleteAllPlayerTokens(tokenRecord.creator_id);
       deletePlayer(player.username);
       reply.send({
