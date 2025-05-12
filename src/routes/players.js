@@ -1,14 +1,14 @@
 'use strict';
 
 const {
-  findPlayerByUsername,
   createPlayer,
   deletePlayer,
+  findPlayer,
 } = require('../database/player');
 
 const {
   createToken,
-  findPlayerByToken,
+  findToken,
   renewTokenExpireDate,
   deleteAllPlayerTokens,
 } = require('../database/token');
@@ -122,8 +122,8 @@ const playerRoutes = (fastify, options, done) => {
         hashedPassword,
       );
 
-      const player = findPlayerByUsername(username);
-      createToken(token, tokenExpireDate.toISOString(), player.player_id);
+      const player = findPlayer(username);
+      createToken(token, tokenExpireDate.toISOString(), player.id);
 
       reply.code(201).send({ token, tokenExpireDate });
     },
@@ -135,7 +135,7 @@ const playerRoutes = (fastify, options, done) => {
     (req, reply) => {
       const { username, password } = req.body;
 
-      const player = findPlayerByUsername(username);
+      const player = findPlayer(username);
       const isValidPassword = checkPassword(
         password,
         player.password_hash,
@@ -148,7 +148,7 @@ const playerRoutes = (fastify, options, done) => {
 
       const token = generateToken();
       const tokenExpireDate = addHoursToDatetime(new Date(), 6);
-      createToken(token, tokenExpireDate.toISOString(), player.player_id);
+      createToken(token, tokenExpireDate.toISOString(), player.id);
 
       reply.code(201).send({ token, tokenExpireDate });
     },
@@ -159,7 +159,7 @@ const playerRoutes = (fastify, options, done) => {
     getPlayerOpts,
     (req, reply) => {
       const { username } = req.params;
-      const player = findPlayerByUsername(username);
+      const player = findPlayer(username);
       reply.send(player);
     },
   );
@@ -170,8 +170,10 @@ const playerRoutes = (fastify, options, done) => {
     (req, reply) => {
       const { token } = req.body;
 
-      const player = findPlayerByToken(token);
-      deleteAllPlayerTokens(player.player_id);
+      const tokenRecord = findToken(token);
+      const player = findPlayer(tokenRecord.creator_id, 'id');
+
+      deleteAllPlayerTokens(tokenRecord.creator_id);
       deletePlayer(player.username);
       reply.send({
         'message': `Player with ${player.username} has been deleted`,

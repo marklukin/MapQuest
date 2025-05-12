@@ -28,28 +28,20 @@ const createToken = (
   query.run(token, tokenExpireDate, creatorId);
 };
 
-const findPlayerByToken = (token) => {
+const findToken = (token) => {
   const exists = playerTokenExists(token);
   if (!exists) {
     throw new RecordNotFound(`Player token don't exist`);
   }
 
-  const tokenQuery = db.prepare(`
+  const query = db.prepare(`
     SELECT * FROM Tokens
     WHERE token = ?
   `);
 
-  const tokenRecord = tokenQuery.get(token);
-  const creatorId = tokenRecord.creator_id;
+  const record = query.get(token);
 
-  const playerQuery = db.prepare(`
-    SELECT * FROM Players
-    WHERE player_id = ?
-  `);
-
-  const player = playerQuery.get(creatorId);
-
-  return player;
+  return record;
 };
 
 const renewTokenExpireDate = (playerId, newToken, newExpireDate) => {
@@ -73,7 +65,7 @@ const deleteAllPlayerTokens = (playerId) => {
 
 module.exports = {
   createToken,
-  findPlayerByToken,
+  findToken,
   renewTokenExpireDate,
   deleteAllPlayerTokens,
 };
