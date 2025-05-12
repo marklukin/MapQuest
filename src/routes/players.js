@@ -4,9 +4,14 @@ const {
   findPlayerByUsername,
   createPlayer,
   deletePlayer,
-  findPlayerByToken,
-  updateUserToken,
 } = require('../database/player');
+
+const {
+  createToken,
+  findPlayerByToken,
+  renewTokenExpireDate,
+  deleteAllPlayerTokens,
+} = require('../database/token');
 
 const {
   generateToken,
@@ -70,6 +75,7 @@ const loginPlayerOpts = {
     },
     body: {
       required: ['username', 'password'],
+      type: 'object',
       properties: {
         username: { type: 'string' },
         password: { type: 'string' },
@@ -114,9 +120,10 @@ const playerRoutes = (fastify, options, done) => {
       createPlayer(
         username,
         hashedPassword,
-        token,
-        tokenExpireDate,
       );
+
+      const player = findPlayerByUsername(username);
+      createToken(token, tokenExpireDate.toISOString(), player.player_id);
 
       reply.code(201).send({ token, tokenExpireDate });
     },
@@ -128,20 +135,20 @@ const playerRoutes = (fastify, options, done) => {
     (req, reply) => {
       const { username, password } = req.body;
 
-      const user = findPlayerByUsername(username);
+      const player = findPlayerByUsername(username);
       const isValidPassword = checkPassword(
         password,
-        user.password_hash,
-        user.password_salt,
+        player.password_hash,
+        player.password_salt,
       );
       // FIX: fix error
       if (!isValidPassword) {
         reply.code(401).send({ error: 'unautherized' });
       }
-      const tokenExpireDate = addHoursToDatetime(new Date(), 6);
 
       const token = generateToken();
-      updateUserToken(user.token, token, tokenExpireDate);
+      const tokenExpireDate = addHoursToDatetime(new Date(), 6);
+      createToken(token, tokenExpireDate.toISOString(), player.player_id);
 
       reply.code(201).send({ token, tokenExpireDate });
     },
@@ -164,8 +171,8 @@ const playerRoutes = (fastify, options, done) => {
       const { token } = req.body;
 
       const player = findPlayerByToken(token);
+      deleteAllPlayerTokens(player.player_id);
       deletePlayer(player.username);
-
       reply.send({
         'message': `Player with ${player.username} has been deleted`,
       });
