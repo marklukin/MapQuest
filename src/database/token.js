@@ -31,7 +31,7 @@ const createToken = (
 const findToken = (token) => {
   const exists = playerTokenExists(token);
   if (!exists) {
-    throw new RecordNotFound(`Player token don't exist`);
+    throw new RecordNotFound(`Player token doesn't exist`);
   }
 
   const query = db.prepare(`

@@ -23,7 +23,7 @@ const createPlayer = (
   const exists = playerExists(username);
   if (exists) {
     throw new RecordAlreadyExists(
-      `User with username ${username} is alredy exists`,
+      `Player with username: ${username} alredy exists`,
     );
   }
   const record = db.prepare(`
@@ -39,7 +39,7 @@ const createPlayer = (
 const deletePlayer = (username) => {
   const exists = playerExists(username);
   if (!exists) {
-    throw new RecordNotFound(`User with username ${username} is not found`);
+    throw new RecordNotFound(`Player with username: ${username} not found`);
   }
 
   const record = db.prepare(`
@@ -53,16 +53,16 @@ const deletePlayer = (username) => {
 const findPlayer = (value, field = 'username') => {
   const exists = playerExists(value, field);
   if (!exists) {
-    throw new RecordNotFound(`User with ${field} ${value} is not found`);
+    throw new RecordNotFound(`Player with ${field}: ${value} not found`);
   }
 
   const record = db.prepare(`
     SELECT * FROM Players WHERE ${field} = ?
   `);
 
-  const user = record.get(value);
+  const player = record.get(value);
 
-  return user;
+  return player;
 };
 
 module.exports = {

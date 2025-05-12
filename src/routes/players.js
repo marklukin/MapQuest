@@ -113,16 +113,17 @@ const playerRoutes = (fastify, options, done) => {
       const { username, password } = req.body;
 
       const hashedPassword = hashPassword(password);
-      const token = generateToken();
-
-      const tokenExpireDate = addHoursToDatetime(new Date(), 6);
 
       createPlayer(
         username,
         hashedPassword,
       );
 
+      const token = generateToken();
+      const tokenExpireDate = addHoursToDatetime(new Date(), 6);
+
       const player = findPlayer(username);
+
       createToken(token, tokenExpireDate.toISOString(), player.id);
 
       reply.code(201).send({ token, tokenExpireDate });
@@ -148,6 +149,7 @@ const playerRoutes = (fastify, options, done) => {
 
       const token = generateToken();
       const tokenExpireDate = addHoursToDatetime(new Date(), 6);
+
       createToken(token, tokenExpireDate.toISOString(), player.id);
 
       reply.code(201).send({ token, tokenExpireDate });
@@ -176,7 +178,7 @@ const playerRoutes = (fastify, options, done) => {
       deleteAllPlayerTokens(tokenRecord.creator_id);
       deletePlayer(player.username);
       reply.send({
-        'message': `Player with ${player.username} has been deleted`,
+        'message': `Player with username: ${player.username} has been deleted`,
       });
     },
   );
