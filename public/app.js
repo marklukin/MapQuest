@@ -1,3 +1,4 @@
+'use strict';
 import { auth } from './auth.js';
 
 let countries = [];
@@ -8,6 +9,8 @@ let currentCountry = null;
 let hintCount = 0;
 let usedCountries = new Set();
 let attempt = 1; //будет две попытки
+let hintUsed = false;
+let fiftyUsed = false; //подсказка 50/50, которая одна на всю игру
 
 const countryImage = document.getElementById('country-image');
 const optionsContainer = document.getElementById('options-container');
@@ -15,6 +18,9 @@ const hintButton = document.getElementById('hint-btn');
 const hintContainer = document.getElementById('hint-container');
 const roundInfo = document.getElementById('round-info');
 const scoreElement = document.getElementById('score');
+
+let fiftyButton = null; //для кнопки 50/50
+let finalBlock = null; //для финального экрана
 
 let regionNow = 'World'; //текущий регион для кнопки "Играть снова"
 
@@ -45,6 +51,8 @@ async function initGame(region = 'World') { // инициализируем иг
   currentRound = 1;
   score = 0;
   usedCountries.clear();
+  fiftyUsed = false;
+  hintUsed = false;
 
   countries = await fetchCountries(region);
   if (countries.length === 0) {
@@ -52,6 +60,7 @@ async function initGame(region = 'World') { // инициализируем иг
     return;
   }
 
+  removeFinalBlock();
   updateRoundInfo();
   updateScore();
   showGameArea(true);
@@ -66,6 +75,7 @@ function startNewRound() {
   }
 
   attempt = 1;
+  hintUsed = false;
   hintCount = 0;
   hintContainer.innerHTML = '';
   hintButton.style.display = 'none';
@@ -86,6 +96,7 @@ function startNewRound() {
   countryImage.alt = `Country outline`;
 
   generateOptions();
+  renderFiftyButton();
 }
 
 function generateOptions() {
@@ -129,47 +140,36 @@ function checkAnswer(selectedButton, selectedCountry) {
     selectedButton.disabled = true;
     selectedButton.classList.remove('btn-outline-primary');
     selectedButton.classList.add('btn-danger');
-    if (attempt === 1) {
-      attempt = 2;
-      hintButton.style.display = 'block';
-      hintButton.disabled = false;
-    } else { //вторая ошибка - показать ответ и перейти дальше
+
+    const visibleButtons = Array.from(optionsContainer.querySelectorAll('button'))//проверяем использовано ли 50/50 (когда видно < 3 кнопок)
+      .filter(btn => btn.style.display !== 'none' && !btn.disabled);
+
+    if (visibleButtons.length <= 1 || attempt === 2) { // неправильный ответ после 50/50 или вторая попытка - показываем прав. ответ
       const buttons = optionsContainer.querySelectorAll('button');
       buttons.forEach(btn => btn.disabled = true);
       for (const button of buttons) {
         if (button.textContent === currentCountry.name) {
           button.classList.remove('btn-outline-primary');
           button.classList.add('btn-success');
+          button.style.display = 'block';
         }
-      };
-      showHintButton(false);
-      revealAnswer();
     }
+    revealAnswer();
+  } else { 
+      attempt = 2;
+      showRandomHint(); //после первой ошибки сразу выводим одну случайную подсказку
+      if (fiftyButton) fiftyButton.disabled = true; // 50/50 больше нельзя использовать
+    }; 
   }
-
 }
 
-function showHint() {
-  if (hintCount < 3) {
-    const hint = document.createElement('p');
-    hint.textContent = `Hint ${hintCount + 1}: 
-${currentCountry.hints[hintCount]}`;
-    hintContainer.appendChild(hint);
-    hintCount++;
-
-    if (hintCount === 3) { //UPD: после третей подсказки показываем кнопку показать ответ
-      hintButton.style.display = 'none';
-
-    const showAnswerButton = document.createElement('button');
-    showAnswerButton.className = 'btn btn-warning mt-2';
-    showAnswerButton.textContent = 'Show Answer';
-    showAnswerButton.onclick = () => {
-      revealAnswer();
-      showAnswerButton.remove();
-    }
-      hintContainer.appendChild(showAnswerButton);
-    }
-  }
+function showRandomHint() {
+  if (hintUsed) return;
+  hintUsed = true;
+  const randomIndex = Math.floor(Math.random() * 3);
+  const hint = document.createElement('p');
+  hint.textContent = `Hint: ${currentCountry.hints[randomIndex]}`;
+  hintContainer.appendChild(hint);
 }
 
 function revealAnswer() {
@@ -186,9 +186,29 @@ ${currentCountry.name}</strong>`;
         }, 2000);
 }
 
-function showHintButton(show) {
-  hintButton.style.display = show ? 'block' : 'none';
-  hintButton.disabled = !show;
+function renderFiftyButton() { //создаем кнопку 50/50 под вариантами
+  if (!fiftyButton) {
+    fiftyButton = document.createElement('button');
+    fiftyButton.className = 'btn btn-info mb-2 mt-4 w-100';
+    fiftyButton.textContent = '50/50';
+    fiftyButton.addEventListener('click', useFiftyFifty);
+    optionsContainer.parentNode.insertBefore(fiftyButton, optionsContainer.nextSibling);
+  }
+  fiftyButton.style.display = fiftyUsed ? 'none' : 'block';
+  fiftyButton.disabled = fiftyUsed || attempt === 2;
+}
+
+function useFiftyFifty() {
+  if (fiftyUsed || attempt === 2) return;
+  fiftyUsed = true;
+  fiftyButton.disabled = true;
+
+  const buttons = Array.from(optionsContainer.querySelectorAll('button')); //находим все кнопки, которые с неправильными ответами
+  const incorrectButtons = buttons.filter(btn => btn.textContent !== currentCountry.name && !btn.disabled);
+  shuffleArray(incorrectButtons); // случайно оставляем одну неправильную, остальные убираем
+  const toRemove = incorrectButtons.slice(0, incorrectButtons.length - 1);
+  toRemove.forEach(btn => btn.style.display = 'none');
+  fiftyButton.style.display = 'none';
 }
 
 function updateRoundInfo() {
@@ -205,22 +225,7 @@ function updateScore() {
 
 function endGame() {
   showGameArea(false);
-  hintContainer.innerHTML = '';
-
-  const finalMessage = document.createElement('div'); //показ финального счета
-  finalMessage.className = 'alert alert-success';
-  finalMessage.innerHTML = `<h4>The game is over!</h4>
-                          <p>Your final score is: ${score} out of ${totalRounds} rounds.</p>`;
-
-  const playAgainButton = document.createElement('button'); //добавление кнопки "Играть снова"
-  playAgainButton.className = 'btn btn-primary mt-3';
-  playAgainButton.textContent = 'Play again';
-  playAgainButton.addEventListener('click', () => {
-    initGame(regionNow);
-  });
-
-  hintContainer.appendChild(finalMessage);
-  hintContainer.appendChild(playAgainButton);
+  showFinalBlock();
 }
 
 function showGameArea(show) { //отдельная функция для очищения/показа игровой области
@@ -228,8 +233,51 @@ function showGameArea(show) { //отдельная функция для очи�
   optionsContainer.style.display = show ? 'block' : 'none';
   roundInfo.style.display = show ? 'block' : 'none';
   scoreElement.style.display = show ? 'block' : 'none';
+  if (fiftyButton) fiftyButton.style.display = show && !fiftyUsed ? 'block' : 'none';
   if (show) {
     hintContainer.innerHTML = '';
+  }
+}
+
+function showFinalBlock() {
+  document.querySelector('.container.mt-4').style.display = 'none';
+
+  if (!finalBlock) {
+    finalBlock = document.createElement('div');
+    finalBlock.style.position = 'fixed';
+    finalBlock.style.top = '50%';
+    finalBlock.style.left = '50%';
+    finalBlock.style.transform = 'translate(-50%, -50%)';
+    finalBlock.style.background = '#e9fbe9';
+    finalBlock.style.borderRadius = '12px';
+    finalBlock.style.boxShadow = '0 4px 24px rgba(0, 0, 0, 0.07)';
+    finalBlock.style.padding = '32px 32px 24px 32px';
+    finalBlock.style.textAlign = 'center';
+    finalBlock.style.minWidth = '300px';
+    finalBlock.style.zIndex = 1000;
+    document.body.appendChild(finalBlock);
+  }
+  finalBlock.innerHTML = `
+    <div class='alert alert-success' style='font-size:1.15rem;'>
+      <h4>The game is over!</h4>
+      <p>Your final score is: <b>${score}</b> out of <b>${totalRounds}</b> rounds.</p>
+    </div>
+  `;
+  const playAgainButton = document.createElement('button');
+  playAgainButton.className = 'btn btn-primary mt-3';
+  playAgainButton.textContent = 'Play again';
+  playAgainButton.onclick = () => {
+    removeFinalBlock();
+    initGame(regionNow);
+  };
+  finalBlock.appendChild(playAgainButton);
+}
+
+function removeFinalBlock() {
+  if (finalBlock) {
+    finalBlock.remove();
+    finalBlock = null;
+    document.querySelector('.container.mt-4').style.display = 'block'; //возвращаем контейнер с игрой
   }
 }
 
@@ -260,7 +308,7 @@ document.querySelectorAll('.navbar .nav-link').forEach(link => { // обраба
   })
 })
 
-hintButton.addEventListener('click', showHint);
+hintButton.addEventListener('click', showRandomHint);
 
 window.addEventListener('DOMContentLoaded', () => { //начало игры когда страница загружается
   const worldLink = document.querySelector('.nav-link[aria-current="page"]'); //устанавливаю активный регион по умолчанию
@@ -270,7 +318,6 @@ window.addEventListener('DOMContentLoaded', () => { //начало игры ко
 
   initGame('World');
 })
-
 
 
 // AUTHORIZATION
