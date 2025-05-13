@@ -370,11 +370,33 @@ document.addEventListener('DOMContentLoaded', () => {
   //REGISTER
   document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const form = e.target;
     const formData = new FormData(e.target);
+
+    const passwordInput = form.querySelector('input[name="password"]');
+    const confirmInput = form.querySelector('input[name="confirmPassword"]');
+    const usernameInput = form.querySelector('input[name="username"]');
+
+    passwordInput.classList.remove('password-mismatch');
+    confirmInput.classList.remove('password-mismatch');
+
+    const password = formData.get('password');
+    const confirmPassword = formData.get('confirmPassword');
+
+    if (password !== confirmPassword) {
+      passwordInput.classList.add('password-mismatch');
+      confirmInput.classList.add('password-mismatch');
+      alert('Passwords do not match!');
+      return;
+    }
+
     try {
-      await auth.register(formData.get('username'), formData.get('password'));
+      await auth.register(formData.get('username'), password);
       handlePostLogin();
     } catch (error) {
+      passwordInput.value = '';
+      confirmInput.value = '';
+      usernameInput.focus();
       alert('Registration failed: ' + error.message);
     }
   });
