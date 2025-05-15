@@ -1,66 +1,76 @@
 'use strict';
 
-const { db } = require('./connection');
+const { db, dbQueue } = require('./connection');
 const {
   RecordNotFound,
   RecordAlreadyExists,
 } = require('../error-handler');
 
-const playerExists = (value, field = 'username') => {
-  const record = db.prepare(`
-    SELECT COUNT(*) AS count FROM Players WHERE ${field} = ?
-  `);
+const playerExists = async (value, field = 'username') => {
+  const count = await dbQueue.put(() => {
+    const record = db.prepare(`
+      SELECT COUNT(*) AS count FROM Players WHERE ${field} = ?
+    `);
 
-  const count = record.get(value).count;
+    return record.get(value).count;
+  });
+
   if (count) return true;
   else return false;
 };
 
-const createPlayer = (
+const createPlayer = async (
   username,
   password,
 ) => {
-  const exists = playerExists(username);
+  const exists = await playerExists(username);
   if (exists) {
     throw new RecordAlreadyExists(
       `Player with username: ${username} alredy exists`,
     );
   }
-  const record = db.prepare(`
-    INSERT INTO Players 
-    (username, password_hash, password_salt) 
-    VALUES(?, ?, ?)
-  `);
 
-  record.run(username, password.hash, password.salt);
+  await dbQueue.put(() => {
+    const record = db.prepare(`
+      INSERT INTO Players 
+      (username, password_hash, password_salt) 
+      VALUES(?, ?, ?)
+    `);
+
+    record.run(username, password.hash, password.salt);
+  });
 };
 
 
-const deletePlayer = (username) => {
-  const exists = playerExists(username);
+const deletePlayer = async (username) => {
+  const exists = await playerExists(username);
   if (!exists) {
     throw new RecordNotFound(`Player with username: ${username} not found`);
   }
 
-  const record = db.prepare(`
-    DELETE FROM Players
-    WHERE username = ?
-  `);
+  await dbQueue.put(() => {
+    const record = db.prepare(`
+      DELETE FROM Players
+      WHERE username = ?
+    `);
 
-  record.run(username);
+    record.run(username);
+  });
 };
 
-const findPlayer = (value, field = 'username') => {
-  const exists = playerExists(value, field);
+const findPlayer = async (value, field = 'username') => {
+  const exists = await playerExists(value, field);
   if (!exists) {
     throw new RecordNotFound(`Player with ${field}: ${value} not found`);
   }
 
-  const record = db.prepare(`
-    SELECT * FROM Players WHERE ${field} = ?
-  `);
+  const player = await dbQueue.put(() => {
+    const record = db.prepare(`
+      SELECT * FROM Players WHERE ${field} = ?
+    `);
 
-  const player = record.get(value);
+    return record.get(value);
+  });
 
   return player;
 };
