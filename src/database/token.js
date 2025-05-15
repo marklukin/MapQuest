@@ -1,66 +1,77 @@
 'use strict';
 
-const { db } = require('./connection');
+const { db, dbQueue } = require('./connection');
 
 const { RecordNotFound } = require('../error-handler');
 
-const playerTokenExists = (token) => {
-  const record = db.prepare(`
-    SELECT COUNT(*) AS count FROM Tokens WHERE token = ?
-  `);
+const playerTokenExists = async (token) => {
+  const count = await dbQueue.put(() => {
+    const record = db.prepare(`
+      SELECT COUNT(*) AS count FROM Tokens WHERE token = ?
+    `);
 
-  const count = record.get(token).count;
+    return record.get(token).count;
+  });
+
   if (count) return true;
   else return false;
 };
 
-const createToken = (
+const createToken = async (
   token,
   tokenExpireDate,
   creatorId,
 ) => {
-  const query = db.prepare(`
-    INSERT INTO Tokens
-    (token, token_expire_date, creator_id)
-    VALUES(?, ?, ?)
-  `);
+  await dbQueue.put(() => {
+    const query = db.prepare(`
+      INSERT INTO Tokens
+      (token, token_expire_date, creator_id)
+      VALUES(?, ?, ?)
+    `);
 
-  query.run(token, tokenExpireDate, creatorId);
+    query.run(token, tokenExpireDate, creatorId);
+  });
 };
 
-const findToken = (token) => {
-  const exists = playerTokenExists(token);
+const findToken = async (token) => {
+  const exists = await playerTokenExists(token);
   if (!exists) {
     throw new RecordNotFound(`Player token doesn't exist`);
   }
 
-  const query = db.prepare(`
-    SELECT * FROM Tokens
-    WHERE token = ?
-  `);
+  const record = await dbQueue.put(() => {
+    const query = db.prepare(`
+      SELECT * FROM Tokens
+      WHERE token = ?
+    `);
 
-  const record = query.get(token);
+    return query.get(token);
+  });
 
   return record;
 };
 
-const renewTokenExpireDate = (playerId, newToken, newExpireDate) => {
-  const query = db.prepare(`
-    UPDATE Tokens
-    SET token = ?, token_expire_date = ? 
-    WHERE creator_id = ?
-  `);
+const renewTokenExpireDate = async (playerId, newToken, newExpireDate) => {
+  await dbQueue.put(() => {
+    const query = db.prepare(`
+      UPDATE Tokens
+      SET token = ?, token_expire_date = ? 
+      WHERE creator_id = ?
+    `);
 
-  query.run(newToken, newExpireDate, playerId);
+    query.run(newToken, newExpireDate, playerId);
+  });
 };
 
-const deleteAllPlayerTokens = (playerId) => {
-  const query = db.prepare(`
-    DELETE FROM Tokens
-    WHERE creator_id = ?
-  `);
+const deleteAllPlayerTokens = async (playerId) => {
+  await dbQueue.put(() => {
+    const query = db.prepare(`
+      DELETE FROM Tokens
+      WHERE creator_id = ?
+    `);
 
-  query.run(playerId);
+    query.run(playerId);
+  });
 };
 
 module.exports = {

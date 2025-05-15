@@ -4,7 +4,7 @@ const fastify = require('fastify')({ logger: true });
 const path = require('node:path');
 
 const { errorHandler } = require('./src/error-handler');
-const { createDatabase } = require('./src/database/connection');
+const { createDatabase, dbQueue } = require('./src/database/connection');
 
 const result = require('dotenv').config();
 if (result.error) {
@@ -34,10 +34,26 @@ fastify.register(require('./src/routes/players'),
   { prefix: 'api/v1' },
 );
 
-fastify.listen({ port, hostname }, (err, address) => {
-  createDatabase();
-  if (err) {
+const start = async () => {
+  dbQueue.process();
+  try {
+    await fastify.listen({ port: 3000 });
+  } catch (err) {
     fastify.log.error(err);
     process.exit(1);
   }
-});
+
+  createDatabase();
+};
+
+start();
+
+// fastify.listen({ port, hostname }, async (err, address) => {
+//   await createDatabase();
+//
+//   if (err) {
+//     fastify.log.error(err);
+//     process.exit(1);
+//   }
+//   await dbQueue.process();
+// });

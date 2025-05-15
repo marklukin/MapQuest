@@ -105,38 +105,35 @@ const deletePlayerOpts = {
   },
 };
 
-const playerRoutes = (fastify, options, done) => {
+const playerRoutes = async (fastify, options) => {
   fastify.post(
     '/players/register',
     registerPlayerOpts,
-    (req, reply) => {
+    async (req, reply) => {
       const { username, password } = req.body;
 
       const hashedPassword = hashPassword(password);
 
-      createPlayer(
-        username,
-        hashedPassword,
-      );
+      await createPlayer(username, hashedPassword);
 
       const token = generateToken();
       const tokenExpireDate = addHoursToDatetime(new Date(), 6);
 
-      const player = findPlayer(username);
+      const player = await findPlayer(username);
 
-      createToken(token, tokenExpireDate.toISOString(), player.id);
+      await createToken(token, tokenExpireDate.toISOString(), player.id);
 
-      reply.code(201).send({ token, tokenExpireDate });
+      return reply.code(201).send({ token, tokenExpireDate });
     },
   );
 
   fastify.post(
     '/players/log-in',
     loginPlayerOpts,
-    (req, reply) => {
+    async (req, reply) => {
       const { username, password } = req.body;
 
-      const player = findPlayer(username);
+      const player = await findPlayer(username);
       const isValidPassword = checkPassword(
         password,
         player.password_hash,
@@ -150,7 +147,7 @@ const playerRoutes = (fastify, options, done) => {
       const token = generateToken();
       const tokenExpireDate = addHoursToDatetime(new Date(), 6);
 
-      createToken(token, tokenExpireDate.toISOString(), player.id);
+      await createToken(token, tokenExpireDate.toISOString(), player.id);
 
       reply.code(201).send({ token, tokenExpireDate });
     },
@@ -159,9 +156,9 @@ const playerRoutes = (fastify, options, done) => {
   fastify.get(
     '/players/:username',
     getPlayerOpts,
-    (req, reply) => {
+    async (req, reply) => {
       const { username } = req.params;
-      const player = findPlayer(username);
+      const player = await findPlayer(username);
       reply.send(player);
     },
   );
@@ -169,21 +166,19 @@ const playerRoutes = (fastify, options, done) => {
   fastify.delete(
     '/players',
     deletePlayerOpts,
-    (req, reply) => {
+    async (req, reply) => {
       const { token } = req.body;
 
-      const tokenRecord = findToken(token);
-      const player = findPlayer(tokenRecord.creator_id, 'id');
+      const tokenRecord = await findToken(token);
+      const player = await findPlayer(tokenRecord.creator_id, 'id');
 
-      deleteAllPlayerTokens(tokenRecord.creator_id);
-      deletePlayer(player.username);
+      await deleteAllPlayerTokens(tokenRecord.creator_id);
+      await deletePlayer(player.username);
       reply.send({
         'message': `Player with username: ${player.username} has been deleted`,
       });
     },
   );
-
-  done();
 };
 
 module.exports = playerRoutes;
