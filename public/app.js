@@ -1,12 +1,12 @@
 'use strict';
 import { auth } from './auth.js';
+import { BiDirectionalPriorityQueue } from './priorityQueue.js';
 
 let countries = [];
 let currentRound = 1;
 const totalRounds = 15;
 let score = 0;
 let currentCountry = null;
-let hintCount = 0;
 let usedCountries = new Set();
 let attempt = 1; //будет две попытки
 let hintUsed = false;
@@ -67,6 +67,8 @@ async function initGame(region = 'World') { // инициализируем иг
   startNewRound();
 }
 
+const hintsQueue = new BiDirectionalPriorityQueue();
+
 function startNewRound() {
 
   if (currentRound > totalRounds) {
@@ -76,7 +78,6 @@ function startNewRound() {
 
   attempt = 1;
   hintUsed = false;
-  hintCount = 0;
   hintContainer.innerHTML = '';
   hintButton.style.display = 'none';
   hintButton.disabled = false;
@@ -90,6 +91,11 @@ function startNewRound() {
 
   const randomIndex = Math.floor(Math.random() * availableCountries.length);
   currentCountry = availableCountries[randomIndex];
+
+
+  shuffleArray(currentCountry.hints).forEach(hint => hintsQueue.enqueue(hint));
+
+
   usedCountries.add(currentCountry.name);
 
   countryImage.src = currentCountry.imagePath;
@@ -166,10 +172,11 @@ function checkAnswer(selectedButton, selectedCountry) {
 function showRandomHint() {
   if (hintUsed) return;
   hintUsed = true;
-  const randomIndex = Math.floor(Math.random() * 3);
-  const hint = document.createElement('p');
-  hint.textContent = `Hint: ${currentCountry.hints[randomIndex]}`;
-  hintContainer.appendChild(hint);
+
+  const hint = hintsQueue.dequeue(); //случайный выбор
+  const hintElement = document.createElement('p');
+  hintElement.textContent = `Hint: ${hint}`;
+  hintContainer.appendChild(hintElement);
 }
 
 function revealAnswer() {
