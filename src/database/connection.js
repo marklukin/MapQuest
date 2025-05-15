@@ -3,6 +3,9 @@
 const { DatabaseSync } = require('node:sqlite');
 const db = new DatabaseSync('./database.db');
 
+const TaskQueue = require('../queue');
+const dbQueue = new TaskQueue();
+
 const createDatabase = () => {
   db.exec(`
     CREATE TABLE IF NOT EXISTS Players(
@@ -26,11 +29,10 @@ const createDatabase = () => {
       FOREIGN KEY(creator_id) REFERENCES Players(id)
     )
   `);
-
-  return db;
 };
 
 module.exports = {
   db,
   createDatabase,
+  dbQueue,
 };
