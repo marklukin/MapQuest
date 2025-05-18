@@ -84,6 +84,14 @@ const loginPlayerOpts = {
   },
 };
 
+const tokenHeader = {
+  type: 'object',
+  properties: {
+    'x-token': { 'type': 'string' },
+  },
+  required: ['x-token'],
+};
+
 const deletePlayerOpts = {
   schema: {
     response: {
@@ -95,13 +103,7 @@ const deletePlayerOpts = {
       },
     },
 
-    body: {
-      type: 'object',
-      required: ['token'],
-      properties: {
-        token: { type: 'string' },
-      },
-    },
+    headers: tokenHeader,
   },
 };
 
@@ -167,7 +169,7 @@ const playerRoutes = async (fastify, options) => {
     '/players',
     deletePlayerOpts,
     async (req, reply) => {
-      const { token } = req.body;
+      const token = req.headers['x-token'];
 
       const tokenRecord = await findToken(token);
       const player = await findPlayer(tokenRecord.creator_id, 'id');
