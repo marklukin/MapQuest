@@ -35,7 +35,7 @@ fastify.register(require('./src/routes/players'),
 );
 
 const start = async () => {
-  dbQueue.process();
+  dbQueue.start();
   try {
     await fastify.listen({ port: 3000 });
   } catch (err) {
@@ -47,13 +47,3 @@ const start = async () => {
 };
 
 start();
-
-// fastify.listen({ port, hostname }, async (err, address) => {
-//   await createDatabase();
-//
-//   if (err) {
-//     fastify.log.error(err);
-//     process.exit(1);
-//   }
-//   await dbQueue.process();
-// });
