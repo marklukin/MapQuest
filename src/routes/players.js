@@ -12,6 +12,7 @@ const {
   renewTokenExpireDate,
   deleteAllPlayerTokens,
 } = require('../database/token');
+const { InvalidPassword } = require('../error-handler');
 
 const {
   generateToken,
@@ -141,9 +142,9 @@ const playerRoutes = async (fastify, options) => {
         player.password_hash,
         player.password_salt,
       );
-      // FIX: fix error
+
       if (!isValidPassword) {
-        reply.code(401).send({ error: 'unautherized' });
+        throw new InvalidPassword('Your password is invalid');
       }
 
       const token = generateToken();
