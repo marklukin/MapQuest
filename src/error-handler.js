@@ -21,6 +21,12 @@ class RecordAlreadyExists extends AppException {
   }
 };
 
+class InvalidPassword extends AppException {
+  constructor(message) {
+    super(message, 401);
+  }
+}
+
 class InvalidToken extends AppException {
   constructor(message) {
     super(message, 401);
@@ -32,6 +38,7 @@ class TokenExpired extends AppException {
     super(message, 401);
   }
 };
+
 
 const errorHandler = (err, req, reply) => {
   if (err instanceof AppException) {
@@ -56,6 +63,7 @@ const errorHandler = (err, req, reply) => {
 module.exports = {
   RecordNotFound,
   RecordAlreadyExists,
+  InvalidPassword,
   InvalidToken,
   TokenExpired,
   errorHandler,
