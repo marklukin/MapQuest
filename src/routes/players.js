@@ -22,26 +22,6 @@ const {
   addHoursToDatetime,
 } = require('../utils');
 
-const Player = {
-  type: 'object',
-  properties: {
-    Playerid: { type: 'integer' },
-    username: { type: 'string' },
-    world_score: { type: 'integer' },
-    europe_score: { type: 'integer' },
-    asia_score: { type: 'integer' },
-    usa_score: { type: 'integer' },
-  },
-};
-
-const getPlayerOpts = {
-  schema: {
-    response: {
-      200: Player,
-    },
-  },
-};
-
 const registerPlayerOpts = {
   schema: {
     response: {
@@ -81,6 +61,24 @@ const loginPlayerOpts = {
       properties: {
         username: { type: 'string' },
         password: { type: 'string' },
+      },
+    },
+  },
+};
+
+const getPlayerOpts = {
+  schema: {
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          Playerid: { type: 'integer' },
+          username: { type: 'string' },
+          world_score: { type: 'integer' },
+          europe_score: { type: 'integer' },
+          asia_score: { type: 'integer' },
+          usa_score: { type: 'integer' },
+        },
       },
     },
   },
