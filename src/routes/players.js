@@ -94,18 +94,18 @@ const tokenHeader = {
   required: ['x-token'],
 };
 
+const statusMessage = {
+  type: 'object',
+  properties: {
+    message: { type: 'string' },
+  },
+};
+
 const deletePlayerOpts = {
   schema: {
-    response: {
-      201: {
-        type: 'object',
-        properties: {
-          message: { type: 'string' },
-        },
-      },
-    },
-
     headers: tokenHeader,
+
+    response: { 201: statusMessage },
   },
 };
 
@@ -118,16 +118,9 @@ const changePasswordOpts = {
       },
     },
 
-    response: {
-      201: {
-        type: 'object',
-        properties: {
-          message: { type: 'string' },
-        },
-      },
-    },
-
     headers: tokenHeader,
+
+    response: { 201: statusMessage },
   },
 };
 
