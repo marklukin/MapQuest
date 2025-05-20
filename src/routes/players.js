@@ -13,8 +13,8 @@ const {
   renewTokenExpireDate,
   deleteAllPlayerTokens,
 } = require('../database/token');
-const { InvalidPassword } = require('../error-handler');
 
+const { Unauthorized } = require('../error-handler');
 const {
   generateToken,
   checkPassword,
@@ -122,7 +122,7 @@ const changePasswordOpts = {
       201: {
         type: 'object',
         properties: {
-          status: { type: 'string' },
+          message: { type: 'string' },
         },
       },
     },
@@ -167,7 +167,7 @@ const playerRoutes = async (fastify, options) => {
       );
 
       if (!isValidPassword) {
-        throw new InvalidPassword('Your password is invalid');
+        throw new Unauthorized('Your password is invalid');
       }
 
       const token = generateToken();
@@ -220,7 +220,7 @@ const playerRoutes = async (fastify, options) => {
       await changePassword(hashedNewPassword, player.username);
 
       reply.send({
-        'status': 'The password was changed successfully',
+        'message': 'The password was changed successfully',
       });
     },
   );
