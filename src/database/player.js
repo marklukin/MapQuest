@@ -75,8 +75,26 @@ const findPlayer = async (value, field = 'username') => {
   return player;
 };
 
+const changePassword = async (newPassword, value, field = 'username') => {
+  const exists = await playerExists(value, field);
+  if (!exists) {
+    throw new RecordNotFound(`Player with ${field}: ${value} not found`);
+  }
+
+  await dbQueue.put(() => {
+    const record = db.prepare(`
+      UPDATE Players
+      SET password_hash = ?, password_salt = ?
+      WHERE ${field} = ?
+    `);
+
+    record.run(newPassword.hash, newPassword.salt, value);
+  });
+};
+
 module.exports = {
   createPlayer,
   deletePlayer,
   findPlayer,
+  changePassword,
 };

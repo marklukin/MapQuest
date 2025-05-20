@@ -4,6 +4,7 @@ const {
   createPlayer,
   deletePlayer,
   findPlayer,
+  changePassword,
 } = require('../database/player');
 
 const {
@@ -108,6 +109,28 @@ const deletePlayerOpts = {
   },
 };
 
+const changePasswordOpts = {
+  schema: {
+    body: {
+      type: 'object',
+      properties: {
+        newPassword: { type: 'string' },
+      },
+    },
+
+    response: {
+      201: {
+        type: 'object',
+        properties: {
+          status: { type: 'string' },
+        },
+      },
+    },
+
+    headers: tokenHeader,
+  },
+};
+
 const playerRoutes = async (fastify, options) => {
   fastify.post(
     '/players/register',
@@ -179,6 +202,25 @@ const playerRoutes = async (fastify, options) => {
       await deletePlayer(player.username);
       reply.send({
         'message': `Player with username: ${player.username} has been deleted`,
+      });
+    },
+  );
+
+  fastify.post(
+    '/players/changePassword',
+    changePasswordOpts,
+    async (req, reply) => {
+      const token = req.headers['x-token'];
+      const { newPassword } = req.body;
+
+      const tokenRecord = await findToken(token);
+      const player = await findPlayer(tokenRecord.creator_id, 'id');
+
+      const hashedNewPassword = hashPassword(newPassword);
+      await changePassword(hashedNewPassword, player.username);
+
+      reply.send({
+        'status': 'The password was changed successfully',
       });
     },
   );
