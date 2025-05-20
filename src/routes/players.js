@@ -5,6 +5,7 @@ const {
   deletePlayer,
   findPlayer,
   changePassword,
+  changeUsername,
 } = require('../database/player');
 
 const {
@@ -21,26 +22,6 @@ const {
   hashPassword,
   addHoursToDatetime,
 } = require('../utils');
-
-const Player = {
-  type: 'object',
-  properties: {
-    Playerid: { type: 'integer' },
-    username: { type: 'string' },
-    world_score: { type: 'integer' },
-    europe_score: { type: 'integer' },
-    asia_score: { type: 'integer' },
-    usa_score: { type: 'integer' },
-  },
-};
-
-const getPlayerOpts = {
-  schema: {
-    response: {
-      200: Player,
-    },
-  },
-};
 
 const registerPlayerOpts = {
   schema: {
@@ -86,6 +67,24 @@ const loginPlayerOpts = {
   },
 };
 
+const getPlayerOpts = {
+  schema: {
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          Playerid: { type: 'integer' },
+          username: { type: 'string' },
+          world_score: { type: 'integer' },
+          europe_score: { type: 'integer' },
+          asia_score: { type: 'integer' },
+          usa_score: { type: 'integer' },
+        },
+      },
+    },
+  },
+};
+
 const tokenHeader = {
   type: 'object',
   properties: {
@@ -94,18 +93,18 @@ const tokenHeader = {
   required: ['x-token'],
 };
 
+const statusMessage = {
+  type: 'object',
+  properties: {
+    message: { type: 'string' },
+  },
+};
+
 const deletePlayerOpts = {
   schema: {
-    response: {
-      201: {
-        type: 'object',
-        properties: {
-          message: { type: 'string' },
-        },
-      },
-    },
-
     headers: tokenHeader,
+
+    response: { 201: statusMessage },
   },
 };
 
@@ -118,16 +117,24 @@ const changePasswordOpts = {
       },
     },
 
-    response: {
-      201: {
-        type: 'object',
-        properties: {
-          message: { type: 'string' },
-        },
+    headers: tokenHeader,
+
+    response: { 201: statusMessage },
+  },
+};
+
+const changeUsernameOpts = {
+  schema: {
+    body: {
+      type: 'object',
+      properties: {
+        newUsername: { type: 'string' },
       },
     },
 
     headers: tokenHeader,
+
+    response: { 201: statusMessage },
   },
 };
 
@@ -221,6 +228,24 @@ const playerRoutes = async (fastify, options) => {
 
       reply.send({
         'message': 'The password was changed successfully',
+      });
+    },
+  );
+
+  fastify.post(
+    '/players/changeUsername',
+    changeUsernameOpts,
+    async (req, reply) => {
+      const token = req.headers['x-token'];
+      const { newUsername } = req.body;
+
+      const tokenRecord = await findToken(token);
+      const player = await findPlayer(tokenRecord.creator_id, 'id');
+
+      await changeUsername(newUsername, player.username);
+
+      reply.send({
+        'message': 'The username was changed successfully',
       });
     },
   );
