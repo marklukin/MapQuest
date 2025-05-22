@@ -44,6 +44,10 @@ class TaskQueue extends EventEmitter {
     this.isProcessing = false;
   }
 
+  stop() {
+    this.removeListener('newTask');
+  }
+
   start() {
     this.on('newTask', () => {
       if (!this.isProcessing) {

@@ -7,15 +7,15 @@ const {
 } = require('../error-handler');
 
 const playerExists = async (value, field = 'username') => {
-  const count = await dbQueue.put(() => {
+  const record = await dbQueue.put(() => {
     const record = db.prepare(`
-      SELECT COUNT(*) AS count FROM Players WHERE ${field} = ?
+      SELECT * FROM Players WHERE ${field} = ?
     `);
 
-    return record.get(value).count;
+    return record.get(value);
   });
 
-  if (count) return true;
+  if (record) return true;
   else return false;
 };
 

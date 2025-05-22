@@ -5,15 +5,15 @@ const { db, dbQueue } = require('./connection');
 const { RecordNotFound } = require('../error-handler');
 
 const playerTokenExists = async (token) => {
-  const count = await dbQueue.put(() => {
+  const record = await dbQueue.put(() => {
     const record = db.prepare(`
-      SELECT COUNT(*) AS count FROM Tokens WHERE token = ?
+      SELECT * FROM Tokens WHERE token = ?
     `);
 
-    return record.get(token).count;
+    return record.get(token);
   });
 
-  if (count) return true;
+  if (record) return true;
   else return false;
 };
 
