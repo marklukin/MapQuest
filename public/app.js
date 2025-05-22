@@ -2,6 +2,7 @@
 import { auth } from './auth.js';
 import { BiDirectionalPriorityQueue } from './utils/priorityQueue.js';
 import { memoize } from './utils/memoize.js';
+import { profileContainer, createProfileContainer, showProfileError, updateProfileDisplay, hideProfile, togglePasswordVisibility } from './profile.js';
 
 let countries = [];
 let currentRound = 1;
@@ -12,6 +13,7 @@ let usedCountries = new Set();
 let attempt = 1; //будет две попытки
 let hintUsed = false;
 let fiftyUsed = false; //подсказка 50/50, которая одна на всю игру
+let gameStartTime = null; //для отслеживания времени игры
 
 const countryImage = document.getElementById('country-image');
 const optionsContainer = document.getElementById('options-container');
@@ -23,7 +25,9 @@ const scoreElement = document.getElementById('score');
 let fiftyButton = null; //для кнопки 50/50
 let finalBlock = null; //для финального экрана
 
+
 let regionNow = 'World'; //текущий регион для кнопки "Играть снова"
+let currentView = 'game'; //будет 'game' или 'profile'
 
 const fetchCountries = memoize(async (region = 'World') => {
   try {
@@ -47,6 +51,48 @@ const fetchCountries = memoize(async (region = 'World') => {
   }
 })
 
+async function fetchUserStats() {
+  try {
+    if (!auth.token) throw new Error('User is not authenticated!');
+
+    const response = await fetch('/api/v1/players/stats', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-token': auth.token
+      }
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch user stats');
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching user stats: ', error);
+    return null;
+  }
+}
+
+async function saveGameResult(region, score, totalTime) {
+  try {
+    if (!auth.token) return;
+
+    await fetch('/api/v1/players/game-result', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-token': auth.token
+      },
+      body: JSON.stringify({
+        region: region.toLowerCase(),
+        score,
+        timeSpent: totalTime
+      })
+    })
+  } catch (error) {
+    console.error('Error saving game result: ', error);
+  }
+}
+
 async function initGame(region = 'World') { // инициализируем игру
   regionNow = region;
   currentRound = 1;
@@ -54,6 +100,8 @@ async function initGame(region = 'World') { // инициализируем иг
   usedCountries.clear();
   fiftyUsed = false;
   hintUsed = false;
+  gameStartTime = Date.now();
+  currentView = 'game';
 
   countries = await fetchCountries(region);
   if (countries.length === 0) {
@@ -67,6 +115,8 @@ async function initGame(region = 'World') { // инициализируем иг
   showGameArea(true);
   startNewRound();
 }
+
+
 
 const hintsQueue = new BiDirectionalPriorityQueue();
 
@@ -329,7 +379,6 @@ window.addEventListener('DOMContentLoaded', () => { //начало игры ко
   initGame('World');
 })
 
-
 // AUTHORIZATION
 function handlePostLogin() {
   const modalEl = document.getElementById('authModal');
@@ -342,7 +391,6 @@ function handlePostLogin() {
   document.querySelectorAll('[data-unauth]').forEach(el =>
     el.classList.add('d-none')
   );
-  setTimeout(() => initGame('World'), 200);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
