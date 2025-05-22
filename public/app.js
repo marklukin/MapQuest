@@ -1,6 +1,7 @@
 'use strict';
 import { auth } from './auth.js';
-import { BiDirectionalPriorityQueue } from './priorityQueue.js';
+import { BiDirectionalPriorityQueue } from './utils/priorityQueue.js';
+import { memoize } from './utils/memoize.js';
 
 let countries = [];
 let currentRound = 1;
@@ -24,14 +25,14 @@ let finalBlock = null; //для финального экрана
 
 let regionNow = 'World'; //текущий регион для кнопки "Играть снова"
 
-async function fetchCountries(region = 'World') { // получаем данные про страны с сервера
+const fetchCountries = memoize(async (region = 'World') => {
   try {
     const response = await fetch('countries.json');
     if (!response.ok) throw new Error('Failed to fetch countries');
 
     const allCountries = await response.json();
 
-    if (region === 'World') {        // если регион World, возвращаем все страны со все страны со всех регионов
+    if (region === 'World') {
       let combinedCountries = [];
       for (const regionKey in allCountries) {
         combinedCountries = [...combinedCountries, ...allCountries[regionKey]];
@@ -39,12 +40,12 @@ async function fetchCountries(region = 'World') { // получаем данны
       return combinedCountries;
     }
 
-    return allCountries[region] || []; // иначе возвращаем страны конкретного региона
+    return allCountries[region] || [];
   } catch (error) {
     console.error('Error fetching countries:', error);
     return [];
   }
-}
+})
 
 async function initGame(region = 'World') { // инициализируем игру
   regionNow = region;
@@ -81,6 +82,8 @@ function startNewRound() {
   hintContainer.innerHTML = '';
   hintButton.style.display = 'none';
   hintButton.disabled = false;
+
+  hintsQueue.clear();
 
   let availableCountries = countries.filter(country => !usedCountries.has(country.name));
 
