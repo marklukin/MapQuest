@@ -4,7 +4,7 @@ const { db, dbQueue } = require('./connection');
 
 const { RecordNotFound } = require('../error-handler');
 
-const playerTokenExists = async (token) => {
+const tokenExists = async (token) => {
   const record = await dbQueue.put(() => {
     const record = db.prepare(`
       SELECT * FROM Tokens WHERE token = ?
@@ -34,12 +34,7 @@ const createToken = async (
 };
 
 const findToken = async (token) => {
-  const exists = await playerTokenExists(token);
-  if (!exists) {
-    throw new RecordNotFound(`Player token doesn't exist`);
-  }
-
-  const record = await dbQueue.put(() => {
+  const tokenRecord = await dbQueue.put(() => {
     const query = db.prepare(`
       SELECT * FROM Tokens
       WHERE token = ?
@@ -48,7 +43,11 @@ const findToken = async (token) => {
     return query.get(token);
   });
 
-  return record;
+  if (!tokenRecord) {
+    throw new RecordNotFound(`The token doesn't exist`);
+  }
+
+  return tokenRecord;
 };
 
 const renewTokenExpireDate = async (playerId, newToken, newExpireDate) => {
@@ -79,4 +78,5 @@ module.exports = {
   findToken,
   renewTokenExpireDate,
   deleteAllPlayerTokens,
+  tokenExists,
 };

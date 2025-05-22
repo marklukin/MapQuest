@@ -43,11 +43,6 @@ const createPlayer = async (
 
 
 const deletePlayer = async (username) => {
-  const exists = await playerExists(username);
-  if (!exists) {
-    throw new RecordNotFound(`Player with username: ${username} not found`);
-  }
-
   await dbQueue.put(() => {
     const record = db.prepare(`
       DELETE FROM Players
@@ -59,11 +54,6 @@ const deletePlayer = async (username) => {
 };
 
 const findPlayer = async (value, field = 'username') => {
-  const exists = await playerExists(value, field);
-  if (!exists) {
-    throw new RecordNotFound(`Player with ${field}: ${value} not found`);
-  }
-
   const player = await dbQueue.put(() => {
     const record = db.prepare(`
       SELECT * FROM Players WHERE ${field} = ?
@@ -72,15 +62,15 @@ const findPlayer = async (value, field = 'username') => {
     return record.get(value);
   });
 
-  return player;
-};
-
-const changePassword = async (newPassword, value, field = 'username') => {
-  const exists = await playerExists(value, field);
-  if (!exists) {
+  if (!player) {
     throw new RecordNotFound(`Player with ${field}: ${value} not found`);
   }
 
+  return player;
+};
+
+
+const changePassword = async (newPassword, value, field = 'username') => {
   await dbQueue.put(() => {
     const record = db.prepare(`
       UPDATE Players
@@ -93,11 +83,6 @@ const changePassword = async (newPassword, value, field = 'username') => {
 };
 
 const changeUsername = async (newUsername, value, field = 'username') => {
-  const exists = await playerExists(value, field);
-  if (!exists) {
-    throw new RecordNotFound(`Player with ${field}: ${value} not found`);
-  }
-
   await dbQueue.put(() => {
     const record = db.prepare(`
       UPDATE Players
