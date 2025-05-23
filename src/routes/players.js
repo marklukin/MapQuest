@@ -1,27 +1,27 @@
-'use strict';
-
-const {
+import {
   createPlayer,
-  deletePlayer,
   findPlayer,
+  deletePlayer,
   changePassword,
   changeUsername,
-} = require('../database/player');
+} from '../database/player.js';
 
-const {
+import {
   createToken,
   findToken,
-  renewTokenExpireDate,
   deleteAllPlayerTokens,
-} = require('../database/token');
+} from '../database/token.js';
 
-const { Unauthorized } = require('../error-handler');
-const {
+
+import { Unauthorized } from '../error-handler.js';
+
+import {
   generateToken,
   checkPassword,
   hashPassword,
   addHoursToDatetime,
-} = require('../utils');
+} from '../utils.js';
+
 
 const registerPlayerOpts = {
   schema: {
@@ -138,7 +138,7 @@ const changeUsernameOpts = {
   },
 };
 
-const playerRoutes = async (fastify, options) => {
+export const playerRoutes = async (fastify, options) => {
   fastify.post(
     '/players/register',
     registerPlayerOpts,
@@ -250,5 +250,3 @@ const playerRoutes = async (fastify, options) => {
     },
   );
 };
-
-module.exports = playerRoutes;

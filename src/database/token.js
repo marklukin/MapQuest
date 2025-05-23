@@ -1,8 +1,5 @@
-'use strict';
-
-const { db, dbQueue } = require('./connection');
-
-const { RecordNotFound } = require('../error-handler');
+import { db, dbQueue } from './connection.js';
+import { RecordNotFound } from '../error-handler.js';
 
 const tokenExists = async (token) => {
   const record = await dbQueue.put(() => {
@@ -73,7 +70,7 @@ const deleteAllPlayerTokens = async (playerId) => {
   });
 };
 
-module.exports = {
+export {
   createToken,
   findToken,
   renewTokenExpireDate,

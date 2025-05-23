@@ -1,6 +1,4 @@
-'use strict';
-
-const crypto = require('node:crypto');
+import 'node:crypto'
 
 const generateToken = () => crypto.randomBytes(128).toString('hex');
 
@@ -32,7 +30,7 @@ const addHoursToDatetime = (date, hours) => {
   return result;
 };
 
-module.exports = {
+export {
   hashPassword,
   checkPassword,
   generateToken,

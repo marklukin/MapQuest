@@ -1,5 +1,3 @@
-'use strict';
-
 class AppException extends Error {
   constructor(message, statusCode) {
     super(message);
@@ -47,7 +45,7 @@ const errorHandler = (err, req, reply) => {
   return reply.code(500).send(err.message);
 };
 
-module.exports = {
+export {
   RecordNotFound,
   RecordAlreadyExists,
   Unauthorized,

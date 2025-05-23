@@ -1,10 +1,5 @@
-'use strict';
-
-const { db, dbQueue } = require('./connection');
-const {
-  RecordNotFound,
-  RecordAlreadyExists,
-} = require('../error-handler');
+import { db, dbQueue } from './connection.js';
+import { RecordNotFound, RecordAlreadyExists } from '../error-handler.js';
 
 const playerExists = async (value, field = 'username') => {
   const record = await dbQueue.put(() => {
@@ -94,8 +89,7 @@ const changeUsername = async (newUsername, value, username) => {
   });
 };
 
-
-module.exports = {
+export {
   createPlayer,
   deletePlayer,
   findPlayer,
