@@ -25,7 +25,6 @@ const scoreElement = document.getElementById('score');
 let fiftyButton = null; //для кнопки 50/50
 let finalBlock = null; //для финального экрана
 
-
 let regionNow = 'World'; //текущий регион для кнопки "Играть снова"
 let currentView = 'game'; //будет 'game' или 'profile'
 
@@ -110,13 +109,27 @@ async function initGame(region = 'World') { // инициализируем иг
   }
 
   removeFinalBlock();
+  hideProfile();
   updateRoundInfo();
   updateScore();
   showGameArea(true);
   startNewRound();
 }
 
+async function showProfile() {
+  currentView = 'profile';
+  showGameArea(false);
+  removeFinalBlock();
 
+  if (!profileContainer) createProfileContainer();
+  
+  const stats = await fetchUserStats();
+  if (stats) {
+    updateProfileDisplay(stats);
+  } else showProfileError();
+
+  profileContainer.style.display = 'block';
+}
 
 const hintsQueue = new BiDirectionalPriorityQueue();
 
@@ -362,9 +375,13 @@ document.querySelectorAll('.navbar .nav-link').forEach(link => { // обраба
 
     event.target.classList.add('active'); // добавляем активный класс к нажатой ссылке
 
-    const region = event.target.textContent; // получаем название региона с текста ссылки
+    const linkText = event.target.textContent;
 
-    initGame(region); // и начинаем игру с выбраным регионом
+    if (linkText === 'Your profile') {
+      showProfile()
+    } else {
+      initGame(linkText);
+    }
   })
 })
 
@@ -378,6 +395,7 @@ window.addEventListener('DOMContentLoaded', () => { //начало игры ко
 
   initGame('World');
 })
+
 
 // AUTHORIZATION
 function handlePostLogin() {
