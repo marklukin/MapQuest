@@ -1,7 +1,9 @@
-export function memoize(func, ttlMinutes = 60) {
+export function memoize(func, ttlMinutes = 60, maxSize = 1000) {
   const cache = new Map();
 
   return async function(...args) {
+    if (cache.size > maxSize) cache.clear();
+
     const key = JSON.stringify(args);
     const now = Date.now();
     const item = cache.get(key);
