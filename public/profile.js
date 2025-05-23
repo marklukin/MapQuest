@@ -35,7 +35,7 @@ export function updateProfileDisplay(stats) {
             <h6>Account information</h6>
           </div>
           <div class="card-body">
-            <p><strong>Nickname:</strong> ${stats.username}</p>
+            <p><strong>Username:</strong> ${stats.username}</p>
             <p><strong>Password:</strong>
               <span id="password-display">••••••••</span>
               <button id="toggle-password" class="btn btn-sm btn-outline-secondary ms-2">
