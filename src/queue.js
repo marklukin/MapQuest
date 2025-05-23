@@ -1,8 +1,6 @@
-'use strict';
+import EventEmitter from 'node:events';
 
-const EventEmitter = require('node:events');
-
-class TaskQueue extends EventEmitter {
+export class TaskQueue extends EventEmitter {
   constructor(maxQueueSize = 1000, timeout = 20) {
     super();
     this.queue = [];
@@ -44,10 +42,6 @@ class TaskQueue extends EventEmitter {
     this.isProcessing = false;
   }
 
-  stop() {
-    this.removeListener('newTask');
-  }
-
   start() {
     this.on('newTask', () => {
       if (!this.isProcessing) {
@@ -56,5 +50,3 @@ class TaskQueue extends EventEmitter {
     });
   }
 }
-
-module.exports = TaskQueue;

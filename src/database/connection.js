@@ -1,9 +1,8 @@
-'use strict';
+import { DatabaseSync } from 'node:sqlite';
 
-const { DatabaseSync } = require('node:sqlite');
 const db = new DatabaseSync('./database.db');
 
-const TaskQueue = require('../queue');
+import { TaskQueue } from '../queue.js';
 const dbQueue = new TaskQueue();
 
 const createDatabase = () => {
@@ -31,8 +30,8 @@ const createDatabase = () => {
   `);
 };
 
-module.exports = {
+export {
   db,
-  createDatabase,
   dbQueue,
+  createDatabase,
 };
