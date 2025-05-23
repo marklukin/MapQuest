@@ -394,8 +394,7 @@ function handlePostLogin() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const modalEl = document.getElementById('authModal');
-  const modal = new bootstrap.Modal(modalEl);
+  const modal = new bootstrap.Modal('#authModal');
 
   auth.addAuthListener((isAuthenticated) => {
     document.querySelectorAll('[data-auth]').forEach(el => 
@@ -404,12 +403,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[data-unauth]').forEach(el => 
       el.classList.toggle('d-none', isAuthenticated)
     );
+    if (isAuthenticated) {
+      modal.hide();
+    } else {
+      modal.show();
+    }
   });
 
   if (auth.isAuthenticated()) {
     handlePostLogin();
-  }
-  else {
+  } else {
     modal.show();
   }
 
@@ -459,7 +462,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  document.querySelector('[data-logout]')?.addEventListener('click', () => {
+  document.querySelector('[data-logout]')?.addEventListener('click', (e) => {
+    e.preventDefault();
     auth.logout();
     location.reload();
   });
