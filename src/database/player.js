@@ -14,25 +14,25 @@ const playerExists = async (value, field = 'username') => {
   else return false;
 };
 
-const createPlayer = async (
-  username,
-  password,
-) => {
+const createPlayer = async (username, password) => {
   const exists = await playerExists(username);
   if (exists) {
     throw new RecordAlreadyExists(
       `Player with username: ${username} alredy exists`,
     );
   }
+  
+  const curDatetimeString = new Date().toISOString();
+  const registrationDate = curDatetimeString.split('T')[0];
 
   await dbQueue.put(() => {
     const record = db.prepare(`
       INSERT INTO Players 
-      (username, password_hash, password_salt) 
-      VALUES(?, ?, ?)
+      (username, password_hash, password_salt, registration_date) 
+      VALUES(?, ?, ?, ?)
     `);
 
-    record.run(username, password.hash, password.salt);
+    record.run(username, password.hash, password.salt, registrationDate);
   });
 };
 
