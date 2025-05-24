@@ -19,6 +19,7 @@ import 'dotenv/config';
 const port = process.env.PORT;
 if (!port) {
   console.error('Missing port option in .env');
+  process.exit(1);
 }
 
 const hostname = process.env.HOSTNAME;

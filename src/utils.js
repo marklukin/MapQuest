@@ -1,4 +1,4 @@
-import 'node:crypto'
+import crypto from 'node:crypto';
 
 const generateToken = () => crypto.randomBytes(128).toString('hex');
 
