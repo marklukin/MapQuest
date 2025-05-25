@@ -1,4 +1,4 @@
-export function memoize(func, ttlMinutes = 60, maxSize = 1000) {
+export function memoize(func, ttlMinutes = 5, maxSize = 1000) {
   const cache = new Map();
   
   setInterval(() => {
