@@ -75,6 +75,7 @@ const getPlayerOpts = {
         properties: {
           Playerid: { type: 'integer' },
           username: { type: 'string' },
+          registration_date: { type: 'string' },
           world_score: { type: 'integer' },
           europe_score: { type: 'integer' },
           asia_score: { type: 'integer' },
