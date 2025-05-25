@@ -1,6 +1,12 @@
 export function memoize(func, ttlMinutes = 60, maxSize = 1000) {
   const cache = new Map();
   
+  setInterval(() => {
+    for (const [key, item] of cache.entries()) {
+      if (Date.now() > item.expiry) cache.delete(key);
+    }
+  }, ttlMinutes * 60 * 1000);
+
   return async function(...args) {
     if (cache.size > maxSize) cache.clear();
 
