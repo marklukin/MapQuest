@@ -25,7 +25,7 @@ const createDatabase = () => {
     CREATE TABLE IF NOT EXISTS Tokens(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       token TEXT NOT NULL,
-      token_expire_date TEXT NOT NULL,
+      expire TEXT NOT NULL,
       creator_id INTEGER NOT NULL,
       FOREIGN KEY(creator_id) REFERENCES Players(id)
     )
