@@ -16,7 +16,8 @@ const createDatabase = () => {
       world_score INTEGER DEFAULT 0,
       europe_score INTEGER DEFAULT 0,
       asia_score INTEGER DEFAULT 0,
-      usa_score INTEGER DEFAULT 0
+      usa_score INTEGER DEFAULT 0,
+      africa_score INTEGER DEFAULT 0
     )
   `);
 

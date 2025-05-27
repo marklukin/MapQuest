@@ -81,6 +81,7 @@ const getPlayerOpts = {
           europe_score: { type: 'integer' },
           asia_score: { type: 'integer' },
           usa_score: { type: 'integer' },
+          africa_score: { type: 'integer' },
         },
       },
     },
