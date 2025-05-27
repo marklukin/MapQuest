@@ -9,6 +9,7 @@ import {
 import {
   createToken,
   findToken,
+  validateToken,
   deleteAllPlayerTokens,
 } from '../database/token.js';
 
@@ -202,6 +203,7 @@ export const playerRoutes = async (fastify, options) => {
     deletePlayerOpts,
     async (req, reply) => {
       const token = req.headers['x-token'];
+      await validateToken(token);
 
       const tokenRecord = await findToken(token);
       const player = await findPlayer(tokenRecord.creator_id, 'id');
@@ -219,6 +221,7 @@ export const playerRoutes = async (fastify, options) => {
     changePasswordOpts,
     async (req, reply) => {
       const token = req.headers['x-token'];
+      await validateToken(token);
       const { newPassword } = req.body;
 
       const tokenRecord = await findToken(token);
@@ -238,6 +241,7 @@ export const playerRoutes = async (fastify, options) => {
     changeUsernameOpts,
     async (req, reply) => {
       const token = req.headers['x-token'];
+      await validateToken(token);
       const { newUsername } = req.body;
 
       const tokenRecord = await findToken(token);

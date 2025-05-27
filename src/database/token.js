@@ -1,18 +1,5 @@
 import { db, dbQueue } from './connection.js';
-import { RecordNotFound } from '../error-handler.js';
-
-const tokenExists = async (token) => {
-  const record = await dbQueue.put(() => {
-    const record = db.prepare(`
-      SELECT * FROM Tokens WHERE token = ?
-    `);
-
-    return record.get(token);
-  });
-
-  if (record) return true;
-  else return false;
-};
+import { RecordNotFound, Unauthorized } from '../error-handler.js';
 
 const createToken = async (
   token,
@@ -59,6 +46,15 @@ const renewTokenExpireDate = async (playerId, newToken, newExpireDate) => {
   });
 };
 
+const validateToken = async (token) => {
+  const tokenRecord = await findToken(token);
+  const tokenExpireDate = Date.parse(tokenRecord.token_expire_date);
+
+  if (Date.now() > tokenExpireDate) {
+    throw new Unauthorized('Token is expired');
+  }
+};
+
 const deleteAllPlayerTokens = async (playerId) => {
   await dbQueue.put(() => {
     const query = db.prepare(`
@@ -73,7 +69,7 @@ const deleteAllPlayerTokens = async (playerId) => {
 export {
   createToken,
   findToken,
+  validateToken,
   renewTokenExpireDate,
   deleteAllPlayerTokens,
-  tokenExists,
 };
