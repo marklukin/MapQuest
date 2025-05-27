@@ -31,7 +31,7 @@ const registerPlayerOpts = {
         type: 'object',
         properties: {
           token: { type: 'string' },
-          tokenExpireDate: { type: 'string' },
+          expire: { type: 'string' },
         },
       },
     },
@@ -81,6 +81,7 @@ const getPlayerOpts = {
           europe_score: { type: 'integer' },
           asia_score: { type: 'integer' },
           usa_score: { type: 'integer' },
+          africa_score: { type: 'integer' },
         },
       },
     },
@@ -152,13 +153,13 @@ export const playerRoutes = async (fastify, options) => {
       await createPlayer(username, hashedPassword);
 
       const token = generateToken();
-      const tokenExpireDate = addHoursToDatetime(new Date(), 6);
+      const expire = addHoursToDatetime(new Date(), 6);
 
       const player = await findPlayer(username);
 
-      await createToken(token, tokenExpireDate.toISOString(), player.id);
+      await createToken(token, expire.toISOString(), player.id);
 
-      return reply.code(201).send({ token, tokenExpireDate });
+      return reply.code(201).send({ token, expire });
     },
   );
 

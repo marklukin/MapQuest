@@ -9,7 +9,7 @@ const createToken = async (
   await dbQueue.put(() => {
     const query = db.prepare(`
       INSERT INTO Tokens
-      (token, token_expire_date, creator_id)
+      (token, expire, creator_id)
       VALUES(?, ?, ?)
     `);
 
@@ -38,7 +38,7 @@ const renewTokenExpireDate = async (playerId, newToken, newExpireDate) => {
   await dbQueue.put(() => {
     const query = db.prepare(`
       UPDATE Tokens
-      SET token = ?, token_expire_date = ? 
+      SET token = ?, expire = ? 
       WHERE creator_id = ?
     `);
 
@@ -48,7 +48,7 @@ const renewTokenExpireDate = async (playerId, newToken, newExpireDate) => {
 
 const validateToken = async (token) => {
   const tokenRecord = await findToken(token);
-  const tokenExpireDate = Date.parse(tokenRecord.token_expire_date);
+  const tokenExpireDate = Date.parse(tokenRecord.expire);
 
   if (Date.now() > tokenExpireDate) {
     throw new Unauthorized('Token is expired');
