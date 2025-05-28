@@ -64,6 +64,17 @@ const findPlayer = async (value, field = 'username') => {
   return player;
 };
 
+const updateScore = async (score, region, playerId) => {
+  await dbQueue.put(() => {
+    const record = db.prepare(`
+      UPDATE Players
+      SET ${region}_score = ?
+      WHERE id = ?
+    `);
+
+    record.run(score, playerId);
+  });
+};
 
 const changePassword = async (newPassword, username) => {
   await dbQueue.put(() => {
@@ -95,4 +106,5 @@ export {
   findPlayer,
   changePassword,
   changeUsername,
+  updateScore,
 };
