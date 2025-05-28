@@ -163,7 +163,7 @@ const updateScoreOpts = {
 
 const updateAvatarOpts = {
   schema: {
-    haders: tokenHeader,
+    headers: tokenHeader,
 
     body: {
       type: 'object',
