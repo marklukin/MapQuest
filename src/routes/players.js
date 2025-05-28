@@ -70,25 +70,36 @@ const loginPlayerOpts = {
   },
 };
 
+const Player = {
+  type: 'object',
+  properties: {
+    Playerid: { type: 'integer' },
+    username: { type: 'string' },
+    registration_date: { type: 'string' },
+    world_score: { type: 'integer' },
+    europe_score: { type: 'integer' },
+    asia_score: { type: 'integer' },
+    usa_score: { type: 'integer' },
+    africa_score: { type: 'integer' },
+  },
+};
+
 const getPlayerOpts = {
   schema: {
     response: {
-      200: {
-        type: 'object',
-        properties: {
-          Playerid: { type: 'integer' },
-          username: { type: 'string' },
-          registration_date: { type: 'string' },
-          world_score: { type: 'integer' },
-          europe_score: { type: 'integer' },
-          asia_score: { type: 'integer' },
-          usa_score: { type: 'integer' },
-          africa_score: { type: 'integer' },
-        },
-      },
+      200: Player,
     },
   },
 };
+
+
+const getCurrentPlayerOpts = {
+  schema: {
+    headers: tokenHeader,
+    
+    response: { 200: Player },
+  }
+}
 
 const tokenHeader = {
   type: 'object',
@@ -149,7 +160,7 @@ const updateScoreOpts = {
 
     response: { 201: statusMessage },
   }
-}
+};
 
 const updateAvatarOpts = {
   schema: {
@@ -165,7 +176,8 @@ const updateAvatarOpts = {
 
     response: { 201: statusMessage },
   },
-}
+};
+
 
 export const playerRoutes = async (fastify, options) => {
   fastify.post(
