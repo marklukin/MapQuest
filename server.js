@@ -2,18 +2,19 @@ import Fastify from 'fastify';
 
 const fastify = Fastify({ logger: true });
 
+import { playerRoutes } from './src/routes/players.js';
+import { errorHandler } from './src/error-handler.js';
+
+import { createDatabase, dbQueue } from './src/database/connection.js';
+
+import { fastifyStatic } from '@fastify/static';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-import { playerRoutes } from './src/routes/players.js';
-import { errorHandler } from './src/error-handler.js';
-import { fastifyStatic } from '@fastify/static';
-
-import { createDatabase, dbQueue } from './src/database/connection.js';
-
+import { fastifyCookie } from '@fastify/cookie';
 import 'dotenv/config';
 
 const port = process.env.PORT;
@@ -30,6 +31,11 @@ if (!hostname) {
 
 fastify.register(fastifyStatic, {
   root: path.join(__dirname, 'public'),
+});
+
+fastify.register(fastifyCookie, {
+  hook: 'onRequest',
+  parseOptions: {},
 });
 
 fastify.setErrorHandler(errorHandler);

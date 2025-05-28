@@ -4,6 +4,7 @@ import {
   deletePlayer,
   changePassword,
   changeUsername,
+  updateScore,
 } from '../database/player.js';
 
 import {
@@ -141,6 +142,14 @@ const changeUsernameOpts = {
   },
 };
 
+const updateScoreOpts = {
+  schema: {
+    headers: tokenHeader,
+
+    response: { 201: statusMessage },
+  }
+}
+
 export const playerRoutes = async (fastify, options) => {
   fastify.post(
     '/players/register',
@@ -255,4 +264,23 @@ export const playerRoutes = async (fastify, options) => {
       });
     },
   );
+
+  fastify.post(
+    '/players/updateScore',
+    updateScoreOpts,
+    async (req, reply) => {
+      const token = req.headers['x-token'];
+      await validateToken(token);
+
+      const { score, region } = req.cookies;
+      const tokenRecord = await findToken(token);
+      const playerId = tokenRecord.creator_id;
+
+      await updateScore(score, region, playerId);
+
+      reply.send({
+        'message': 'The score was changed successfully'
+      });
+    }
+  )
 };
