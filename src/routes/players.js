@@ -5,6 +5,7 @@ import {
   changePassword,
   changeUsername,
   updateScore,
+  updateAvatar,
 } from '../database/player.js';
 
 import {
@@ -150,6 +151,22 @@ const updateScoreOpts = {
   }
 }
 
+const updateAvatarOpts = {
+  schema: {
+    haders: tokenHeader,
+
+    body: {
+      type: 'object',
+      required: ['avatar'],
+      properties: {
+        avatar: { type: 'string' },
+      },
+    },
+
+    response: { 201: statusMessage },
+  },
+}
+
 export const playerRoutes = async (fastify, options) => {
   fastify.post(
     '/players/register',
@@ -279,8 +296,35 @@ export const playerRoutes = async (fastify, options) => {
       await updateScore(score, region, playerId);
 
       reply.send({
-        'message': 'The score was changed successfully'
+        'message': 'The score was updated successfully'
       });
     }
-  )
+  );
+  
+  fastify.post(
+    '/players/updateAvatar',
+    updateAvatarOpts,
+    async (req, reply) => {
+      const token = req.headers['x-token'];
+      await validateToken(token);
+      
+      const { avatar } = req.body;
+
+      const sizeInBytes = (avatar.length * 3) / 4;
+      const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
+
+      if (sizeInBytes > MAX_IMAGE_SIZE) {
+        return reply.code(500).send({ 
+          err: 'Image too large. Maximum size is 2MB.' 
+        });
+      }
+
+      const tokenRecord = await findToken(token);
+      await updateAvatar(avatar, tokenRecord.creator_id);
+
+      reply.send({
+        'message': 'The avatar was updated successfully',
+      });
+    }
+  );
 };
