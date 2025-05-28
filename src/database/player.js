@@ -76,6 +76,18 @@ const updateScore = async (score, region, playerId) => {
   });
 };
 
+const updateAvatar = async (newAvatar, playerId) => {
+  await dbQueue.put(() => {
+    const record = db.prepare(`
+      UPDATE Players
+      SET avatar = ?
+      WHERE id = ?
+    `);
+
+    record.run(newAvatar, playerId);
+  });
+}
+
 const changePassword = async (newPassword, username) => {
   await dbQueue.put(() => {
     const record = db.prepare(`
@@ -107,4 +119,5 @@ export {
   changePassword,
   changeUsername,
   updateScore,
+  updateAvatar,
 };
