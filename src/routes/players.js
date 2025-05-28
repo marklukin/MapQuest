@@ -70,26 +70,6 @@ const loginPlayerOpts = {
   },
 };
 
-const getPlayerOpts = {
-  schema: {
-    response: {
-      200: {
-        type: 'object',
-        properties: {
-          Playerid: { type: 'integer' },
-          username: { type: 'string' },
-          registration_date: { type: 'string' },
-          world_score: { type: 'integer' },
-          europe_score: { type: 'integer' },
-          asia_score: { type: 'integer' },
-          usa_score: { type: 'integer' },
-          africa_score: { type: 'integer' },
-        },
-      },
-    },
-  },
-};
-
 const tokenHeader = {
   type: 'object',
   properties: {
@@ -97,6 +77,36 @@ const tokenHeader = {
   },
   required: ['x-token'],
 };
+
+const Player = {
+  type: 'object',
+  properties: {
+    Playerid: { type: 'integer' },
+    username: { type: 'string' },
+    registration_date: { type: 'string' },
+    world_score: { type: 'integer' },
+    europe_score: { type: 'integer' },
+    asia_score: { type: 'integer' },
+    usa_score: { type: 'integer' },
+    africa_score: { type: 'integer' },
+  },
+};
+
+const getPlayerOpts = {
+  schema: {
+    response: {
+      200: Player,
+    },
+  },
+};
+
+const getCurrentPlayerOpts = {
+  schema: {
+    headers: tokenHeader,
+    
+    response: { 200: Player },
+  }
+}
 
 const statusMessage = {
   type: 'object',
@@ -149,7 +159,7 @@ const updateScoreOpts = {
 
     response: { 201: statusMessage },
   }
-}
+};
 
 const updateAvatarOpts = {
   schema: {
@@ -165,7 +175,8 @@ const updateAvatarOpts = {
 
     response: { 201: statusMessage },
   },
-}
+};
+
 
 export const playerRoutes = async (fastify, options) => {
   fastify.post(
@@ -221,6 +232,19 @@ export const playerRoutes = async (fastify, options) => {
     async (req, reply) => {
       const { username } = req.params;
       const player = await findPlayer(username);
+      reply.send(player);
+    },
+  );
+
+  fastify.get(
+    '/players/currentPlayer',
+    getCurrentPlayerOpts,
+    async (req, reply) => {
+      const token = req.headers['x-token'];
+
+      const tokenRecord = await findToken(token);
+      const player = await findPlayer(tokenRecord.creator_id, 'id');
+
       reply.send(player);
     },
   );
