@@ -10,6 +10,7 @@ const createDatabase = () => {
     CREATE TABLE IF NOT EXISTS Players(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT NOT NULL,
+      avatar TEXT,
       password_hash TEXT NOT NULL,
       password_salt TEXT NOT NULL,
       registration_date TEXT NOT NULL,
