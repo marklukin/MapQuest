@@ -70,6 +70,14 @@ const loginPlayerOpts = {
   },
 };
 
+const tokenHeader = {
+  type: 'object',
+  properties: {
+    'x-token': { 'type': 'string' },
+  },
+  required: ['x-token'],
+};
+
 const Player = {
   type: 'object',
   properties: {
@@ -92,7 +100,6 @@ const getPlayerOpts = {
   },
 };
 
-
 const getCurrentPlayerOpts = {
   schema: {
     headers: tokenHeader,
@@ -100,14 +107,6 @@ const getCurrentPlayerOpts = {
     response: { 200: Player },
   }
 }
-
-const tokenHeader = {
-  type: 'object',
-  properties: {
-    'x-token': { 'type': 'string' },
-  },
-  required: ['x-token'],
-};
 
 const statusMessage = {
   type: 'object',
@@ -233,6 +232,19 @@ export const playerRoutes = async (fastify, options) => {
     async (req, reply) => {
       const { username } = req.params;
       const player = await findPlayer(username);
+      reply.send(player);
+    },
+  );
+
+  fastify.get(
+    '/players/currentPlayer',
+    getCurrentPlayerOpts,
+    async (req, reply) => {
+      const token = req.headers['x-token'];
+
+      const tokenRecord = await findToken(token);
+      const player = await findPlayer(tokenRecord.creator_id, 'id');
+
       reply.send(player);
     },
   );
