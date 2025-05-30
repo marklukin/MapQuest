@@ -1,16 +1,19 @@
 'use strict';
 import { auth } from './auth.js';
 import { BiDirectionalPriorityQueue } from './utils/priorityQueue.js';
-import { memoize } from './utils/memoize.js';
+import { getCountryLoader } from './utils/countryLoader.js';
 import { profileContainer, createProfileContainer, showProfileError, updateProfileDisplay, hideProfile, togglePasswordVisibility } from './profile.js';
 
-let countries = [];
+let countryLoader = null;
+let otherRegionNames = [];
+let availableCountriesNames = [];
+
 let currentRound = 1;
 const totalRounds = 15;
 let score = 0;
 let currentCountry = null;
 let usedCountries = new Set();
-let attempt = 1; //будет две попытки
+let attempt = 1;
 let hintUsed = false;
 let fiftyUsed = false; //подсказка 50/50, которая одна на всю игру
 let gameStartTime = null; //для отслеживания времени игры
@@ -22,33 +25,149 @@ const hintContainer = document.getElementById('hint-container');
 const roundInfo = document.getElementById('round-info');
 const scoreElement = document.getElementById('score');
 
-let fiftyButton = null; //для кнопки 50/50
-let finalBlock = null; //для финального экрана
-
+let fiftyButton = null;
+let finalBlock = null;
 let regionNow = 'World'; //текущий регион для кнопки "Играть снова"
 let currentView = 'game'; //будет 'game' или 'profile'
 
-const fetchCountries = memoize(async (region = 'World') => {
-  try {
-    const response = await fetch('countries.json');
-    if (!response.ok) throw new Error('Failed to fetch countries');
+async function initGame(region = 'World') { // инициализируем игру
+  regionNow = region;
+  currentRound = 1;
+  score = 0;
+  usedCountries.clear();
+  fiftyUsed = false;
+  hintUsed = false;
+  gameStartTime = Date.now();
+  currentView = 'game';
 
-    const allCountries = await response.json();
+  try {
+    console.log(`Initializing game for region: ${region}`) //debug
+    countryLoader = await getCountryLoader();
 
     if (region === 'World') {
-      let combinedCountries = [];
-      for (const regionKey in allCountries) {
-        combinedCountries = [...combinedCountries, ...allCountries[regionKey]];
-      }
-      return combinedCountries;
+      availableCountriesNames = await countryLoader.getAllCountryNames();
+      otherRegionNames = [];
+    } else {
+      availableCountriesNames = await countryLoader.getCountryNamesFromRegion(region);
+      otherRegionNames = await countryLoader.getOtherRegionNames(region);
     }
 
-    return allCountries[region] || [];
+    console.log(`Loaded ${availableCountriesNames.length} countries for game`); // debug
+    console.log(`Loaded ${otherRegionNames.length} other region names`); // debug
+
+    if (availableCountriesNames.length < 4) {
+      throw new Error(`Not enough countries in region ${region}. Need at least 4, got ${availableCountriesNames.length}`)
+    }
+
+    removeFinalBlock();
+    hideProfile();
+    updateRoundInfo();
+    updateScore();
+    showGameArea(true);
+
+    await startNewRound();
+    logCountriesFromRegion('Europe');
   } catch (error) {
-    console.error('Error fetching countries:', error);
-    return [];
+    console.error('Failed to initialize game:', error);
+    alert('Failed to load game data. Please try again');
   }
-})
+}
+
+const hintsQueue = new BiDirectionalPriorityQueue();
+
+async function startNewRound() {
+  if (currentRound > totalRounds) {
+    endGame();
+    return;
+  }
+  console.log(`Starting round ${currentRound}`); // debug
+
+  attempt = 1;
+  hintUsed = false;
+  hintContainer.innerHTML = '';
+  hintButton.style.display = 'none';
+  hintButton.disabled = false;
+  hintsQueue.clear();
+
+  const unusedNames = availableCountriesNames.filter(name => !usedCountries.has(name));
+
+  if (unusedNames.length === 0) {
+    console.log('All countries used, resetting a set') //debug
+    usedCountries.clear();
+    unusedNames.push(...availableCountriesNames);
+  }
+
+  if (unusedNames.length < 1) {
+    throw new Error('No countries available for the round');
+  }
+
+  const randomIndex = Math.floor(Math.random() * unusedNames.length);
+  const selectedName = unusedNames[randomIndex];
+  usedCountries.add(selectedName);  
+
+  currentCountry = await countryLoader.getCountryByName(regionNow, selectedName);
+  console.log(`Selected country: ${currentCountry.name}`); //debug
+
+  shuffleArray(currentCountry.hints).forEach(hint => hintsQueue.enqueue(hint));
+
+  countryImage.src = currentCountry.imagePath;
+  countryImage.alt = `Country outline`;
+
+  await generateOptions();
+  renderFiftyButton();
+}
+
+class OptionGenerationStrategy {
+  generate(availableCountriesNames, otherRegionNames, currentCountry) {
+    throw new Error('Not implemented');
+  }
+}
+
+class WorldStrategy extends OptionGenerationStrategy {
+  generate(availableCountriesNames, otherRegionNames, currentCountry) {
+    const otherNames = availableCountriesNames.filter(name => name !== currentCountry.name);
+    const shuffledOthers = shuffleArray(otherNames).slice(0, 3).map(name => ({ name }));
+    return [currentCountry, ...shuffledOthers];
+  }
+}
+
+class RegionStrategy extends OptionGenerationStrategy {
+  generate(availableCountriesNames, otherRegionNames, currentCountry) {
+    const sameRegionIncorrect = availableCountriesNames
+      .filter(name => name !== currentCountry.name)
+      .slice(0, 2)
+      .map(name => ({ name }));
+    const needMore = 3 - sameRegionIncorrect.length;
+    const otherRegionIncorrect = shuffleArray(otherRegionNames)
+        .filter(name => name !== currentCountry.name)
+        .slice(0, needMore)
+        .map(name => ({ name }));
+    return [currentCountry, ...sameRegionIncorrect, ...otherRegionIncorrect];
+  }
+}
+
+async function generateOptions() {
+  optionsContainer.innerHTML = '';
+
+  const strategy = regionNow === 'World' ? new WorldStrategy() : new RegionStrategy();
+  let options = strategy.generate(availableCountriesNames, otherRegionNames, currentCountry)
+  options = shuffleArray(options);
+
+  for (const country of options) {
+    const button = document.createElement('button');
+    button.className = 'btn btn-outline-primary mb-2 w-100';
+    button.textContent = country.name;
+    button.addEventListener('click', () => checkAnswer(button, country.name));
+    optionsContainer.appendChild(button);
+  }
+}
+async function logCountriesFromRegion(region) {
+  console.log(`Loading countries from ${region} incrementally:`);
+  const iterator = countryLoader.getCountriesIterator(region);
+  for await (const country of iterator) {
+    console.log(`- ${country.name} (Hints: ${country.hints.length}, Image: ${country.imagePath})`);
+  }
+}
 
 async function fetchUserStats() {
   try {
@@ -92,103 +211,6 @@ async function saveGameResult(region, score, totalTime) {
   }
 }
 
-async function initGame(region = 'World') { // инициализируем игру
-  regionNow = region;
-  currentRound = 1;
-  score = 0;
-  usedCountries.clear();
-  fiftyUsed = false;
-  hintUsed = false;
-  gameStartTime = Date.now();
-  currentView = 'game';
-
-  countries = await fetchCountries(region);
-  if (countries.length === 0) {
-    alert('Failed to load countries. Please try again');
-    return;
-  }
-
-  removeFinalBlock();
-  hideProfile();
-  updateRoundInfo();
-  updateScore();
-  showGameArea(true);
-  startNewRound();
-}
-
-async function showProfile() {
-  currentView = 'profile';
-  showGameArea(false);
-  removeFinalBlock();
-
-  if (!profileContainer) createProfileContainer();
-  
-  const stats = await fetchUserStats();
-  if (stats) {
-    updateProfileDisplay(stats);
-  } else showProfileError();
-
-  profileContainer.style.display = 'block';
-}
-
-const hintsQueue = new BiDirectionalPriorityQueue();
-
-function startNewRound() {
-
-  if (currentRound > totalRounds) {
-    endGame();
-    return;
-  }
-
-  attempt = 1;
-  hintUsed = false;
-  hintContainer.innerHTML = '';
-  hintButton.style.display = 'none';
-  hintButton.disabled = false;
-
-  hintsQueue.clear();
-
-  let availableCountries = countries.filter(country => !usedCountries.has(country.name));
-
-  if (availableCountries.length === 0) { //если все страны использованы, начинаем заново
-    usedCountries.clear();
-    availableCountries = countries;
-  }
-
-  const randomIndex = Math.floor(Math.random() * availableCountries.length);
-  currentCountry = availableCountries[randomIndex];
-
-
-  shuffleArray(currentCountry.hints).forEach(hint => hintsQueue.enqueue(hint));
-
-
-  usedCountries.add(currentCountry.name);
-
-  countryImage.src = currentCountry.imagePath;
-  countryImage.alt = `Country outline`;
-
-  generateOptions();
-  renderFiftyButton();
-}
-
-function generateOptions() {
-  optionsContainer.innerHTML = '';
-
-  let incorrectOptions = countries.filter(country => country.name !== currentCountry.name);
-  incorrectOptions = shuffleArray(incorrectOptions).slice(0, 3);
-
-  let options = [currentCountry, ...incorrectOptions];
-  options = shuffleArray(options);
-
-  for (const country of options) {
-    const button = document.createElement('button');
-    button.className = 'btn btn-outline-primary mb-2 w-100';
-    button.textContent = country.name;
-    button.addEventListener('click', () => checkAnswer(button, country.name));
-    optionsContainer.appendChild(button);
-  }
-}
-
 function checkAnswer(selectedButton, selectedCountry) {
   if (selectedCountry === currentCountry.name) { //если правильный ответ
 
@@ -225,13 +247,13 @@ function checkAnswer(selectedButton, selectedCountry) {
           button.classList.add('btn-success');
           button.style.display = 'block';
         }
-    }
-    revealAnswer();
-  } else { 
+      }
+      revealAnswer();
+    } else {
       attempt = 2;
       showRandomHint(); //после первой ошибки сразу выводим одну случайную подсказку
       if (fiftyButton) fiftyButton.disabled = true; // 50/50 больше нельзя использовать
-    }; 
+    };
   }
 }
 
@@ -247,16 +269,16 @@ function showRandomHint() {
 
 function revealAnswer() {
   const revealMessage = document.createElement('p');
-      revealMessage.innerHTML = `<strong>The correct answer is: 
+  revealMessage.innerHTML = `<strong>The correct answer is: 
 ${currentCountry.name}</strong>`;
-        revealMessage.className = 'alert alert-info mt-2';
-        hintContainer.appendChild(revealMessage);
+  revealMessage.className = 'alert alert-info mt-2';
+  hintContainer.appendChild(revealMessage);
 
-        setTimeout(() => {
-          currentRound++;
-          updateRoundInfo();
-          startNewRound();
-        }, 2000);
+  setTimeout(() => {
+    currentRound++;
+    updateRoundInfo();
+    startNewRound();
+  }, 2000);
 }
 
 function renderFiftyButton() { //создаем кнопку 50/50 под вариантами
@@ -363,6 +385,21 @@ function shuffleArray(arr) { //shuffle
   }
 
   return newArray;
+}
+
+async function showProfile() {
+  currentView = 'profile';
+  showGameArea(false);
+  removeFinalBlock();
+
+  if (!profileContainer) createProfileContainer();
+
+  const stats = await fetchUserStats();
+  if (stats) {
+    updateProfileDisplay(stats);
+  } else showProfileError();
+
+  profileContainer.style.display = 'block';
 }
 
 document.querySelectorAll('.navbar .nav-link').forEach(link => { // обрабатываем ивенты для навигационных ссылок
