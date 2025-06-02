@@ -197,7 +197,7 @@ export async function handleAvatarChange(event) {
   try {
     showAvatarLoading();
 
-    const base64 = await fileToBase64(file);
+    const base64 = await fileToBase64Memoized(file);
 
     await updateAvatar(base64);
 
@@ -238,6 +238,7 @@ function fileToBase64(file) {
     reader.onerror = error => reject(error);
   });
 }
+const fileToBase64Memoized = memoize(fileToBase64);
 
 function showAvatarLoading() {
   const avatarImg = document.getElementById('user-avatar');
