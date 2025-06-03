@@ -14,6 +14,8 @@ const createDatabase = () => {
       password_hash TEXT NOT NULL,
       password_salt TEXT NOT NULL,
       registration_date TEXT NOT NULL,
+      total_time_spent INTEGER DEFAULT 0,
+      total_games_played INTEGER DEFAULT 0,
       world_score INTEGER DEFAULT 0,
       europe_score INTEGER DEFAULT 0,
       asia_score INTEGER DEFAULT 0,
