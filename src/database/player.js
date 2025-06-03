@@ -64,15 +64,21 @@ const findPlayer = async (value, field = 'username') => {
   return player;
 };
 
-const updateScore = async (score, region, playerId) => {
+const saveGameResult = async (playerId, score, region, timeSpent) => {
+  const player = await findPlayer(playerId, 'id');
+
+  const newScore = player[`${region}_score`] + score;
+  const totalGamesPlayed = player.total_games_played + 1;
+  const totalTimeSpent = player.total_time_spent + timeSpent;
+
   await dbQueue.put(() => {
     const record = db.prepare(`
       UPDATE Players
-      SET ${region}_score = ?
+      SET ${region}_score = ?, total_time_spent = ?, total_games_played = ?
       WHERE id = ?
     `);
 
-    record.run(score, playerId);
+    record.run(newScore, totalTimeSpent, totalGamesPlayed, playerId);
   });
 };
 
@@ -118,6 +124,6 @@ export {
   findPlayer,
   changePassword,
   changeUsername,
-  updateScore,
+  saveGameResult,
   updateAvatar,
 };
