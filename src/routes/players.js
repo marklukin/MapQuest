@@ -4,7 +4,7 @@ import {
   deletePlayer,
   changePassword,
   changeUsername,
-  updateScore,
+  saveGameResult,
   updateAvatar,
 } from '../database/player.js';
 
@@ -84,6 +84,8 @@ const Player = {
     Playerid: { type: 'integer' },
     username: { type: 'string' },
     registration_date: { type: 'string' },
+    total_games_played: { type: 'integer' },
+    total_time_spent: { type: 'integer' },
     world_score: { type: 'integer' },
     europe_score: { type: 'integer' },
     asia_score: { type: 'integer' },
@@ -153,12 +155,20 @@ const changeUsernameOpts = {
   },
 };
 
-const updateScoreOpts = {
+const gameResultOpts = {
   schema: {
     headers: tokenHeader,
-
+    body: {
+      type: 'object',
+      required: ['region', 'score', 'timeSpent'],
+      properties: {
+        region: { type: 'string' },
+        score: { type: 'number' },
+        timeSpent: { type: 'integer' },
+      },
+    },
     response: { 201: statusMessage },
-  }
+  },
 };
 
 const updateAvatarOpts = {
@@ -307,17 +317,16 @@ export const playerRoutes = async (fastify, options) => {
   );
 
   fastify.post(
-    '/players/updateScore',
-    updateScoreOpts,
+    '/players/gameResult',
+    gameResultOpts,
     async (req, reply) => {
       const token = req.headers['x-token'];
       await validateToken(token);
 
-      const { score, region } = req.cookies;
-      const tokenRecord = await findToken(token);
-      const playerId = tokenRecord.creator_id;
+      const { score, region, timeSpent } = req.body;
 
-      await updateScore(score, region, playerId);
+      const tokenRecord = await findToken(token);
+      await saveGameResult(tokenRecord.creator_id, score, region, timeSpent);
 
       reply.send({
         'message': 'The score was updated successfully'

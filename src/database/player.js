@@ -66,7 +66,7 @@ const findPlayer = async (value, field = 'username') => {
 
 const saveGameResult = async (playerId, score, region, timeSpent) => {
   const player = await findPlayer(playerId, 'id');
-
+  
   const newScore = player[`${region}_score`] + score;
   const totalGamesPlayed = player.total_games_played + 1;
   const totalTimeSpent = player.total_time_spent + timeSpent;
