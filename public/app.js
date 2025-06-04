@@ -1,8 +1,11 @@
 'use strict';
-import { auth } from './auth.js';
+import { auth } from './authProxy.js';
 import { BiDirectionalPriorityQueue } from './utils/priorityQueue.js';
 import { getCountryLoader } from './utils/countryLoader.js';
 import { profileContainer, createProfileContainer, showProfileError, updateProfileDisplay, hideProfile, togglePasswordVisibility } from './profile.js';
+import { initProfileAuth } from './profile.js';
+
+initProfileAuth(auth);
 
 let countryLoader = null;
 let otherRegionNames = [];
@@ -194,7 +197,7 @@ async function saveGameResult(region, score, totalTime) {
   try {
     if (!auth.token) return;
 
-    await fetch('/api/v1/players/game-result', {
+    const response = await fetch('/api/v1/players/game-result', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -205,7 +208,13 @@ async function saveGameResult(region, score, totalTime) {
         score,
         timeSpent: totalTime
       })
-    })
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to save game result');
+    }
+
+    console.log('Game result saved successfully');
   } catch (error) {
     console.error('Error saving game result: ', error);
   }
@@ -320,6 +329,10 @@ function updateScore() {
 
 function endGame() {
   showGameArea(false);
+  if (auth.token && gameStartTime) {
+    const totalTime = Math.floor((Date.now() - gameStartTime) / 1000);
+    saveGameResult(regionNow, score, totalTime);
+  }
   showFinalBlock();
 }
 
@@ -416,7 +429,10 @@ document.querySelectorAll('.navbar .nav-link').forEach(link => { // обраба
 
     if (linkText === 'Your profile') {
       showProfile()
-    } else {
+    } else if (linkText === 'Logout' || linkText === 'Login'){
+      return;
+    }
+    else {
       initGame(linkText);
     }
   })

@@ -1,4 +1,11 @@
+import { memoize } from './utils/memoizeAvatar.js';
+
 export let profileContainer = null;
+let auth = null;
+
+export function initProfileAuth(authObject) {
+  auth = authObject;
+}
 
 export function createProfileContainer() {
   profileContainer = document.createElement('div');
@@ -27,10 +34,14 @@ export function createProfileContainer() {
 export function updateProfileDisplay(stats) {
   const profileContent = document.getElementById('profile-content');
 
+  const totalScore = (stats.world_score || 0) + (stats.europe_score || 0) + 
+                    (stats.asia_score || 0) + (stats.africa_score || 0) + 
+                    (stats.usa_score || 0);
+
   profileContent.innerHTML = `
     <div class="row">
       <div class="col-md-6">
-        <div class="card md-3">
+        <div class="card mb-3">
           <div class="card-header">
             <h6>Account information</h6>
           </div>
@@ -39,7 +50,7 @@ export function updateProfileDisplay(stats) {
             <div class="text-center mb-3">
               <div class="avatar-container" style="position: relative; display: inline-block;">
                 <img id="user-avatar" 
-                     src="${stats.avatar}" 
+                     src="${stats.avatar || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNjY2NjY2MiLz48dGV4dCB4PSI1MCIgeT0iNTUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Tm8gQXZhdGFyPC90ZXh0Pjwvc3ZnPg=='}" 
                      alt="User Avatar" 
                      class="rounded-circle" 
                      style="width: 100px; height: 100px; object-fit: cover; border: 3px solid #dee2e6;">
@@ -64,15 +75,15 @@ export function updateProfileDisplay(stats) {
         </div>
       </div>
       <div class="col-md-6">
-        <div class="card md-3">
+        <div class="card mb-3">
           <div class="card-header">
             <h6>General Stats</h6>
           </div>
           <div class="card-body">
-            <p><strong>Total points:</strong> ${stats.totalScore || 0}</p>
+            <p><strong>Total points:</strong> ${stats.totalScore || totalScore}</p>
             <p><strong>Games played:</strong> ${stats.gamesPlayed || 0}</p>
-            <p><strong>Total game time:</strong> ${formatTime(stats.totalTimeSpent) || 0}</p>
-            <p><strong>Average result:</strong> ${stats.gamesPlayed ? (stats.totalScore / stats.gamesPlayed).toFixed(1) : 0}</p>
+            <p><strong>Total game time:</strong> ${formatTime(stats.totalTimeSpent || 0)}</p>
+            <p><strong>Average result:</strong> ${stats.gamesPlayed && stats.gamesPlayed > 0 ? (stats.totalScore / stats.gamesPlayed).toFixed(1) : 0}</p>
           </div>
         </div>
       </div>
@@ -85,24 +96,24 @@ export function updateProfileDisplay(stats) {
           </div>
           <div class="card-body">
             <div class="row">
-              <div class="col-md-3 text-center">
-                <h5>${stats.worldScore || 0}</h5>
+              <div class="col-md-2 text-center">
+                <h5>${stats.world_score || 0}</h5>
                 <p class="text-muted">World</p>
               </div>
-              <div class="col-md-3 text-center">
-                <h5>${stats.europeScore || 0}</h5>
+              <div class="col-md-2 text-center">
+                <h5>${stats.europe_score || 0}</h5>
                 <p class="text-muted">Europe</p>
               </div>
-              <div class="col-md-3 text-center">
-                <h5>${stats.asiaScore || 0}</h5>
+              <div class="col-md-2 text-center">
+                <h5>${stats.asia_score || 0}</h5>
                 <p class="text-muted">Asia</p>
               </div>
-              <div class="col-md-3 text-center">
-                <h5>${stats.africaScore || 0}</h5>
+              <div class="col-md-2 text-center">
+                <h5>${stats.africa_score || 0}</h5>
                 <p class="text-muted">Africa</p>
               </div>
-              <div class="col-md-3 text-center">
-                <h5>${stats.americaScore || 0}</h5>
+              <div class="col-md-2 text-center">
+                <h5>${stats.usa_score || 0}</h5>
                 <p class="text-muted">America</p>
               </div>
             </div>
@@ -112,9 +123,25 @@ export function updateProfileDisplay(stats) {
     </div>
   `;
 
-  document.getElementById('toggle-password').addEventListener('click', togglePasswordVisibility);
-  document.getElementById('change-avatar-btn').addEventListener('click', triggerAvatarUpload);
-  document.getElementById('avatar-input').addEventListener('change', handleAvatarChange);
+  setupEventListeners();
+}
+
+function setupEventListeners() {
+  const togglePasswordBtn = document.getElementById('toggle-password');
+  const changeAvatarBtn = document.getElementById('change-avatar-btn');
+  const avatarInput = document.getElementById('avatar-input');
+
+  if (togglePasswordBtn) {
+    togglePasswordBtn.addEventListener('click', togglePasswordVisibility);
+  }
+  
+  if (changeAvatarBtn) {
+    changeAvatarBtn.addEventListener('click', triggerAvatarUpload);
+  }
+  
+  if (avatarInput) {
+    avatarInput.addEventListener('change', handleAvatarChange);
+  }
 }
 
 export function showProfileError() {
@@ -134,6 +161,8 @@ export async function togglePasswordVisibility() {
   const passwordDisplay = document.getElementById('password-display');
   const toggleButton = document.getElementById('toggle-password');
 
+  if (!passwordDisplay || !toggleButton) return;
+
   if (passwordDisplay.textContent === '••••••••') {
     try {
       const response = await fetch('/api/v1/players/password', {
@@ -148,8 +177,11 @@ export async function togglePasswordVisibility() {
         const data = await response.json();
         passwordDisplay.textContent = data.password || 'Error receiving password';
         toggleButton.textContent = 'Hide';
+      } else {
+        passwordDisplay.textContent = 'Error loading password';
       }
     } catch (error) {
+      console.error('Password loading error:', error);
       passwordDisplay.textContent = 'Loading error';
     }
   } else {
@@ -176,7 +208,10 @@ function formatTime(seconds) {
 
 //Avatar functions
 export function triggerAvatarUpload() {
-  document.getElementById('avatar-input').click();
+  const avatarInput = document.getElementById('avatar-input');
+  if (avatarInput) {
+    avatarInput.click();
+  }
 }
 
 export async function handleAvatarChange(event) {
@@ -201,7 +236,10 @@ export async function handleAvatarChange(event) {
 
     await updateAvatar(base64);
 
-    document.getElementById('user-avatar').src = base64;
+    const avatarImg = document.getElementById('user-avatar');
+    if (avatarImg) {
+      avatarImg.src = base64;
+    }
     
     showAvatarSuccess();
   } catch (error) {
