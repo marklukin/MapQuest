@@ -1,98 +1,55 @@
 import { memoize } from "./memoize.js";
 
 class CountryDataLoader {
-  constructor() {
-    this.allCountriesData = null;
-  }
-
-  async loadAllData() {
-    try {
-      const response = await fetch('countries.json');
-      if (!response.ok) throw new Error('Failed to fetch countries');
-      this.allCountriesData = await response.json();
-      console.log('Country data loaded!') //for debug
-    } catch (error) {
-      console.error('Error loading country data: ', error);
-      throw error;
-    }
-  }
 
   async getCountryNamesFromRegion(region) {
-    if (!this.allCountriesData) {
-      await this.loadAllData();
-    }
+    const pattern = region === 'World' ? '*.*.name' : `${region}.*.name`;
 
-    const countries = this.allCountriesData[region] || [];
-    return countries.map(country => country.name);
+    return new Promise((resolve, reject) => {
+      const names = [];
+      oboe('countries.json')
+        .node(pattern, function (name) {
+          names.push(name);
+        })
+        .done(() => resolve(names))
+        .fail((err) => {
+          console.error(`Error loading names for region ${region}: `, err);
+          reject(err);
+        })
+    })
   }
 
   async getCountryByName(region, name) {
-    if (!this.allCountriesData) {
-      await this.loadAllData();
-    }
+    const pattern = region === 'World' ? '!*.*' : `${region}.*`;
 
-    if (region === 'World') {
-      for (const countries of Object.values(this.allCountriesData)) {
-        const country = countries.find(c => c.name === name);
-        if (country) return country;
-      }
-      return null;
-    } else {
-      const countries = this.allCountriesData[region] || [];
-      return countries.find(country => country.name === name);
-    }
+    return new Promise((resolve, reject) => {
+      let found = false;
+      const stream = oboe('countries.json')
+        .node(pattern, function (country) {
+          if (country.name === name) {
+            found = true;
+            resolve(country);
+            stream.abort();
+          }
+          return oboe.drop;
+        })
+        .fail(err => reject(err))
+        .done(() => {
+          if (!found) resolve(null)
+        })
+    })
   }
-
-  async *getCountriesIterator(region) {
-    if (!this.allCountriesData) {
-      await this.loadAllData();
-    }
-    const countries = this.allCountriesData[region] || [];
-    for (const country of countries) {
-      yield country;
-    }
-  }
-
-  getOtherRegionNames = memoize(async function(selectedRegion) {
-    if (!this.allCountriesData) {
-      await this.loadAllData();
-    }
-
-    const otherNames = [];
-    for (const [regionName, countries] of Object.entries(this.allCountriesData)) {
-      if (regionName !== selectedRegion) {
-        countries.forEach(country => otherNames.push(country.name));    
-      }
-    }
-
-    console.log(`Loaded ${otherNames.length} other region names`); //debug please help me ts not working
-    return otherNames;
-  }, 5, 10);
 
   async getAllCountryNames() {
-    if (!this.allCountriesData) {
-      await this.loadAllData();
-    }
-
-    const allNames = [];
-    for (const countries of Object.values(this.allCountriesData)) {
-      countries.forEach(country => allNames.push(country.name));
-    }
-
-    return allNames;
+    return await this.getCountryNamesFromRegion('World');
   }
 
-  async getAllCountries() {
-    if (!this.allCountriesData) {
-      await this.loadAllData();
-    }
-
-    const allCountries = [];
-    for (const countries of Object.values(this.allCountriesData)) {
-      allCountries.push(...countries);
-    }
-    return allCountries;
-  }
+  getOtherRegionNames = memoize(async function (selectedRegion) {
+    const allNames = await this.getAllCountryNames();
+    const regionNames = await this.getCountryNamesFromRegion(selectedRegion);
+    const otherNames = allNames.filter(name => !regionNames.includes(name));
+    return otherNames;
+  }, 5, 10);
 
 }
 
