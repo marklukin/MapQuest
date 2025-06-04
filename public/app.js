@@ -68,7 +68,6 @@ async function initGame(region = 'World') { // инициализируем иг
     showGameArea(true);
 
     await startNewRound();
-    logCountriesFromRegion('Europe');
   } catch (error) {
     console.error('Failed to initialize game:', error);
     alert('Failed to load game data. Please try again');
@@ -135,14 +134,13 @@ class WorldStrategy extends OptionGenerationStrategy {
 
 class RegionStrategy extends OptionGenerationStrategy {
   generate(availableCountriesNames, otherRegionNames, currentCountry) {
-    const sameRegionIncorrect = availableCountriesNames
-      .filter(name => name !== currentCountry.name)
+    const sameRegionShuffled = shuffleArray(availableCountriesNames.filter(name => name !== currentCountry.name));
+    const sameRegionIncorrect = sameRegionShuffled
       .slice(0, 2)
       .map(name => ({ name }));
-    const needMore = 3 - sameRegionIncorrect.length;
-    const otherRegionIncorrect = shuffleArray(otherRegionNames)
-        .filter(name => name !== currentCountry.name)
-        .slice(0, needMore)
+    const otherRegionShuffled = shuffleArray(otherRegionNames);
+    const otherRegionIncorrect = otherRegionShuffled
+        .slice(0, 1)
         .map(name => ({ name }));
     return [currentCountry, ...sameRegionIncorrect, ...otherRegionIncorrect];
   }
@@ -161,13 +159,6 @@ async function generateOptions() {
     button.textContent = country.name;
     button.addEventListener('click', () => checkAnswer(button, country.name));
     optionsContainer.appendChild(button);
-  }
-}
-async function logCountriesFromRegion(region) {
-  console.log(`Loading countries from ${region} incrementally:`);
-  const iterator = countryLoader.getCountriesIterator(region);
-  for await (const country of iterator) {
-    console.log(`- ${country.name} (Hints: ${country.hints.length}, Image: ${country.imagePath})`);
   }
 }
 
