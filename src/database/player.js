@@ -1,5 +1,5 @@
 import { db, dbQueue } from './connection.js';
-import { RecordNotFound, RecordAlreadyExists } from '../error-handler.js';
+import { RecordNotFound, RecordAlreadyExists } from '#src/error-handler';
 
 const playerExists = async (value, field = 'username') => {
   const record = await dbQueue.put(() => {

@@ -2,7 +2,7 @@ import Fastify from 'fastify';
 
 const fastify = Fastify({ logger: true });
 
-import { playerRoutes } from './src/routes/players.js';
+import { playerRoutes } from './src/routes/api/v1/players.js';
 import { errorHandler } from './src/error-handler.js';
 
 import { createDatabase, dbQueue } from './src/database/connection.js';

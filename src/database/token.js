@@ -34,7 +34,7 @@ const findToken = async (token) => {
   return tokenRecord;
 };
 
-const renewTokenExpireDate = async (playerId, newToken, newExpireDate) => {
+const renewToken = async (playerId, newToken, newExpireDate) => {
   await dbQueue.put(() => {
     const query = db.prepare(`
       UPDATE Tokens
@@ -70,6 +70,6 @@ export {
   createToken,
   findToken,
   validateToken,
-  renewTokenExpireDate,
+  renewToken,
   deleteAllPlayerTokens,
 };

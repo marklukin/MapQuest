@@ -6,24 +6,25 @@ import {
   changeUsername,
   saveGameResult,
   updateAvatar,
-} from '../database/player.js';
+} from '#src/database/player';
 
 import {
   createToken,
   findToken,
   validateToken,
+  renewToken,
   deleteAllPlayerTokens,
-} from '../database/token.js';
+} from '#src/database/token';
 
 
-import { Unauthorized } from '../error-handler.js';
+import { Unauthorized } from '#src/error-handler';
 
 import {
   generateToken,
   checkPassword,
   hashPassword,
   addHoursToDatetime,
-} from '../utils.js';
+} from '#src/utils';
 
 
 const registerPlayerOpts = {

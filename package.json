@@ -13,6 +13,9 @@
   "license": "MIT",
   "author": "",
   "type": "module",
+  "imports": {
+    "#src/*": "./src/*.js"
+  },
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
