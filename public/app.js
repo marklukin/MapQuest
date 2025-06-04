@@ -1,11 +1,9 @@
 'use strict';
-import { auth } from './authProxy.js';
+import { auth } from './auth.js';
 import { BiDirectionalPriorityQueue } from './utils/priorityQueue.js';
 import { getCountryLoader } from './utils/countryLoader.js';
 import { profileContainer, createProfileContainer, showProfileError, updateProfileDisplay, hideProfile, togglePasswordVisibility } from './profile.js';
-import { initProfileAuth } from './profile.js';
 
-initProfileAuth(auth);
 
 let countryLoader = null;
 let otherRegionNames = [];
@@ -42,6 +40,7 @@ async function initGame(region = 'World') { // инициализируем иг
   hintUsed = false;
   gameStartTime = Date.now();
   currentView = 'game';
+  hideProfile(currentView);
 
   try {
     console.log(`Initializing game for region: ${region}`) //debug
@@ -63,7 +62,7 @@ async function initGame(region = 'World') { // инициализируем иг
     }
 
     removeFinalBlock();
-    hideProfile();
+    hideProfile(currentView);
     updateRoundInfo();
     updateScore();
     showGameArea(true);
@@ -176,7 +175,9 @@ async function fetchUserStats() {
   try {
     if (!auth.token) throw new Error('User is not authenticated!');
 
-    const response = await fetch('/api/v1/players/stats', {
+    console.log('Fetching user stats with token:', auth.token);
+
+    const response = await fetch('/api/v1/players/currentPlayer', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -186,7 +187,26 @@ async function fetchUserStats() {
 
     if (!response.ok) throw new Error('Failed to fetch user stats');
 
-    return await response.json();
+    const playerData = await response.json();
+    console.log('Received player data:', playerData);
+    
+    return {
+      username: playerData.username,
+      avatar: playerData.avatar,
+      createdAt: playerData.registration_date,
+      totalScore: (playerData.world_score || 0) + 
+                 (playerData.europe_score || 0) + 
+                 (playerData.asia_score || 0) + 
+                 (playerData.africa_score || 0) + 
+                 (playerData.usa_score || 0),
+      gamesPlayed: playerData.total_games_played || 0,
+      totalTimeSpent: playerData.total_time_spent || 0,
+      world_score: playerData.world_score || 0,
+      europe_score: playerData.europe_score || 0,
+      asia_score: playerData.asia_score || 0,
+      africa_score: playerData.africa_score || 0,
+      usa_score: playerData.usa_score || 0
+    };
   } catch (error) {
     console.error('Error fetching user stats: ', error);
     return null;
@@ -197,7 +217,7 @@ async function saveGameResult(region, score, totalTime) {
   try {
     if (!auth.token) return;
 
-    const response = await fetch('/api/v1/players/game-result', {
+    const response = await fetch('/api/v1/players/gameResult', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -337,13 +357,19 @@ function endGame() {
 }
 
 function showGameArea(show) { //отдельная функция для очищения/показа игровой области
-  countryImage.style.display = show ? 'block' : 'none';
-  optionsContainer.style.display = show ? 'block' : 'none';
-  roundInfo.style.display = show ? 'block' : 'none';
-  scoreElement.style.display = show ? 'block' : 'none';
-  if (fiftyButton) fiftyButton.style.display = show && !fiftyUsed ? 'block' : 'none';
   if (show) {
+    countryImage.style.display = 'block';
+    optionsContainer.style.display = 'block';
+    roundInfo.style.display = 'block';
+    scoreElement.style.display = 'block';
+    if (fiftyButton) fiftyButton.style.display = !fiftyUsed ? 'block' : 'none';
     hintContainer.innerHTML = '';
+  } else {
+    countryImage.style.display = 'none';
+    optionsContainer.style.display = 'none';
+    roundInfo.style.display = 'none';
+    scoreElement.style.display = 'none';
+    if (fiftyButton) fiftyButton.style.display = 'none';
   }
 }
 
@@ -402,17 +428,26 @@ function shuffleArray(arr) { //shuffle
 
 async function showProfile() {
   currentView = 'profile';
-  showGameArea(false);
+  const gameContainer = document.querySelector('.container.mt-4');
+  if (gameContainer) gameContainer.style.display = 'none';
   removeFinalBlock();
 
-  if (!profileContainer) createProfileContainer();
+  if (!profileContainer) {
+    createProfileContainer();
+  } else {
+    profileContainer.style.display = 'block';
+  }
 
-  const stats = await fetchUserStats();
-  if (stats) {
-    updateProfileDisplay(stats);
-  } else showProfileError();
-
-  profileContainer.style.display = 'block';
+  try {
+    const stats = await fetchUserStats();
+    if (stats) {
+      updateProfileDisplay(stats);
+    }
+    profileContainer.style.display = 'block';
+  } catch (error) {
+    console.error('Error loading profile:', error);
+    showProfileError();
+  }
 }
 
 document.querySelectorAll('.navbar .nav-link').forEach(link => { // обрабатываем ивенты для навигационных ссылок
@@ -433,6 +468,8 @@ document.querySelectorAll('.navbar .nav-link').forEach(link => { // обраба
       return;
     }
     else {
+      document.querySelector('.container.mt-4').style.display = 'block';
+      hideProfile(currentView);
       initGame(linkText);
     }
   })
