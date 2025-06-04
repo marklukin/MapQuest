@@ -1,16 +1,12 @@
 import { memoize } from './utils/memoizeAvatar.js';
-
+import { auth } from './auth.js';
 export let profileContainer = null;
-let auth = null;
-
-export function initProfileAuth(authObject) {
-  auth = authObject;
-}
 
 export function createProfileContainer() {
   profileContainer = document.createElement('div');
   profileContainer.id = 'profile-container';
-  profileContainer.className = 'row';
+  profileContainer.className = 'container mt-4';
+  profileContainer.style.display = 'none';
   profileContainer.innerHTML = `
     <div class="col-12">
       <div class="card">
@@ -28,7 +24,8 @@ export function createProfileContainer() {
     </div>
   `;
 
-  document.querySelector('.container.mt-4').appendChild(profileContainer);
+  const gameContainer = document.querySelector('.container.mt-4');
+  gameContainer.parentNode.insertBefore(profileContainer, gameContainer.nextSibling);
 }
 
 export function updateProfileDisplay(stats) {
@@ -64,12 +61,31 @@ export function updateProfileDisplay(stats) {
             </div>
 
             <p><strong>Username:</strong> ${stats.username}</p>
-            <p><strong>Password:</strong>
-              <span id="password-display">••••••••</span>
-              <button id="toggle-password" class="btn btn-sm btn-outline-secondary ms-2">
-                Show
-              </button>
-            </p>
+
+            <div id="password-change-section">
+              <p><strong>Password:</strong> ••••••••
+                <button id="change-password-btn" class="btn btn-sm btn-outline-secondary ms-2">
+                  Change
+                </button>
+              </p>
+              
+              <form id="password-change-form" class="mt-3" style="display: none;">
+                <div class="mb-3">
+                  <label for="new-password" class="form-label">New Password</label>
+                  <input type="password" class="form-control" id="new-password" required>
+                </div>
+                <div class="mb-3">
+                  <label for="confirm-password" class="form-label">Confirm New Password</label>
+                  <input type="password" class="form-control" id="confirm-password" required>
+                </div>
+                <div class="d-flex gap-2">
+                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                  <button type="button" class="btn btn-secondary" id="cancel-password-change">Cancel</button>
+                </div>
+                <div id="password-change-message" class="mt-2"></div>
+              </form>
+            </div>
+
             <p><strong>Date of Registration:</strong> ${formatDate(stats.createdAt)}</p>
           </div>
         </div>
@@ -127,12 +143,32 @@ export function updateProfileDisplay(stats) {
 }
 
 function setupEventListeners() {
-  const togglePasswordBtn = document.getElementById('toggle-password');
   const changeAvatarBtn = document.getElementById('change-avatar-btn');
   const avatarInput = document.getElementById('avatar-input');
 
-  if (togglePasswordBtn) {
-    togglePasswordBtn.addEventListener('click', togglePasswordVisibility);
+  const changePasswordBtn = document.getElementById('change-password-btn');
+  const passwordForm = document.getElementById('password-change-form');
+  const cancelBtn = document.getElementById('cancel-password-change');
+
+  if (changePasswordBtn) {
+    changePasswordBtn.addEventListener('click', () => {
+      passwordForm.style.display = 'block';
+      changePasswordBtn.style.display = 'none';
+    });
+  }
+  
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', () => {
+      passwordForm.style.display = 'none';
+      changePasswordBtn.style.display = 'inline-block';
+      document.getElementById('password-change-message').textContent = '';
+      document.getElementById('new-password').value = '';
+      document.getElementById('confirm-password').value = '';
+    });
+  }
+  
+  if (passwordForm) {
+    passwordForm.addEventListener('submit', handlePasswordChange);
   }
   
   if (changeAvatarBtn) {
@@ -141,6 +177,66 @@ function setupEventListeners() {
   
   if (avatarInput) {
     avatarInput.addEventListener('change', handleAvatarChange);
+  }
+}
+
+async function handlePasswordChange(e) {
+  e.preventDefault();
+  
+  const newPassword = document.getElementById('new-password').value;
+  const confirmPassword = document.getElementById('confirm-password').value;
+  const messageElement = document.getElementById('password-change-message');
+  const passwordForm = document.getElementById('password-change-form');
+  const changePasswordBtn = document.getElementById('change-password-btn');
+  
+  messageElement.textContent = '';
+  messageElement.className = 'mt-2';
+
+  if (newPassword !== confirmPassword) {
+    messageElement.textContent = 'New passwords do not match!';
+    messageElement.className = 'mt-2 text-danger';
+    return;
+  }
+  
+  if (newPassword.length < 6) {
+    messageElement.textContent = 'Password must be at least 6 characters!';
+    messageElement.className = 'mt-2 text-danger';
+    return;
+  }
+  
+  try {
+    const response = await fetch('/api/v1/players/changePassword', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-token': auth.token
+      },
+      body: JSON.stringify({
+        newPassword
+      })
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.err || 'Password change failed');
+    }
+
+    messageElement.textContent = 'Password changed successfully!';
+    messageElement.className = 'mt-2 text-success';
+
+    document.getElementById('new-password').value = '';
+    document.getElementById('confirm-password').value = '';
+    
+    setTimeout(() => {
+      passwordForm.style.display = 'none';
+      changePasswordBtn.style.display = 'inline-block';
+      messageElement.textContent = '';
+    }, 2000);
+    
+  } catch (error) {
+    console.error('Password change error:', error);
+    messageElement.textContent = 'Error: ' + error.message;
+    messageElement.className = 'mt-2 text-danger';
   }
 }
 
@@ -153,8 +249,13 @@ export function showProfileError() {
   `;
 }
 
-export function hideProfile() {
+export function hideProfile(currentView) {
   if (profileContainer) profileContainer.style.display = 'none';
+
+  const gameContainer = document.querySelector('.container.mt-4');
+  if (gameContainer && currentView !== 'profile') {
+    gameContainer.style.display = 'block';
+  }
 }
 
 export async function togglePasswordVisibility() {
