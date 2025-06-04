@@ -92,6 +92,7 @@ const Player = {
     asia_score: { type: 'integer' },
     usa_score: { type: 'integer' },
     africa_score: { type: 'integer' },
+    avatar: { type: 'string' },
   },
 };
 
