@@ -53,10 +53,46 @@ class CountryDataLoader {
 
 }
 
+class CountryDataLoaderProxy {
+  constructor(loader) {
+    this.loader = loader;
+    this._getCountryNamesFromRegion = memoize(
+      loader.getCountryNamesFromRegion.bind(loader), 5, 10
+    );
+
+    this._getCountryByName = memoize(
+      loader.getCountryByName.bind(loader), 5, 10
+    );
+
+    this._getAllCountryNames = memoize(
+      loader.getAllCountryNames.bind(loader), 5, 10
+    );
+
+    this._getOtherRegionNames = loader.getOtherRegionNames.bind(loader);
+  }
+
+  async getCountryNamesFromRegion(region) {
+    return await this._getCountryNamesFromRegion(region);
+  }
+
+  async getCountryByName(region, name) {
+    return await this._getCountryByName(region, name);
+  }
+
+  async getAllCountryNames() {
+    return await this._getAllCountryNames();
+  }
+
+  async getOtherRegionNames(selectedRegion) {
+    return await this._getOtherRegionNames(selectedRegion);
+  }
+}
+
 let loaderInstance = null; //singleton
 export async function getCountryLoader() {
   if (!loaderInstance) {
-    loaderInstance = new CountryDataLoader();
+    const loader = new CountryDataLoader();
+    loaderInstance = new CountryDataLoaderProxy(loader);
   }
   return loaderInstance;
 }
